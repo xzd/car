@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>企业中心</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+    <style>
+        body {
+            background: #f7f7f7
+        }
+
+        * {
+            font-family: PingFang SC
+        }
+
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="card_head">企业中心</div>
+    <div class="company_list">
+
+    </div>
+    <div class="padding_b"></div>
+    <footer class="footer">
+        <a href="newIndex.html" class="footer-list hight">
+            <i class="icons index"></i>
+            返回首页
+        </a>
+        <a href="{:U('Deliver/add')}" class="footer-list">
+            <i class="icons publish"></i>
+            发布信息
+        </a>
+        <a href="{:U('Carowner/index')}" class="footer-list">
+            <i class="icons my-membmer"></i>
+            个人中心
+        </a>
+    </footer>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script>
+    $(function () {
+        function getList() {
+            $.get({
+                url: URL + '/Index/index',
+                async: true,
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res);
+                    let data = res.data;
+
+                    let enHtml = '';
+                    for (let i in data.enterprises) {
+                        console.log(i);
+                        enHtml += '<dl class="company">';
+                        enHtml += '<dt>' + data.enterprises[i].name + '</dt>';
+                        enHtml += '<dd>联系人：' + data.enterprises[i].contact + '</dd>';
+                        enHtml += '<dd>电话：' + data.enterprises[i].telephone + '</dd>';
+                        enHtml += ' <dd>手机：' + data.enterprises[i].mobile + '</dd>';
+                        enHtml += '<dd>' + data.enterprises[i].address + '</dd></dl>';
+
+                    }
+
+                    $('.company_list').append(enHtml);
+
+
+                }
+            })
+        }
+
+        getList();
+    })
+</script>
+
+</body>
+</html>

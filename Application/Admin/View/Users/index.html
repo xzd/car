@@ -1,0 +1,172 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    <div class="main-right">
+        <h1 class="main-right-title">注册用户管理 > 发货方用户管理</h1>
+        <div class="search text-align">
+            <form class="form-inline" method="get" action="{:U('users/index')}">
+                <label for="nickname" class="margin-right">
+                    <span>微信昵称</span>
+                    <input type="text" name="nickname" class="input" value="{$search.nickname}" />
+                </label>
+                <label for="phone">
+                    <span>手机号</span>
+                    <input type="text" name="phone" class="input" value="{$search.phone}" />
+                </label>
+                <a href="#" onclick="$('.form-inline').submit();" class="searchBtn"><i class="icon"></i>搜索</a>
+            </form>
+        </div>
+        <div class="center">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>微信昵称</th>
+                        <th>姓名</th>
+                        <th>发货方类型</th>
+                        <th>是否会员</th>
+                        <th>手机号</th>
+                        <th>注册时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <volist name="info" id="vo">
+                    <tr>
+                        <td>{$vo.nickname}</td>
+                        <td>{$vo.name}</td>
+                        <td>
+                            <if condition="$vo['type_goods'] eq 1">
+                                <span class="label label-success">货主
+                            <else />
+                                <span class="label label-danger">货站
+                            </if>
+                        </td>
+                        <td><if condition="$vo['vip'] eq 1">是<else />否</if></td>
+                        <td>{$vo.phone}</td>
+                        <td>{$vo.create_time}</td>
+                        <td>
+                            <if condition="$vo['lock'] eq 0 and $show_index_lock">
+                            <a href="{:U('/admin/users/lock', array('id' => $vo['id'], 'type' => 1, 'nickname' => $search['nickname'], 'phone' => $search['phone']))}" class="forbidden btn-forbidden">禁封</a>
+                            <elseif condition="$vo['lock'] eq 1 and $show_index_unlock" />
+                            <a href="{:U('/admin/users/unlock', array('id' => $vo['id'], 'type' => 1, 'nickname' => $search['nickname'], 'phone' => $search['phone']))}" class="unblocking">解封</a>
+                            </if>
+                            <if condition="$show_index_edit">
+                            <a href="#" onclick="show('{$vo.id}')" class="edit">编辑</a>
+                            </if>
+                        </td>
+                    </tr>
+                    </volist>
+                </tbody>
+            </table>
+            <div class="page clearfix">
+                <form name="union_form" action="{:U('/admin/users/index')}" method="get">
+                    <input type="hidden" name="search" value="{$search}">
+                    {$page}
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--弹出层-->
+    <div class="dialog"></div>
+    
+    <if condition="$show_index_edit">
+    <volist name="info" id="vo">
+    <form id="submit_form_{$vo.id}" method="post" action="{:U('/admin/users/update')}" >
+        <div class="mask-layer mask-layer-{$vo.id}">
+            <input type="hidden" name="id" value="{$vo.id}" />
+            <input type="hidden" name="type" value="1" />
+            <input type="hidden" name="nickname" value="{$search.nickname}" />
+            <input type="hidden" name="phone" value="{$search.phone}" />
+            
+            <p class="mask-layer-title">发货方注册用户详情</p>
+            <div class="layer-lader">
+                <h3 class="user">用户信息</h3>
+                <ul>
+                    <li>
+                        <span>姓名</span>
+                        <span class="fr">{$vo.name}</span>
+                    </li>
+                    <li>
+                        <span>发货方类型</span>
+                        <span class="fr">
+                            <label for="type1" class="cus">
+                                <input type="radio" id="type1" name="type_goods" value="1" class="radio" <if condition="$vo['type_goods'] eq 1">checked</if>>货主
+                            </label>
+                            <label for="type2" class="cus">
+                                <input type="radio" id="type2" name="type_goods" value="2" class="radio" <if condition="$vo['type_goods'] eq 2">checked</if>>货站
+                            </label>
+                        </span>
+                    </li>
+                    <li class="clearfix">
+                        <span>用户头像</span>
+                        <span class="fr">
+                            <img src="{$vo.header_img}" class="user-img deImg imgJs">
+                        </span>
+                    </li>
+                    <li>
+                        <span>微信昵称</span>
+                        <span class="fr">{$vo.nickname}</span>
+                    </li>
+                    <li>
+                        <span>手机号</span>
+                        <span class="fr">{$vo.phone}</span>
+                    </li>
+                    <li>
+                        <span>身份证号</span>
+                        <span class="fr">{$vo.id_no}</span>
+                    </li>
+                    <li class="clearfix">
+                        <span>身份证照片（正反面）</span>
+                        <span class="fr">
+                            <img src="{$vo.id_face_img}" class="sfz deImg imgJs">
+                             <img src="{$vo.id_word_img}" class="sfz deImg imgJs">
+                        </span>
+                    </li>
+                    <li>
+                        <span>注册时间</span>
+                        <span class="fr">{$vo.register_time}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="layer-lader">
+                <h3 class="member">会员信息</h3>
+                <ul>
+                    <li>
+                        <span>是否会员</span>
+                        <span class="fr"><if condition="$vo['vip'] eq 1">是<else />否</if></span>
+                    </li>
+                    <li>
+                        <span>会员周期</span>
+                        <span class="fr">{$vo.vip_starttime} - {$vo.vip_endtime}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="btn">
+                <a href="#" onclick="submit2('{$vo.id}')" class="confirmBtn">保存</a>
+                <a href="#" class="cancelBtn">取消</a>
+            </div>
+            <!--imgBg begin-->
+            <div class="imgBg">
+                <div class="imgBgMain">
+                    <img src="" alt="" class="showImg" width="100%" />
+                </div>
+            </div>
+            <!--imgBg end-->
+        </div>
+    </form>
+    </volist>
+    </if>
+
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/js/admin.js"></script>
+    <script>
+        //弹出货源详情
+        function show(id) {
+            $('.dialog,.mask-layer-' + id).show();
+        }
+        function submit2(id) {
+            $('#submit_form_' + id).submit();
+        }
+    </script>
+    </body>
+</html>

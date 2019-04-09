@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>车主详情</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+</head>
+<body>
+<div class="wrap">
+    <div class="margin-bottom">
+        <div class="members-head detail-top">
+            <div class="detail-img">
+                <i class="vv" id="mem"></i>
+            </div>
+            <p class="num"></p>
+        </div>
+        <p class="regist-title go">车辆运输信息</p>
+        <div class="huo-info">
+            <ul>
+                <li>
+                    车牌号
+                    <span class="fr" id="car_number_plate"></span>
+                </li>
+                <li>
+                    车长/车型/载重
+                    <span class="fr" id="attr"></span>
+                </li>
+                <li>
+                    运输状态
+                    <span class="fr" id="car_empty"></span>
+                </li>
+            </ul>
+        </div>
+        <p class="regist-title go">常跑路线</p>
+        <div class="huo-info">
+            <ul id="lines">
+
+
+            </ul>
+        </div>
+        <a href="#" class="mob-btn green">联系车主</a>
+    </div>
+</div>
+<div class="dialog"></div>
+<div class="mask mem">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips">您尚未成为发货方会员，无法使用该功能！</p>
+    <div class="botton">
+        <a href="#" class="go">先去逛逛</a>
+        <a href="{:U('Deliver/member')}" class="member">成为会员</a>
+    </div>
+</div>
+<div class="mask reg">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips" id="tip">您尚未完善资料，无法使用该功能！</p>
+    <div class="botton">
+        <a href="#" class="go">先去逛逛</a>
+        <a href="{:U('Deliver/regist')}" class="member">完善资料</a>
+    </div>
+</div>
+<div class="mob-mask">
+    <ul>
+        <li>联系电话</li>
+        <li class="tel">
+
+        </li>
+        <li class="cale">取消</li>
+    </ul>
+</div>
+
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+
+<script>
+    $(function () {
+        let user = '';
+
+        function getOwner(id) {
+            $.ajax({
+                url: URL + '/users/car',
+                type: 'GET',
+                async: true,
+                dataType: 'json',
+                data: {
+                    'id': id
+                },
+                success: function (data, status) {
+                    user = data.data;
+                    let html = '<img src=" ' + user.header_img + ' ">';
+                    $('.detail-img').append(html);
+                    let type = '';
+                    if (user.type == 1) {
+
+                        if (user.type_goods == 1) {
+                            type = '货主';
+                        } else {
+                            type = '货站';
+                        }
+                    } else if (user.type == 2) {
+                        type = '车主';
+                    }
+                    let name = '<h3 class="detail-name"> ' + user.name + '<span class="name-title">' + type + '</span></h3>';
+                    $('.detail-img').after(name);
+
+                    if (user.vip == 1) {
+                        $('#mem').addClass('vv');
+                        $('#mem').removeClass('v');
+                    } else {
+                        $('#mem').addClass('v');
+                        $('#mem').removeClass('vv');
+                    }
+
+                    //'12345678901'.replace(/(\d{4})\d{10}(\d{4})/, '$1****$2');
+                    $('.num').text('身份证号:' + user.id_no.replace(/(\d{4})\d{10}(\d{4})/, '$1****$2'));
+
+                    $('#car_number_plate').text(user.car_number_plate);
+                    if (user.car_empty == 1) {
+                        $('#car_empty').text('空车');
+                    } else {
+                        $('#car_empty').text('运输中');
+                    }
+                    $('#attr').text(user.car_lenght + '/' + user.car_type + '/' + user.car_load + '吨');
+
+                    $('.tel').append('<a href="tel:' + user.phone + '">' + user.phone + '</a>');
+
+                    let lines = user.lines;
+                    var lineHtml = '';
+                    for (let i in lines) {
+                        lineHtml += '<li>' + lines[i].start + '<span class="xieyi margin">至</span>' + lines[i].end + '</li>';
+                    }
+                    $('#lines').append(lineHtml);
+
+                }
+            })
+        }
+
+        let id = '{$id}';
+        if (id != '' && id > 0) {
+            getOwner(id);
+        }
+
+        let my_vip = '{$my_vip}';
+        let state = '{$state}';
+        $('.mob-btn').click(function () {
+
+//            if (state == 2) {
+//                layer.msg('用户资料审核中!请等待');
+//            } else if (state == 4) {
+//                $('#tip').text('审核不通过，请重新注册');
+//                $('.dialog').show();
+//                $('.reg').show();
+//            } else if (state == 3) {
+//                if (my_vip == 0) {
+//                    $('.dialog').show();
+//                    $('.mem').show();
+//                } else {
+                    $('.dialog').show();
+                    $('.mob-mask').slideDown(500);
+//                }
+//            } else {
+//                $('.dialog').show();
+//                $('.reg').show();
+//            }
+
+        });
+        $('.dialog, .go').click(function () {
+            $('.dialog').hide();
+            $('.mask').hide();
+            $('.mob-mask').slideUp(500);
+        });
+
+
+        $('.cale').click(function () {
+            $('.dialog').fadeOut(500);
+            $('.mob-mask').slideUp();
+        });
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>常跑路线管理</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+</head>
+<body>
+<div class="wrap">
+    <div class="empty" style="display:none;">
+        <img src="__PUBLIC__/home/images/chezhu/icon_null@2x.png" alt="">
+        <p class="anonymous">您还没有常跑路线记录</p>
+        <p class="now">赶紧跑起来吧！</p>
+    </div>
+    <div class="line-container" style="margin-bottom: 70px;">
+        <!--浮窗按钮-->
+        <div class="edit-bg-btn">
+            <a href="{:U('Carowner/addRoute')}" class="edit-add"></a>
+            <i class="edit-bg-img"></i>
+            <i class="edit-check"></i>
+        </div>
+        <form action="" class="form margin-top hides">
+            <div class="edit-bg">
+                <img src="__PUBLIC__/home/images/chezhu/edi.png" alt="">
+                <div class="ctiy-c fl">
+                    <p class="city-c-p">出发地</p>
+                    <label for="" class="city-label startCity">
+                        <input type="text" placeholder="请选择出发地" disabled="disabled" class="ctiy-c-input start">
+                        <input type="hidden" name="start_province" id="start_province">
+                        <input type="hidden" name="start_city" id="start_city">
+                        <input type="hidden" name="start_district" id="start_district">
+                        <input type="hidden" name="start_province_name" id="start_province_name">
+                        <input type="hidden" name="start_city_name" id="start_city_name">
+                        <input type="hidden" name="start_district_name" id="start_district_name">
+                    </label>
+                    <p class="city-c-p">目的地</p>
+                    <label for="" class="city-label endCity">
+                        <input type="text" placeholder="请选择目的地" disabled="disabled" class="ctiy-c-input end">
+                        <input type="hidden" name="end_province" id="end_province">
+                        <input type="hidden" name="end_city" id="end_city">
+                        <input type="hidden" name="end_district" id="end_district">
+                        <input type="hidden" name="end_province_name" id="end_province_name">
+                        <input type="hidden" name="end_city_name" id="end_city_name">
+                        <input type="hidden" name="end_district_name" id="end_district_name">
+                        <input type="hidden" name="id" id="editId">
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<footer class="footer">
+    <a href="{:U('Carowner/lists')}" class="huoyuan">
+        <i class="icons huo"></i>
+        货源搜索
+    </a>
+    <a href="#" class="chang-c btnClickRou cu">
+        <i class="icons chang-cu"></i>
+        常跑路线
+    </a>
+    <a href="{:U('Carowner/index')}" class="person ">
+        <i class="icons my"></i>
+        个人中心
+    </a>
+</footer>
+<div class="dialog"></div>
+<div class="city city-check">
+    <p class="curr-add">当前地区：<span class="show-start-city">全国</span>
+        <span class="show-start-city-back" style="position:absolute;right:20px;display: none">返回上一级</span></p>
+    <ul class="city-li">
+
+    </ul>
+    <a href="#" class="cancel">取消</a>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script>
+    $(function () {
+
+        function getList() {
+            $.get(URL+'/lines/index',
+                {
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let cardHTML = '';
+                        let d = data.data;
+                        if(d != ''){
+                            for (let i in d) {
+
+                                cardHTML += '<div class="center padding-bottom">'
+                                cardHTML += '<p class="regist-title route-title">路线'+(parseInt(i)+1)
+                                if(d[i].notice > 0){
+                                    cardHTML +='<span class="remind">'+d[i].notice+'</span>';
+                                }
+                                
+                                if(d[i].start_province_name == d[i].start_city_name && d[i].start_district_name == '') {
+                                    d[i].start_province_name = '全';
+                                }
+                                if(d[i].end_province_name == d[i].end_city_name && d[i].end_district_name == '') {
+                                    d[i].end_province_name = '全';
+                                }
+                                
+                                cardHTML +='</p>';
+                                cardHTML += '<div class="route">';
+                                cardHTML +=  '<span class="route-star">'+d[i].start_province_name+d[i].start_city_name+d[i].start_district_name+'</span>';
+                                cardHTML +=  '<span style="padding-left: 0;text-align: center"><img src="__PUBLIC__/home/images/chezhu/arrow_r1.png" width="50" alt=""></span>';
+                                cardHTML +=  '<span class="route-end">'+d[i].end_province_name+d[i].end_city_name+d[i].end_district_name+'</span>';
+                                cardHTML +=  '</div>';
+                                cardHTML +=  '<div style="text-align: right"><a href="/Carowner/lists?sp=' + d[i].start_province + '&sc=' + d[i].start_city + '&sd=' + d[i].start_district + '&spn=' + d[i].start_province_name + '&scn=' + d[i].start_city_name + '&sdn=' + d[i].start_district_name + '&ep=' + d[i].end_province + '&ec=' + d[i].end_city + '&ed=' + d[i].end_district + '&epn=' + d[i].end_province_name + '&ecn=' + d[i].end_city_name + '&edn=' + d[i].end_district_name + '" class="btn-check">查看</a></div>';
+                                cardHTML += '<div class="edit-btn">';
+                                cardHTML += '<i id="'+d[i].id+'" class="edit-img"></i>';
+                                cardHTML += '<i id="'+d[i].id+'" class="del-img"></i>';
+                                cardHTML +=  '</div>';
+                                cardHTML +=  '</div>';
+                            }
+                            $('.line-container').append(cardHTML);
+                        }else{
+                            $('.empty').show();
+                        }
+
+
+                    } else {
+                    }
+
+                });
+        }
+        getList(1,20,1);
+
+        function getNum(){
+            $.get(URL+'/lines/notice',{
+                datatype:'json'
+            },
+            function (data) {
+                if(data.code === 1){
+                    let num = '';
+                    let d = data.data;
+                    if(d > 0){
+                       num += '<span class="tipss">'+d+'</span>';
+                       $('.chang-cu').prepend(num);
+                    }
+
+                }
+            }
+            )
+        }
+        getNum();
+
+        $(document).on('click', '.del-img', function () {
+            let id = $(this).attr('id');
+            if(id != ''){
+                layer.confirm('是否真的删除！', function(){
+                    $.post(URL+'/lines/delete',
+                        {
+                            id: id,
+                            datatype:'json'
+                        },
+                        function (data) {
+                            if(data.code === 1){
+                                layer.msg('删除成功!');
+                                setTimeout(function () {
+                                    window.location = '/Carowner/route';
+                                }, 2000);
+                            }else{
+                                layer.msg('删除失败!');
+                            }
+
+                        });
+                });
+
+
+            }
+        });
+
+
+
+        let user = '';
+
+        function getOwner() {
+            $.get({
+                url: URL + '/users/index.html?type=2',
+                async: true,
+                dataType: 'json',
+                success: function (data, status) {
+                    user = data.data;
+                    let type = '';
+                    if (user.type == 1) {
+
+                        if (user.type_goods == 1) {
+                            type = '货主';
+                        } else {
+                            type = '货站';
+                        }
+                    } else if (user.type == 2) {
+                        type = '车主';
+                    }
+
+                    if (user.car_empty == 1) {
+                        $('#switch').val(1);
+                        $('#switch').prop('checked', true);
+                    } else {
+                        $('#switch').val(0);
+                        $('#switch').prop('checked', false);
+                    }
+                    let html = '<img id="header_img" src=" ' + user.header_img + ' ">';
+
+                    $('.detail-img').append(html);
+                    let name = '<h3  class="detail-name"> ' + user.name + '<span class="name-title">' + type + '</span></h3>';
+                    $('.detail-img').after(name);
+                    if (user.id_no == '') {
+                        $('.num').text('身份证号:---------');
+                    } else {
+                        $('.num').text('身份证号:' + user.id_no.replace(/(\d{4})\d{10}(\d{4})/, '$1****$2'));
+                    }
+
+
+                    if (user.vip == 1) {
+                        $('#mem').addClass('vv');
+                        $('#mem').removeClass('v');
+                    } else {
+                        $('#mem').addClass('v');
+                        $('#mem').removeClass('vv');
+                    }
+
+                    if (user.phone != 0) {
+                        $('.phone').text(user.phone);
+                    }
+
+                    $('.car_number_plate').text(user.car_number_plate);
+                    let car_type_lenght = '';
+                    if (user.car_lenght != '') {
+                        car_type_lenght += user.car_lenght + '/';
+                    }
+                    if (user.car_type != '') {
+                        car_type_lenght += user.car_type + '/';
+                    }
+                    if (user.car_load != 0) {
+                        car_type_lenght += user.car_load + '吨';
+                    }
+                    $('.attr').text(car_type_lenght);
+
+                }
+            })
+        }
+
+        getOwner();
+        $('.btnClickRou').click(function () {
+            if (user.state == 2) {
+                layer.msg('用户资料审核中!请等待');
+            } else if (user.state == 4) {
+                $('#tip').text('审核不通过，请重新注册');
+                $('.dialog').show();
+                $('.reg').show();
+            } else if (user.state == 3) {
+                if (user.vip == 0) {
+                    $('.dialog').show();
+                    $('.mem').show();
+                } else {
+                    window.location = "{:U('Carowner/route')}";
+                }
+            } else {
+                $('.dialog').show();
+                $('.reg').show();
+            }
+
+
+        });
+
+        let startName = '';
+        let endName = '';
+        let m = -1;
+        let flag = true;
+        let next_code = [];
+        let next_name = [];
+        let city_show = '';
+
+        $('.startCity').click(function () {
+
+            if (flag) {
+                $('.show-start-city').text('全国');
+                $('.city_sure').text('取消');
+                $('.city-check').addClass('start-city-show');
+                $('.city-check').removeClass('end-city-show');
+                $('.start').val('');
+                startName = '';
+                next_code = [];
+                next_name = [];
+                city_show = '.start';
+                m = -1;
+                flag = false;
+                getCity(0);
+            }
+
+            $('.dialog').show();
+            $('.city-check').slideDown();
+            $('body').css('position', 'fixed');
+        });
+
+        $('.endCity').click(function () {
+
+            if (flag) {
+                $('.show-start-city').text('全国');
+                $('.city_sure').text('取消');
+                $('.city-check').addClass('end-city-show');
+                $('.city-check').removeClass('start-city-show');
+                $('.end').val('');
+                endName = '';
+                next_code = [];
+                next_name = [];
+                city_show = '.end';
+                m = -1;
+                flag = false;
+                getCity(0);
+            }
+
+            $('.dialog').show();
+            $('.city-check').slideDown();
+            $('body').css('position', 'fixed');
+        });
+        //
+
+        function getCity(code) {
+            $.get(URL + '/index/citys',
+                {
+                    code: code,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let html = '';
+                        let d = data.data;
+                        for (let i in d) {
+                            html += '<li code="' + d[i].code + '">' + d[i].name + '</li>';
+                        }
+                        $('.city-li').empty();
+                        $('.city-li').append(html);
+                        flag = true;
+                        m++;
+                        if (d.length <= 0) {
+                            $('.city_sure').text('确定');
+                        }
+                    } else {
+                        layer.msg('服务端错误!');
+                        flag = true;
+
+                    }
+
+                });
+        }
+
+        function backGetCity(code) {
+            $.get(URL + '/index/citys',
+                {
+                    code: code,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let html = '';
+                        let d = data.data;
+                        for (let i in d) {
+                            html += '<li code="' + d[i].code + '">' + d[i].name + '</li>';
+                        }
+                        $('.city-li').empty();
+                        $('.city-li').append(html);
+                        flag = true;
+                        m--;
+                        if (d.length <= 0) {
+                            $('.city_sure').text('确定');
+                        }
+                    } else {
+                        layer.msg('服务端错误!');
+                        flag = true;
+
+                    }
+
+                });
+        }
+
+        $(document).on('click', '.start-city-show ul li', function () {
+            if (flag) {
+                flag = false;
+                let addId = ['#start_province', '#start_city', '#start_district'];
+                let addName = ['#start_province_name', '#start_city_name', '#start_district_name'];
+
+                let code = $(this).attr('code');
+                let name = $(this).text();
+
+                $(addId[m]).val(code);
+                $(addName[m]).val(name);
+
+
+                $('.show-start-city').text(name);
+                $('.show-start-city-back').show();
+                next_code.push(code);
+                next_name.push(name);
+
+                startName = '';
+                for (var i = 0; i < next_name.length; i++) {
+                    startName += next_name[i] + ' ';
+                }
+                $('.start').val(startName);
+
+                if (startName != '') {
+                    $('#close').text('确定');
+                }
+                getCity(code)
+            }
+            $(this).addClass('curr-add-current').siblings().removeClass('curr-add-current');
+
+        });
+        $(document).on('click', '.end-city-show ul li', function () {
+            if (flag) {
+                flag = false;
+                let addId = ['#end_province', '#end_city', '#end_district'];
+                let addName = ['#end_province_name', '#end_city_name', '#end_district_name'];
+                let code = $(this).attr('code');
+                let name = $(this).text();
+
+
+                $(addId[m]).val(code);
+                $(addName[m]).val(name);
+
+                $('.show-start-city').text(name);
+                $('.show-start-city-back').show();
+                next_code.push(code);
+                next_name.push(name);
+
+                endName = '';
+                for (var i = 0; i < next_name.length; i++) {
+                    endName += next_name[i] + ' ';
+                }
+                $('.end').val(endName);
+
+                if (endName != '') {
+                    $('#close').text('确定');
+                }
+                getCity(code)
+            }
+            $(this).addClass('curr-add-current').siblings().removeClass('curr-add-current');
+
+        });
+        //
+        $('.show-start-city-back').click(function () {
+            let code = next_code[m - 2];
+            let name = next_name[m - 2];
+            next_name.pop();
+            let show = '';
+            for (var i = 0; i < next_name.length; i++) {
+                show += next_name[i] + ' ';
+            }
+            console.log(show);
+            console.log(city_show);
+            if (m > 1) {
+                $('.show-start-city').text(name);
+                $(city_show).val(show);
+            } else {
+                $('.show-start-city').text('全国');
+                $(city_show).val('全国');
+            }
+            backGetCity(code);
+        });
+
+        $('.add').click(function () {
+            let start = $('.start').val();
+            let end = $('.end').val();
+            if (start == '') {
+                layer.msg('请选填常跑路线出发地。');
+                return false;
+            }
+            if (end == '') {
+                layer.msg('请选填常跑路线目的地。');
+                return false;
+            }
+
+            let url = URL+'/lines/add';
+
+            $.post(url, $('.form').serialize(), function (data, status) {
+                if (data.code == 1) {
+                    layer.msg('添加成功!');
+                    setTimeout(function () {
+                        window.location = '/Carowner/route';
+                    }, 2000);
+
+                } else {
+                    layer.msg('添加失败!');
+                }
+            });
+        });
+
+        $('.dialog').click(function () {
+            $(this).hide();
+            $('.city').slideUp(500);
+        });
+        $('.cancel').click(function () {
+            $('.dialog').hide();
+            $('.city').slideUp(500);
+        });
+
+
+        $('.edit-bg-img').click(function () {
+            $('.edit-btn').show();
+            $(this).hide();
+            $('.edit-check').css('display', 'block');
+        });
+        var editId = '';
+        $(document).on('click', '.edit-img', function () {
+            editId = $(this).attr('id');
+            $('#editId').val(editId);
+            $('.hides').show();
+            $('.check').show();
+            $('.edit-btn').hide();
+            //$('.route').hide();
+        });
+
+        $('.edit-check').click(function () {
+            let start = $('.start').val();
+            let end = $('.end').val();
+            if (start == '') {
+                layer.msg('请选填常跑路线出发地。');
+                return false;
+            }
+            if (end == '') {
+                layer.msg('请选填常跑路线目的地。');
+                return false;
+            }
+            let id = $('#editId').val();
+            if (end == '') {
+                layer.msg('请选择要修改的路线。');
+                return false;
+            }
+
+            let url = URL+'/lines/update';
+
+            $.post(url, $('.form').serialize(), function (data, status) {
+                if (data.code == 1) {
+                    layer.msg('修改成功!');
+                    setTimeout(function () {
+                        window.location = '/Carowner/route';
+                    }, 2000);
+
+                } else {
+                    layer.msg(data.msg);
+                }
+            });
+        });
+
+    })
+</script>
+</body>
+</html>

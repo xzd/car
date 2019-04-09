@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>运费查询</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <style>
+        body{background: #f7f7f7}
+        .ctiy-c-input {
+            padding: 0 0 0 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="head_c">
+        <div class="back">
+            <a href="javascript:history.back(-1)" class="backBtn"></a>
+        </div>
+        <div class="card_headb">运费查询</div>
+        <div class="home">
+            <a href="newIndex.html" class="homeBtn"></a>
+        </div>
+    </div>
+    <div class="banner_bg">
+        <img src="__PUBLIC__/home/images/chezhu/bbb_02.png" alt="">
+    </div>
+    <div class="f_title">
+        <h3>铁路运费查询</h3>
+    </div>
+    <div class="searchs">
+        <div class="search_star">
+            <label for="" class="city-label startCity">
+                <input type="text" placeholder="请选择出发地"
+                       value="内蒙古 呼伦贝尔市 满洲里市" disabled="disabled"
+                       class="ctiy-c-input start input_start">
+                <input type="hidden" name="start_province" id="start_province" value="150000">
+                <input type="hidden" name="start_city" id="start_city" value="150700">
+                <input type="hidden" name="start_district" id="start_district" value="150781">
+                <input type="hidden" name="start_province_name" id="start_province_name"
+                       value="{$start.province_name}">
+                <input type="hidden" name="start_city_name" id="start_city_name" value="{$start.city_name}">
+                <input type="hidden" name="start_district_name" id="start_district_name"
+                       value="满洲里市">
+            </label>
+            <label for="" class="city-label endCity">
+                <input type="text" placeholder="请选择终点站" class="input_start ctiy-c-input end" disabled="disabled">
+                <input type="hidden" name="end_province" id="end_province">
+                <input type="hidden" name="end_city" id="end_city">
+                <input type="hidden" name="end_district" id="end_district">
+                <input type="hidden" name="end_province_name" id="end_province_name">
+                <input type="hidden" name="end_city_name" id="end_city_name">
+                <input type="hidden" name="end_district_name" id="end_district_name">
+            </label>
+        </div>
+        <div class="search_btn">
+            <a href="javascript:;">搜索</a>
+        </div>
+    </div>
+    <div class="result" style="display: none;">
+        <h4>运费（元/吨）</h4>
+        <ul>
+            <li>
+                <p>发站</p>
+                <p class="start_add"></p>
+            </li>
+            <li>
+                <p>到站</p>
+                <p class="end_add"></p>
+            </li>
+            <li>
+                <p>门到门</p>
+                <p class="mdm"></p>
+            </li>
+            <li>
+                <p>门到站</p>
+                <p class="mdz"></p>
+            </li>
+            <li>
+                <p>站到门</p>
+                <p class="zdm"></p>
+            </li>
+            <li>
+                <p>站到站</p>
+                <p class="zdz"></p>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="dialog"></div>
+<div class="city city-check">
+    <p class="curr-add">当前地区：<span class="show-start-city">全国</span>
+        <!--<span class="show-start-city-back">返回上一级</span>-->
+    </p>
+    <ul class="city-li">
+
+    </ul>
+    <a href="#" class="cancel city_sure">取消</a>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script>
+    $(function () {
+        let startName = '';
+        let endName = '';
+        let m = -1;
+        let flag = true;
+        let next_code = [];
+        let next_name = [];
+        let city_show = '';
+
+        $('.startCity').click(function () {
+
+            if (flag) {
+                $('.show-start-city').text('全国');
+                $('.city_sure').text('取消');
+                $('.city-check').addClass('start-city-show');
+                $('.city-check').removeClass('end-city-show');
+                $('.start').val('');
+                startName = '';
+                next_code = [];
+                next_name = [];
+                city_show = '.start';
+                m = -1;
+                flag = false;
+                getCity(0);
+            }
+
+            $('.dialog').show();
+            $('.city-check').slideDown();
+            $('body').css('position', 'fixed');
+        });
+
+        $('.endCity').click(function () {
+
+            if (flag) {
+                $('.show-start-city').text('全国');
+                $('.city_sure').text('取消');
+                $('.city-check').addClass('end-city-show');
+                $('.city-check').removeClass('start-city-show');
+                $('.end').val('');
+                endName = '';
+                next_code = [];
+                next_name = [];
+                city_show = '.end';
+                m = -1;
+                flag = false;
+                getSites(0);
+            }
+
+            $('.dialog').show();
+            $('.city-check').slideDown();
+            $('body').css('position', 'fixed');
+        });
+        //
+
+        function getCity(code) {
+            $.get(URL + '/index/citys',
+                {
+                    code: code,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let html = '';
+                        let d = data.data;
+                        for (let i in d) {
+                            html += '<li code="' + d[i].code + '">' + d[i].name + '</li>';
+                        }
+                        $('.city-li').empty();
+                        $('.city-li').append(html);
+                        flag = true;
+                        m++;
+                        if (d.length <= 0) {
+                            $('.city_sure').text('确定');
+                        }
+                    } else {
+                        layer.msg('服务端错误!');
+                        flag = true;
+
+                    }
+
+                });
+        }
+        function getSites(code) {
+            $.get(URL + '/index/sites',
+                {
+                    code: code,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let html = '';
+                        let d = data.data;
+                        for (let i in d) {
+                            html += '<li code="' + d[i].code + '">' + d[i].name + '</li>';
+                        }
+                        $('.city-li').empty();
+                        $('.city-li').append(html);
+                        flag = true;
+                        m++;
+                        if (d.length <= 0) {
+                            $('.city_sure').text('确定');
+                        }
+                    } else {
+                        layer.msg('服务端错误!');
+                        flag = true;
+
+                    }
+
+                });
+        }
+
+        function backGetCity(code) {
+            $.get(URL + '/index/citys',
+                {
+                    code: code,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let html = '';
+                        let d = data.data;
+                        for (let i in d) {
+                            html += '<li code="' + d[i].code + '">' + d[i].name + '</li>';
+                        }
+                        $('.city-li').empty();
+                        $('.city-li').append(html);
+                        flag = true;
+                        m--;
+                        if (d.length <= 0) {
+                            $('.city_sure').text('确定');
+                        }
+                    } else {
+                        layer.msg('服务端错误!');
+                        flag = true;
+
+                    }
+
+                });
+        }
+
+        $(document).on('click', '.start-city-show ul li', function () {
+            if (flag) {
+                flag = false;
+                let addId = ['#start_province', '#start_city', '#start_district'];
+                let addName = ['#start_province_name', '#start_city_name', '#start_district_name'];
+
+                let code = $(this).attr('code');
+                let name = $(this).text();
+
+                $(addId[m]).val(code);
+                $(addName[m]).val(name);
+
+
+                $('.show-start-city').text(name);
+                $('.show-start-city-back').show();
+                next_code.push(code);
+                next_name.push(name);
+
+                startName = '';
+                for (var i = 0; i < next_name.length; i++) {
+                    startName += next_name[i] + ' ';
+                }
+                $('.start').val(startName);
+
+                if (startName != '') {
+                    $('#close').text('确定');
+                }
+                getCity(code)
+            }
+            $(this).addClass('curr-add-current').siblings().removeClass('curr-add-current');
+
+        });
+        $(document).on('click', '.end-city-show ul li', function () {
+            if (flag) {
+                flag = false;
+                let addId = ['#end_province', '#end_city', '#end_district'];
+                let addName = ['#end_province_name', '#end_city_name', '#end_district_name'];
+                let code = $(this).attr('code');
+                let name = $(this).text();
+
+
+                $(addId[m]).val(code);
+                $(addName[m]).val(name);
+
+                $('.show-start-city').text(name);
+                $('.show-start-city-back').show();
+                next_code.push(code);
+                next_name.push(name);
+
+                endName = '';
+                for (var i = 0; i < next_name.length; i++) {
+                    endName += next_name[i] + ' ';
+                }
+                $('.end').val(endName);
+
+                if (endName != '') {
+                    $('#close').text('确定');
+                }
+                getSites(code)
+            }
+            $(this).addClass('curr-add-current').siblings().removeClass('curr-add-current');
+
+        });
+        //
+        $('.show-start-city-back').click(function () {
+            let code = next_code[m - 2];
+            let name = next_name[m - 2];
+            next_name.pop();
+            let show = '';
+            for (var i = 0; i < next_name.length; i++) {
+                show += next_name[i] + ' ';
+            }
+            console.log(show);
+            console.log(city_show);
+            if (m > 1) {
+                $('.show-start-city').text(name);
+                $(city_show).val(show);
+            } else {
+                $('.show-start-city').text('全国');
+                $(city_show).val('全国');
+            }
+            backGetCity(code);
+        });
+
+        $('.city_sure').click(function () {
+            let start_province = $('#start_province_name').val();
+            let start_city = $('#start_city_name').val();
+            let start_district = $('#start_district_name').val();
+
+            let end_province = $('#end_province_name').val();
+            let end_city = $('#end_city_name').val();
+            let end_district = $('#end_district_name').val();
+
+            let url = URL + '/index/distance';
+            $.post(url, {
+                start_province: start_province,
+                start_city: start_city,
+                start_district: start_district,
+                end_province: end_province,
+                end_city: end_city,
+                end_district: end_district
+            });
+
+
+        });
+
+        $('.dialog').click(function () {
+            $(this).hide();
+            $('.city-check').slideUp();
+            $('.car-x').slideUp();
+            $('.type').slideUp();
+            $('.unit').slideUp();
+            $('.mem').hide();
+            $('body').css('position', 'static');
+        });
+
+        $('.cancel').click(function () {
+            $('.dialog').hide();
+            $('.city-check').slideUp();
+            $('.car-x').slideUp();
+            $('.type').slideUp();
+            $('.unit').slideUp();
+            $('body').css('position', 'static');
+        });
+
+//        搜索
+        $('.search_btn').click(function () {
+
+            let start = $('.start').val();
+            let end = $('.end').val();
+            let end_city_name = $('#end_city_name').val();
+            let start_district_name = $('#start_district_name').val();
+            $('.start_add').html(start_district_name);
+            $('.end_add').html(end_city_name);
+
+            var start_district_code = $('#start_district').val();
+            var end_city_code = $('#end_city').val();
+            if (start == '') {
+                layer.msg('请选择出发地');
+                return false;
+            }
+            if (end == '') {
+                layer.msg('请选择目的地。');
+                return false;
+            }
+
+            let url = URL + '/index/freight/type/2';
+            $.get(url,
+                {
+                    start: start_district_code,
+                    end: end_city_code
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        console.log(data);
+                        $('.result').show();
+                        $('.mdm').html(data.data.mdm);
+                        $('.mdz').html(data.data.mdz);
+                        $('.zdm').html(data.data.zdm);
+                        $('.zdz').html(data.data.zdz);
+                        flag = true;
+                        m--;
+                    } else {
+                        layer.msg(data.msg);
+                        flag = true;
+
+                    }
+
+                });
+        });
+
+    })
+</script>
+
+</body>
+</html>

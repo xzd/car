@@ -1,0 +1,543 @@
+<if condition="$wap">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <!-- uc强制竖屏 -->
+        <meta name="screen-orientation" content="portrait">
+        <!-- QQ强制竖屏 -->
+        <meta name="x5-orientation" content="portrait">
+
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+        <title>客服货源发布</title>
+        <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+        <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+    </head>
+    <body>
+<else />
+    <include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+
+    <div class="main-right">
+        <h1 class="main-right-title">内容管理 > 货源信息 > 新增货源</h1>
+</if>
+    <div class="center">
+    
+    <form class="form-inline" method="post" action="{:U('goods/add')}">
+        <div class="edit-bg">
+            <img src="__PUBLIC__/home/images/fahuo/li.png" alt="">
+            <div class="ctiy-c fl clearfix">
+                <p class="city-c-p">出发地</p>
+                <label for="" class="city-label startCity">
+                    <input type="text" placeholder="内蒙古 呼伦贝尔市 满洲里市" value="" disabled="disabled" class="ctiy-c-input start">
+                    <input type="hidden" name="start_province" id="start_province" value="150000">
+                    <input type="hidden" name="start_city" id="start_city" value="150700">
+                    <input type="hidden" name="start_district" id="start_district" value="150781">
+                    <input type="hidden" name="start_province_name" id="start_province_name" value="内蒙古">
+                    <input type="hidden" name="start_city_name" id="start_city_name" value="呼伦贝尔市">
+                    <input type="hidden" name="start_district_name" id="start_district_name" value="满洲里市">
+                </label>
+                <p class="city-c-p">目的地</p>
+                <label for="" class="city-label endCity">
+                    <input type="text" placeholder="请选择目的地" disabled="disabled" class="ctiy-c-input end">
+                    <input type="hidden" name="end_province" id="end_province">
+                    <input type="hidden" name="end_city" id="end_city">
+                    <input type="hidden" name="end_district" id="end_district">
+                    <input type="hidden" name="end_province_name" id="end_province_name">
+                    <input type="hidden" name="end_city_name" id="end_city_name">
+                    <input type="hidden" name="end_district_name" id="end_district_name">
+
+                </label>
+            </div>
+            <div class="clearfix range">
+
+            </div>
+        </div>
+        <p class="regist-title go">货物信息</p>
+        <label for="" class="arr city-label car-length">
+            <input type="text" placeholder="请选择车长/车型" disabled="disabled" class="ctiy-c-input car-input car_attr"
+                   id="car-x">
+            <input type="hidden" name="car_lenght">
+            <input type="hidden" name="car_type">
+        </label>
+        <label for="" class="arr city-label carType">
+            <input type="text" placeholder="请选择货物类型" disabled="disabled" class="ctiy-c-input car-input goods_type">
+            <input type="hidden" name="goods_type">
+        </label>
+        <label for="" class="arr city-label">
+            <input type="number" placeholder="请输入货物数量" name="goods_num" class="ctiy-c-input car-input goods_num">
+            <input type="hidden" name="goods_unit" class="unit-input" value="吨">
+            <span class="ton">吨</span>
+        </label>
+        <p class="regist-title go">发货方信息</p>
+        <label for="" class="arr city-label">
+            <input type="text" placeholder="发货方姓名" class="ctiy-c-input car-input" name="user_name" id="user_name">
+        </label>
+        <label for="" class="arr city-label">
+            <input type="text" placeholder="发货方身份证号" class="ctiy-c-input car-input" name="user_id_no" id="user_id_no">
+        </label>
+        <label for="" class="arr city-label">
+            <input type="text" placeholder="发货方手机号码" class="ctiy-c-input car-input" name="user_phone" id="user_phone">
+        </label>
+        
+        
+        <br /><br />
+        <a href="#" onclick="$('.form-inline').submit();" class="mob-btn green add">提交</a>
+        <a href="{:U('goods/index')}" class="mob-btn green add">返回</a>
+    </form>
+</div>
+<div class="dialog"></div>
+<div class="city city-check" <if condition="!$wap">style="width: 80%;"</if>>
+    <p class="curr-add">当前地区：<span class="show-start-city">全国</span>
+        <span class="show-start-city-back">返回上一级</span>
+    </p>
+    <ul class="city-li">
+
+    </ul>
+    <a href="#" class="cancel city_sure green">取消</a>
+</div>
+<div class="city car-x fahuo" <if condition="!$wap">style="width: 80%;"</if>>
+    <p class="car-p">车长(可多选)</p>
+    <ul class="lenght-car">
+        <li data="不限">不限</li>
+        <li data="4.5米">4.5米</li>
+        <li data="5.2米">5.2米</li>
+        <li data="6.2米">6.2米</li>
+        <li data="6.8米">6.8米</li>
+        <li data="7.2米">7.2米</li>
+        <li data="8.6米">8.6米</li>
+        <li data="9.6米">9.6米</li>
+        <li data="12.5米">12.5米</li>
+        <li data="13米">13米</li>
+        <li data="13.5米">13.5米</li>
+        <li data="16米">16米</li>
+        <li data="17米">17米</li>
+        <li data="17.5米">17.5米</li>
+    </ul>
+    <p class="car-p">车型(可多选)</p>
+    <ul class="type-car">
+        <li data="不限">不限</li>
+        <li data="平板">平板</li>
+        <li data="高栏">高栏</li>
+        <li data="矮栏">矮栏</li>
+        <li data="高低板">高低板</li>
+        <li data="保温">保温</li>
+        <li data="冷藏">冷藏</li>
+        <li data="危险品">危险品</li>
+        <li data="自卸">自卸</li>
+        <li data="中卡">中卡</li>
+        <li data="面包">面包</li>
+        <li data="厢式">厢式</li>
+    </ul>
+    <a href="#" class="cancel confirm" id="type">确定</a>
+</div>
+<div class="city type fahuo" <if condition="!$wap">style="width: 80%;"</if>>
+    <p class="car-p">请选择货物类型</p>
+    <ul>
+        <li data="普货">普货</li>
+        <li data="木材">木材</li>
+        <li data="烘干板材">烘干板材</li>
+        <li data="湿料板材">湿料板材</li>
+        <li data="原木">原木</li>
+        <li data="防腐材">防腐材</li>
+        <li data="颗粒">颗粒</li>
+        <li data="泡货">泡货</li>
+        <li data="蔬菜">蔬菜</li>
+        <li data="水果">水果</li>
+        <li data="设备">设备</li>
+        <li data="重货">重货</li>
+        <li data="百货">百货</li>
+        <li data="饮料">饮料</li>
+        <li data="食品">食品</li>
+        <li data="配件">配件</li>
+        <li data="煤炭">煤炭</li>
+        <li data="家具">家具</li>
+        <li data="树苗">树苗</li>
+        <li data="化肥">化肥</li>
+        <li data="化工">化工</li>
+        <li data="建材">建材</li>
+        <li data="粮食">粮食</li>
+        <li data="钢材">钢材</li>
+    </ul>
+    <a href="#" class="cancel confirm">确定</a>
+</div>
+<div class="city unit fahuo" <if condition="!$wap">style="width: 80%;"</if>>
+    <p class="car-p">请选择单位</p>
+    <ul>
+        <li data="吨">吨</li>
+        <li data="方">方</li>
+        <li data="件">件</li>
+        <li data="趟">趟</li>
+        <li data="个">个</li>
+        <li data="台">台</li>
+        <li data="箱">箱</li>
+    </ul>
+    <a href="#" class="cancel confirm">确定</a>
+</div>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script>
+    $(function () {
+
+        let user = '';
+        let startName = '';
+        let endName = '';
+        let m = -1;
+        let flag = true;
+        let next_code = [];
+        let next_name = [];
+        let city_show = '';
+
+        $('.startCity').click(function () {
+
+            if (flag) {
+                $('.show-start-city').text('全国');
+                $('.city_sure').text('取消');
+                $('.city-check').addClass('start-city-show');
+                $('.city-check').removeClass('end-city-show');
+                $('.start').val('');
+                startName = '';
+                next_code = [];
+                next_name = [];
+                city_show = '.start';
+                m = -1;
+                flag = false;
+                getCity(0);
+            }
+
+            $('.dialog').show();
+            $('.city-check').slideDown();
+            $('body').css('position', 'fixed');
+        });
+
+        $('.endCity').click(function () {
+
+            if (flag) {
+                $('.show-start-city').text('全国');
+                $('.city_sure').text('取消');
+                $('.city-check').addClass('end-city-show');
+                $('.city-check').removeClass('start-city-show');
+                $('.end').val('');
+                endName = '';
+                next_code = [];
+                next_name = [];
+                city_show = '.end';
+                m = -1;
+                flag = false;
+                getCity(0);
+            }
+
+            $('.dialog').show();
+            $('.city-check').slideDown();
+            $('body').css('position', 'fixed');
+        });
+        //
+
+        function getCity(code) {
+            $.get(URL + '/admin/goods/citys',
+                {
+                    code: code,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let html = '';
+                        let d = data.data;
+                        for (let i in d) {
+                            html += '<li code="' + d[i].code + '">' + d[i].name + '</li>';
+                        }
+                        $('.city-li').empty();
+                        $('.city-li').append(html);
+                        flag = true;
+                        m++;
+                        if (d.length <= 0) {
+                            $('.city_sure').text('确定');
+                        }
+                    } else {
+                        layer.msg('服务端错误!');
+                        flag = true;
+
+                    }
+
+                });
+        }
+
+        function backGetCity(code) {
+            $.get(URL + '/admin/goods/citys',
+                {
+                    code: code,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let html = '';
+                        let d = data.data;
+                        for (let i in d) {
+                            html += '<li code="' + d[i].code + '">' + d[i].name + '</li>';
+                        }
+                        $('.city-li').empty();
+                        $('.city-li').append(html);
+                        flag = true;
+                        m--;
+                        if (d.length <= 0) {
+                            $('.city_sure').text('确定');
+                        }
+                    } else {
+                        layer.msg('服务端错误!');
+                        flag = true;
+
+                    }
+
+                });
+        }
+
+        $(document).on('click', '.start-city-show ul li', function () {
+            if (flag) {
+                flag = false;
+                let addId = ['#start_province', '#start_city', '#start_district'];
+                let addName = ['#start_province_name', '#start_city_name', '#start_district_name'];
+
+                let code = $(this).attr('code');
+                let name = $(this).text();
+
+                $(addId[m]).val(code);
+                $(addName[m]).val(name);
+
+
+                $('.show-start-city').text(name);
+                $('.show-start-city-back').show();
+                next_code.push(code);
+                next_name.push(name);
+
+                startName = '';
+                for (var i = 0; i < next_name.length; i++) {
+                    startName += next_name[i] + ' ';
+                }
+                $('.start').val(startName);
+
+                if (startName != '') {
+                    $('#close').text('确定');
+                }
+                getCity(code)
+            }
+            $(this).addClass('curr-add-current').siblings().removeClass('curr-add-current');
+
+        });
+        $(document).on('click', '.end-city-show ul li', function () {
+            if (flag) {
+                flag = false;
+                let addId = ['#end_province', '#end_city', '#end_district'];
+                let addName = ['#end_province_name', '#end_city_name', '#end_district_name'];
+                let code = $(this).attr('code');
+                let name = $(this).text();
+
+
+                $(addId[m]).val(code);
+                $(addName[m]).val(name);
+
+                $('.show-start-city').text(name);
+                $('.show-start-city-back').show();
+                next_code.push(code);
+                next_name.push(name);
+
+                endName = '';
+                for (var i = 0; i < next_name.length; i++) {
+                    endName += next_name[i] + ' ';
+                }
+                $('.end').val(endName);
+
+                if (endName != '') {
+                    $('#close').text('确定');
+                }
+                getCity(code)
+            }
+            $(this).addClass('curr-add-current').siblings().removeClass('curr-add-current');
+
+        });
+        //
+        $('.show-start-city-back').click(function () {
+            let code = next_code[m - 2];
+            let name = next_name[m - 2];
+            next_name.pop();
+            let show = '';
+            for (var i = 0; i < next_name.length; i++) {
+                show += next_name[i] + ' ';
+            }
+            console.log(show);
+            console.log(city_show);
+            if (m > 1) {
+                $('.show-start-city').text(name);
+                $(city_show).val(show);
+            } else {
+                $('.show-start-city').text('全国');
+                $(city_show).val('全国');
+            }
+            backGetCity(code);
+        });
+
+        $('.city_sure').click(function () {
+            let start_province = $('#start_province_name').val();
+            let start_city = $('#start_city_name').val();
+            let start_district = $('#start_district_name').val();
+
+            let end_province = $('#end_province_name').val();
+            let end_city = $('#end_city_name').val();
+            let end_district = $('#end_district_name').val();
+        });
+
+        $('.dialog').click(function () {
+            $(this).hide();
+            $('.city-check').slideUp();
+            $('.car-x').slideUp();
+            $('.type').slideUp();
+            $('.unit').slideUp();
+            $('.mem').hide();
+            $('body').css('position', 'static');
+        });
+
+        $('.cancel').click(function () {
+            $('.dialog').hide();
+            $('.city-check').slideUp();
+            $('.car-x').slideUp();
+            $('.type').slideUp();
+            $('.unit').slideUp();
+            $('body').css('position', 'static');
+        });
+
+
+        $('.car-length').click(function () {
+            $('.dialog').show();
+            $('.car-x').slideDown();
+        });
+        let car_attr = '';
+        $('.lenght-car li').click(function () {
+
+
+            if ($(this).hasClass('car-current')) {
+                $(this).removeClass('car-current');
+            } else {
+                $(this).addClass('car-current');
+            }
+        });
+
+        $('.type-car li').click(function () {
+            //$(this).addClass('car-current').siblings().removeClass('car-current');
+            if ($(this).hasClass('car-current')) {
+                $(this).removeClass('car-current');
+            } else {
+                $(this).addClass('car-current');
+            }
+        });
+
+        $('#type').click(function () {
+            $('.lenght-car li').each(function () {
+                if ($(this).hasClass('car-current')) {
+                    let data = $(this).attr('data');
+                    car_attr += data + ',';
+                }
+            });
+            car_attr = car_attr.substring(0, car_attr.length - 1);
+            $("input[name='car_lenght']").val(car_attr);
+
+            let type_car = '';
+            $('.type-car li').each(function () {
+                if ($(this).hasClass('car-current')) {
+                    let data = $(this).attr('data');
+                    type_car += data + ',';
+
+                }
+            });
+            type_car = type_car.substring(0, type_car.length - 1);
+            $("input[name='car_type']").val(type_car);
+            car_attr += '/' + type_car;
+            $('.car_attr').val(car_attr);
+            car_attr = '';
+        });
+
+        //选择货物类型
+        $('.carType').click(function () {
+            $('.type').slideDown();
+            $('.dialog').show();
+        });
+        $('.type ul li').click(function () {
+            let data = $(this).attr('data');
+            $('.goods_type').val(data);
+            $("input[name='goods_type']").val(data);
+            $(this).addClass('car-current').siblings().removeClass('car-current');
+        });
+
+        //选择单位
+        $('.unit ul li').click(function () {
+            let data = $(this).attr('data');
+            $('.ton').text(data);
+            $('.unit-input').val(data);
+            $(this).addClass('car-current').siblings().removeClass('car-current');
+        });
+
+        $('.ton').click(function () {
+            $('.unit').slideDown();
+            $('.dialog').show();
+        });
+        $('.go').click(function () {
+            $('.dialog').hide();
+            $('.mask').hide();
+        });
+
+        $('.btnClickRes').click(function () {
+
+            if (user.state == 2) {
+                layer.msg('用户资料审核中!请等待');
+            } else if (user.state == 4) {
+                $('#tip').text('审核不通过，请重新注册');
+                $('.dialog').show();
+                $('.reg').show();
+            } else if (user.state == 3) {
+                if (user.vip == 0) {
+                    $('.dialog').show();
+                    $('.mem').show();
+                } else {
+                    window.location = "{:U('Deliver/published')}";
+                }
+            } else {
+                $('.dialog').show();
+                $('.reg').show();
+            }
+
+        });//btnClickClose
+
+        $('.btnClickClose').click(function () {
+
+            if (user.state == 2) {
+                layer.msg('用户资料审核中!请等待');
+            } else if (user.state == 4) {
+                $('#tip').text('审核不通过，请重新注册');
+                $('.dialog').show();
+                $('.reg').show();
+            } else if (user.state == 3) {
+                if (user.vip == 0) {
+                    $('.dialog').show();
+                    $('.mem').show();
+                } else {
+                    window.location = "{:U('Deliver/closed')}";
+                }
+            } else {
+                $('.dialog').show();
+                $('.reg').show();
+            }
+
+        });
+    })
+</script>
+</body>
+</html>

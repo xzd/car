@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>货源详情</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+</head>
+<body>
+<div class="wrap" id="app">
+    <div class="members-head detail-top">
+        <div class="detail-img">
+            <i class="vv"></i>
+        </div>
+        <p class="num"></p>
+    </div>
+    <div class="line">
+        <p class="star"></p>
+    </div>
+    <div class="line">
+        <p class="end"></p>
+    </div>
+    <div class="huo-info">
+        <ul>
+            <li>
+                货物信息
+                <span class="fr" id="type"></span>
+            </li>
+            <li>
+                所需车辆
+                <span class="fr" id="car_type"></span>
+            </li>
+            <li>
+                货源发布时间
+                <span class="fr" id="create_time"></span>
+            </li>
+        </ul>
+    </div>
+    <a href="#" class="mob-btn">联系货主</a>
+</div>
+<div class="dialog"></div>
+<div class="mask mem">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips">您还不是车主会员，无法使用该功能！</p>
+    <div class="botton">
+        <a href="#" class="go">先去逛逛</a>
+        <a href="{:U('Carowner/member')}" class="member">成为会员</a>
+    </div>
+</div>
+<div class="mask reg">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips" id="tip">您尚未注册完善资料，无法使用该功能！</p>
+    <div class="botton">
+        <a href="#" class="go">先去逛逛</a>
+        <a href="{:U('Carowner/regist')}" class="member">完善资料</a>
+    </div>
+</div>
+<div class="mob-mask">
+    <ul>
+        <li>联系电话</li>
+        <li class="tel">
+        </li>
+        <li class="cale">取消</li>
+    </ul>
+</div>
+
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script>
+    $(function () {
+        let user = '';
+
+        function getOwner(id) {
+            $.ajax({
+                url: URL + '/goods/detail',
+                type: 'GET',
+                async: true,
+                dataType: 'json',
+                data: {
+                    'id': id
+                },
+                success: function (data, status) {
+                    user = data.data;
+                    let html = '<img src=" ' + user.user_header_img + ' ">';
+                    $('.vv').before(html);
+                    let type = '';
+
+                        if(user.user_type_goods == 1){
+                            type = '货主';
+                        }else{
+                            type = '货站';
+                        }
+
+                    let name = '<h3 class="detail-name"> ' + user.user_name + '<span class="name-title">' + type + '</span></h3>';
+                    $('.detail-img').after(name);
+
+                    //'12345678901'.replace(/(\d{4})\d{10}(\d{4})/, '$1****$2');
+                    $('.num').text('身份证号:' + user.user_id_no.replace(/(\d{4})\d{10}(\d{4})/, '$1****$2'));
+                    $('.star').text(user.start_province_name + user.start_city_name + user.start_district_name);
+                    $('.end').text(user.end_province_name + user.end_city_name + user.end_district_name);
+                    if(user.money == ''){
+                        $('#type').text(user.goods_type + '/'+ user.goods_num + user.goods_unit);
+                    }else{
+                        $('#type').text(user.goods_type + '/'+ user.money +'元/吨'+ '/'+ user.goods_num + user.goods_unit);
+                    }
+
+                    $('#car_type').text(user.car_lenght + '/' + user.car_type);
+                    $('#create_time').text(user.create_time);
+                    $('.tel').append('<a class="get-tel" href="tel:'+ user.user_phone + '">'+ user.user_phone + '</a>');
+                }
+            })
+        }
+
+        let id = '{$id}';
+        if (id != '' && id > 0) {
+            getOwner(id);
+        }
+
+        let my_vip = '{$my_vip}';
+        let state = '{$state}';
+        $('.mob-btn').click(function () {
+//            if (state == 2) {
+//                layer.msg('用户资料审核中!请等待');
+//            } else if (state == 4) {
+//                $('#tip').text('审核不通过，请重新注册');
+//                $('.dialog').show();
+//                $('.reg').show();
+//            } else if (state == 3) {
+//                if (my_vip == 0) {
+//                    $('.dialog').show();
+//                    $('.mem').show();
+//                } else {
+                    $('.dialog').show();
+                    $('.mob-mask').slideDown(500);
+//                }
+//            } else {
+//                $('.dialog').show();
+//                $('.reg').show();
+//            }
+
+        });
+        $('.dialog, .go').click(function () {
+            $('.dialog').hide();
+            $('.mask').hide();
+            $('.mob-mask').slideUp(500);
+        });
+
+        //getTel
+        $(document).on('click', '.tel', function () {
+            let url = URL + '/calls/add';
+            $.post(url, {good_id:id}, function (data, status) {
+
+            });
+        });
+
+        $('.cale').click(function () {
+            $('.dialog').fadeOut(500);
+            $('.mob-mask').slideUp();
+        });
+    })
+</script>
+</body>
+</html>

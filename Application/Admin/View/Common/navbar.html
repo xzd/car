@@ -1,0 +1,44 @@
+<nav class="nav">
+    <ul class="slider">
+        <foreach name="menulist" item="menu" key="k">
+            <li class="main <if condition='$controller eq $k'>active</if>">
+                <a href="#">
+                    <if condition="$k eq 'goods'">
+                        <i class="icon content"></i> 内容管理
+                    <elseif condition="$k eq 'users'" />
+                        <i class="icon user"></i> 注册用户管理
+                    <elseif condition="$k eq 'stat'" />
+                        <i class="icon data"></i> 数据统计查询
+                    <elseif condition="$k eq 'manage'" />
+                        <i class="icon system"></i> 系统管理
+                    <elseif condition="$k eq 'index'" />
+                        <i class="icon content"></i> 首页管理
+                    <elseif condition="$k eq 'freights'" />
+                        <i class="icon data"></i> 运费管理
+                    </if>
+                </a>
+                <ul class="slider-list" <if condition="$controller eq $k">style="display: block;"</if>>
+                    <foreach name="menu" item="vo">
+                        <if condition="$vo['view_id'] eq 'audit'">
+                            <li class="slider-list-li current-arrow">
+                                <a href="#">审核管理</a>
+                                <ul class="slider-list-item" <if condition="$controller eq 'users' and ($action eq 'audit' or $action eq 'audited')">style="display: block;"</if>>
+                                    <li <if condition="$controller eq 'users' and $action eq 'audit'">class="curr"</if>>
+                                        <a href="/admin/users/audit">待审核</a>
+                                    </li>
+                                    <li <if condition="$controller eq 'users' and $action eq 'audited'">class="curr"</if>>
+                                        <a href="/admin/users/audited">已审核</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        <else />
+                            <li class="slider-list-li <if condition="$controller eq $k and $action eq $vo['view_id']">current</if>">
+                                <a href="{$vo.url}"> {$vo.name}</a>
+                            </li>
+                        </if>
+                    </foreach>
+                </ul>
+            </li>
+        </foreach>
+    </ul>
+    </nav><!--导航结束-->

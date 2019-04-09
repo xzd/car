@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>其他</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+    <style>
+        body {
+            background: #f7f7f7
+        }
+        .tel{color:#ff0000;font-size: 16px;}
+        .tel span{font-size: 12px;}
+        * {
+            font-family: PingFang SC
+        }
+
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="company_list">
+
+    </div>
+    <div class="padding_b"></div>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script>
+    $(function () {
+        function getList() {
+            $.get(URL + '/index/shop',
+                {
+                    type: 6,
+                    datatype: 'json'
+                },
+                function (data) {
+                    console.log(data);
+                    let list = data.data;
+
+                    let enHtml = '';
+                    for (let i in list) {
+                        enHtml += '<dl class="company">';
+                        enHtml += '<dt>' + list[i].name + '</dt>';
+                        enHtml += '<dd>联系人：' + list[i].contact + '</dd>';
+                        enHtml += '<dd>电话：' + '<a class="tel" href="tel:'+ list[i].telephone + '">'+ list[i].telephone +'<span>(拨打电话)</span></a> </dd>';
+                        enHtml += ' <dd>手机：'+ '<a class="tel" href="tel:'+ list[i].mobile + '">' + list[i].mobile + '</a> </dd>';
+                        enHtml += '<dd>' + list[i].address + '</dd></dl>';
+
+                    }
+
+                    $('.company_list').append(enHtml);
+
+
+                });
+        }
+        getList();
+    })
+</script>
+
+</body>
+</html>

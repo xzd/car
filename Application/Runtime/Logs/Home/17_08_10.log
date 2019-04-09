@@ -1,0 +1,13 @@
+[ 2017-08-10T22:35:29+08:00 ] 127.0.0.1 /cars2/index.php?XDEBUG_SESSION_START=netbeans-xdebug
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000020s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000879s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001277s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001405s ]
+SQL: SHOW COLUMNS FROM `car_users` [ RunTime:0.0315s ]
+SQL: SELECT * FROM `car_users` WHERE ( open_id='oFQtdwd2EJKQxtyvb3id5JX3n1M1' ) LIMIT 1   [ RunTime:0.0369s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000790s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000935s ]
+

@@ -1,0 +1,455 @@
+@charset "utf-8";
+body,html{width: 100%;height: 100%;font-size: 12px;font-family:黑体-简,STHeiti,华文细黑,"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",MingLiu,Arial, Helvetica, sans-serif}
+body{background: #f4f8f9;}
+.clearfix:after,.clearfix:before { visibility:hidden; display:block; font-size:0; content:" "; clear:both; height:0; }
+.clear { clear:both; }
+.fr{float: right}
+.fl{float: left}
+a{text-decoration: none;}
+.wrap{width: 100%;max-width: 768px;margin: 0 auto;overflow: hidden;}
+.members-head{position:relative;top:0;width: 100%;height: 15rem;background: url("../images/chezhu/bg1@2x.png")no-repeat center center;background-size:100% 100%; }
+.head-bg{width: 94%;height: 14rem;background: url("../images/chezhu/bg_vip1@2x.png")no-repeat bottom center;background-size: 100% 100%;position: absolute;bottom: 0;left:50%;margin-left: -47%;color:#fff;}
+.user-info{display: flex;display: -webkit-flex;}
+.user-img{position: relative;width: 70px;height: 70px;margin: 1.6rem 0 0 2rem;}
+.user-img img,.detail-img img{width: 100%;height:100%;border-radius: 50%;overflow: hidden}
+.v,.vv{display: block;width: 15px;height: 15px;background: url("../images/chezhu/icon_g@2x.png")no-repeat;background-size: 100% 100%;position: absolute;bottom: 0;right: 0}
+.mebers-name{margin-top:20px;font-size: 15px; letter-spacing: 2px;width: 60%;text-align: center}
+.name-title{position: relative;padding-left: 10px;margin-left:10px}
+.name-title:before{position: absolute;content: "";width: 1px;height: 1.3rem;border-left: 2px solid #fff;left:0;top:5px;}
+.mebers-name p{margin-top: 1rem}
+.user-desc{margin:2.5rem 0 0 2rem;font-size: 14px;position: relative}
+.user-desc span{margin-right: 1rem;}
+.btn{display: inline-block;background:#ff965d;color:#fff;border-radius:5px;padding: 0.5rem 1.5rem;position: absolute;right: 10px;bottom: 20px;font-size: 14px; }
+.center{margin-top: 10px;background: #fff;padding:10px;position: relative}
+.center .che-members{position: relative;font-size: 16px;padding-left: 3rem;font-weight: normal}
+.center .che-members:before{position: absolute;content: "";width:20px;height: 20px;background: url("../images/chezhu/icon_czhy@2x.png")no-repeat;background-size: 100%;left:0; top:5px;}
+.mebers-info{font-size:14px;line-height: 1.8 ;color:#666;padding-left: 3rem;}
+.center .te:before{width: 25px;height: 25px;background: url("../images/chezhu/icon_hytq@2x.png")no-repeat;background-size: 100%;}
+.center .fa:before{background: url("../images/fahuo/icon_fhfhy@2x.png")no-repeat;background-size: 100%;}
+.center .faCenter:before{width: 25px;height: 25px;background: url("../images/fahuo/icon_hytq@2x.png")no-repeat;background-size: 100%;}
+.center-list{margin-top: 1.5rem;}
+.center-list li{width: 33%;text-align: center;float: left}
+.center-list li .icon{display: block;width: 50px;height: 50px;margin: 0 auto 1rem;}
+.center-list li a{color:#666;font-size: 14px;}
+.fabu{background: url("../images/chezhu/icon_fbhy1@2x.png")no-repeat;background-size: 100%;}
+.chec{background: url("../images/fahuo/icon_czcz1@2x.png")no-repeat;background-size: 100%;}
+.contact{background: url("../images/chezhu/icon_lxcz1@2x.png")no-repeat;background-size: 100%;}
+/*验证手机号*/
+.form{margin-top: 10px;}
+.mob-label{display: block;background: #fff;width: 100%;font-size: 14px;border-bottom: 1px solid #e8e8e8;padding: 10px 0 10px 10px;position: relative}
+.mob-label input{font-size: 14px;}
+.getCode{position: absolute;right: 30px;color:#5ba7e6;font-size: 14px;}
+.bor{border-bottom: none;}
+.mob-btn{display: block;color:#fff;background: #5ba7e6;width: 94%;margin: 0 auto;text-align: center;border-radius: 5px;margin-top: 25px;padding: 10px 0;font-size: 14px;}
+/*货源详情*/
+.detail-top{text-align: center}
+.detail-img{width: 80px;height: 80px;position: relative;border-radius: 50%;margin: 0 auto;padding-top: 20px;}
+.vv{width: 20px;height: 20px;background: url("../images/chezhu/icon_v@3x.png")no-repeat;background-size: 100%;}
+.detail-name{color:#fff;margin-top: 10px;font-size: 16px;font-weight: 300;letter-spacing: 2px;}
+.num{color:#fff;opacity: 0.5;margin-top: 10px;font-size: 14px;}
+.line{background: #fff;padding: 20px;}
+.star,.end{padding-left: 25px;position: relative;font-size: 14px;}
+.star:before,.end:before{display: block;position: absolute;content: "";width: 20px;height: 28px;left: 0;top:0;}
+.star:before{background: url("../images/chezhu/star.png")no-repeat;background-size: 100% auto;}
+.end:before{background: url("../images/chezhu/icon_destination_g@2x.png")no-repeat;background-size: 100%;}
+.huo-info{background: #fff;margin-top: 10px;}
+.huo-info ul li{padding: 15px;border-bottom: 1px solid #e8e8e8;font-size: 14px;color:#666}
+/*弹窗*/
+.dialog{position: fixed;width: 100%;height: 100%;background: rgba(0,0,0,0.5);z-index: 10000;top:0;left: 0;display: none}
+.mask{position: absolute;z-index: 10000;background: #fff;border-radius: 8px;width: 90%;left:50%;margin-left: -45%;top:25%;display: none;}
+.mask-title{text-align: center;padding: 15px 0;background: #5aa6e4;color:#fff;border-top-right-radius: 8px;border-top-left-radius: 8px;font-size: 16px;}
+.tips{text-align: center;padding: 30px 0;border-bottom: 1px solid #e8e8e8;font-size: 14px}
+.botton a{display: inline-block;width:49%;text-align: center;padding: 20px 0;font-size: 16px;}
+.member{color:#ffc3a2}
+.go{color:#666}
+.mob-mask{position: fixed;background: #fff;bottom: 0;left: 0;width: 100%;z-index: 10000;display: none;}
+.mob-mask ul li{font-size: 14px;text-align: center;border-bottom:1px solid #e8e8e8;height: 50px;line-height: 50px;}
+.mob-mask ul li a{color:#333;display: block;}
+/*车主发货方*/
+.pad{padding: 0}
+.member-car li{padding: 15px 10px;border-bottom: 1px solid #e8e8e8;position: relative}
+.member-car li:after,.arrow:after{position: absolute;content: "";width: 8px;height: 8px;border-right: 1px solid #b3b3bb;border-bottom: 1px solid #b3b3bb;transform: rotate(-45deg);-webkit-transform: rotate(-45deg);right:20px;top:2rem;}
+.member-car li a{position: relative;display: block;color:#686868;font-size: 16px;padding-left: 40px;}
+.member-car li a:before{position: absolute;content: "";width: 20px;height: 40px;left:5px;}
+.iphone:before{background: url("../images/fahuo/icon_bdsj@2x.png")no-repeat;background-size: 80% auto;top:-5px;}
+.quan:before{background: url("../images/fahuo/icon_hyqx@2x.png")no-repeat;background-size: 100% auto;}
+.ziyuan:before{background: url("../images/fahuo/icon_wdhy@2x.png")no-repeat;background-size: 100% auto;}
+.iphone span{margin-right: 3rem;color:#aaa;}
+.center .my-car:before{background: url("../images/chezhu/icon_wdcl@2x.png")no-repeat;background-size: 100% auto;left:10px;}
+.car-info{display: flex;display: -webkit-flex;margin-top: 20px;}
+.car-info li{flex: 1;text-align: center}
+.car-info li p.car-title{font-size: 16px;color:#666;line-height: 2}
+.car-info li p.car-att{color:#aaa;font-size: 14px;}
+.car-att img{width: 30px;}
+.car-att .no{display: none;}
+.line-add{border-top:1px solid #e8e8e8;margin-top: 30px;padding: 15px 10px;}
+.line-add a{display: block;color:#666;}
+.center .line-add:before{background: url("../images/chezhu/icon_cplx@2x.png")no-repeat;background-size: 100% auto;left:10px;top:15px;}
+.center .line-add:after{position: absolute;content: "";width: 8px;height: 8px;border-bottom: 1px solid #b3b3bb;border-right: 1px solid #b3b3bb;transform: rotate(-45deg);-webkit-transform: rotate(-45deg);right:20px;top:20px;}
+.center .kefu:before{background: url("../images/chezhu/icon_kfdh@2x.png")no-repeat;background-size: 100% auto;left:10px;top:10px;}
+.center .kefu{color:#666;padding-top: 10px;padding-bottom: 10px;}
+.footer{position: fixed;bottom: 0;width: 100%;left: 0;color:#666666;height:60px;overflow: hidden;display: flex;display: -webkit-flex;z-index: 10000;background: #fff;border-top:1px solid #e8e8e8; }
+.footer a{color:#666;position: relative}
+.huoyuan,.person,.chang-c{flex: 1;-webkit-flex: 1;text-align: center;font-size: 14px;}
+.footer .icons{display: block;width: 30px;height: 30px;margin: 8px auto 0;}
+.huo{background: url("../images/chezhu/icon_fahuo_n@2x.png")no-repeat;background-size: 100% auto;}
+.huo-cu{background: url("../images/chezhu/icon_fahuo_s@2x.png")no-repeat;background-size: 100% auto;}
+.huo-u{background: url("../images/fahuo/icon_fahuo_s@2x.png")no-repeat;background-size: 100% auto;}
+.my{background: url("../images/chezhu/icon_gerenzhongxin_n@2x.png")no-repeat;background-size: 100% auto;}
+.che-u{background: url("../images/fahuo/icon_zhaoche_s@2x.png")no-repeat;background-size: 100% auto;}
+.my-cu{background: url("../images/chezhu/icon_gerenzhongxin_s@2x.png")no-repeat;background-size: 100% auto;}
+.my-u{background: url("../images/fahuo/icon_gerenzhongxin_s@2x.png")no-repeat;background-size: 100% auto;}
+.che{background: url("../images/fahuo/icon_zhaoche_n@2x.png")no-repeat;background-size: 100% auto;}
+.chang{background: url("../images/chezhu/addre.png")no-repeat;background-size: 30px auto;}
+.chang-cu{background: url("../images/chezhu/adder.png")no-repeat;background-size: 30px auto;}
+.zhaohuo{background: url("../images/fahuo/zhaohuo.png")no-repeat;background-size: 30px auto;}
+.zhaohuo-u{background: url("../images/fahuo/zhaohuo3.png")no-repeat;background-size: 30px auto;}
+.footer a.cur {color:#1dbb3d}
+.footer a.cu{color:#5ba7e6;}
+.mob{width: 70%;}
+.verification{width: 100%;}
+.regist-title{font-size: 16px;padding: 15px 0 15px 20px;position: relative;}
+.regist-title:before{position: absolute;content: "";width: 1px;height: 16px;border-left: 3px solid #5aa6e4;left:10px;top:19px;}
+.file{position: absolute;top: 30px;left: 0;height: 100%;opacity: 0;}
+.list-top{position: fixed;display: flex;display: -webkit-flex;top:0;left:0;z-index: 10001;height: 50px;line-height: 50px;background: #fff;width: 100%;font-size: 14px;border-bottom: 1px solid #d6d6d6}
+.list-top .list-top-title{flex:1;-webkit-flex: 1;width: 20%;text-align: center;position: relative;font-weight: 700;font-size: 15px}
+.list-top .car-attr{width: 29%;}
+.list-top-title:after{position: absolute;content: "";width: 10px;height: 10px;background: url("../images/chezhu/arrow_d@2x.png")no-repeat;background-size: 100% auto;right:5%;top:22px;}
+.car-attr:before,.car-x:before{position: absolute;content: "";display: block;width:1px;height:20px;border-left: 1px solid #e8e8e8;left:0;top:15px;}
+.huo-lists{margin-top:10px;width: 100%;overflow: hidden;margin-bottom: 70px;}
+.huo-item{margin-bottom: 5px;background: #fff;padding:10px;}
+.huo-img{width: 25%;float: left;text-align: center}
+.huo-img img{width: 67px;height: 67px;border-radius: 50%;}
+.huozhu-info{width: 68%;float: right;padding-left: 20px;}
+.huozhu,.huozhan{display:block;color:#fff;background: #5aa6e4;border-radius: 20px;font-size: 14px;width: 80%;margin: 0 auto;}
+.huozhan{background: #1dbb3d}
+.huozhu-info-top{border-bottom: 1px solid #aaa;padding-bottom: 10px;display: flex;display: -webkit-flex;font-size: 14px;color:#333;font-weight: 700}
+.huozhu-info-top span{flex:1;}
+.huozhu-info-top span.flex-img{flex:0.5;}
+.huo-list-name{padding-top: 10px;font-size: 14px;line-height: 2}
+.list-item-time{float: right;color:#aaaaaa;font-size: 12px;}
+.list-item-p{color:#666;margin: 0;}
+.white{height: 100%;background: #fff;}
+.empty{position: absolute;width:100%;height:100%;text-align: center;background: #fff;z-index: 10000;}
+.empty img{width: 50%;margin-top: 40%;}
+.anonymous{margin-top: 20px;font-size: 16px;color:#333;}
+.now{font-size: 14px;color:#666;line-height: 2;}
+.now a{color:#666}
+.all,.car-attr-mask{position: absolute;width: 100%;left:0;top:50px;background: #fff;z-index: 10000;font-size: 14px;display: none}
+.all li{padding: 10px 0 10px 20px;}
+.all li a{color:#333;}
+.all li.current a,.huolist-cu,.zhi{color:#5aa6e4}
+.huolist-cu:after{background: url("../images/chezhu/arrow_up@2x.png")no-repeat;background-size: 100% auto;}
+.cancel{text-align: center;display: block;width: 100%;background: #5aa6e4;color:#fff;padding: 10px 0;font-size: 14px;}
+.cancel:active{color:#fff;}
+.curr-add{padding-left: 20px;font-size: 14px;}
+.city{position: fixed;bottom: 0;background: #fff;z-index: 10001;width: 100%;display: none;}
+.car-attr-mask ul,.city ul,.city-list ul{padding-left: 20px;height: 250px;overflow: auto;margin-top: 10px;}
+.city .curr-add,.city-list .curr-add{padding:10px 0 10px 20px}
+.car-attr-mask ul li,.city ul li,.city-list ul li{display: inline-block;padding: 8px 0;width: 29%;text-align: center;background: #f3f3f3;color:#333;margin-right: 10px;margin-bottom: 10px;}
+.car-attr-mask ul li.curr-add-current,.city ul li.curr-add-current,.city-list ul li.curr-add-current{background: #5aa6e4;color:#fff;}
+.car-c ul li.car-current,.car-x ul li.car-current,.type ul li.car-current,.unit ul li.car-current{background: #1dbb3d;color:#fff;}
+.type ul,.unit ul{height: auto}
+.name-s{color:#666;margin: 0;}
+.page, .page-group{background: #f4f8f9;top:24px;}
+.edit-bg{width: 100%;background:#fff;padding:10px 0 15px 0 }
+.edit-bg img{float: left;margin-left: 20px;width: 15px;margin-top: 30px;}
+.ctiy-c{font-size: 14px;width: 80%;margin-left: 10px;}
+.city-c-p{font-size: 16px;color:#aaaaaa;margin-bottom: 5px;}
+.ctiy-c-input{position: relative;width: 100%;border:1px solid #e8e8e8;font-size: 14px;border-radius: 5px;color:#333;background: #fff;padding: 10px 0 10px 10px;margin-bottom: 10px;font-weight: 700}
+.city-label{position: relative;display: block}
+.car-x ul{height: auto;}
+.city-label:after,.car-label:after{position: absolute;content: "";display: block;width: 8px;height: 8px;border-bottom: 1px solid #1dbb3d;border-right: 1px solid #1dbb3d;transform: rotate(45deg);-webkit-transform: rotate(45deg);}
+.city-label:after{right:0;top:10px;}
+.show-start-city-back{position:absolute;right:10px;display: none;cursor: pointer;width: 100px;text-align: center;height: 30px;line-height: 30px;border:1px solid #e8e8e8;background:#f3f3f3}
+.arr{
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    background: #fff;
+    text-align: center;
+    padding-top: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.range{margin-left: 40px;font-size: 14px;font-weight: 600;}
+.arr:after{right: 2rem;
+    top: 2rem;}
+.arr .ton{color:#1dbb3d}
+.route{display: flex;display: -webkit-flex;width: 100%;padding: 10px 0}
+.route span{flex: 1;text-align: left;position: relative;font-size: 16px;padding-left: 24px;}
+.route .route-star:before,.route .route-end:before{width: 20px;height: 25px;position: absolute;content: "";left: 3px;top:0;}
+.route .route-star:before{background: url("../images/chezhu/icon_departure@2x.png")no-repeat;background-size: 100% auto;top:5px;}
+.route .route-end:before{background: url("../images/chezhu/icon_destination@2x.png")no-repeat;background-size: 100% auto;}
+.route-title{font-size: 16px;color:#aaa;padding:0 0 0 25px;}
+.route-title:before{top:4px}
+.padding-bottom{padding-bottom: 20px;}
+.edit-btn,.check{position: absolute;right: 20px;top:10px;display: none;}
+.edit-btn i,.check i{display: inline-block;width: 25px;height:30px;margin-left: 10px;cursor: pointer}
+.edit-img{background: url("../images/chezhu/icon__edit1@2x.png")no-repeat;background-size: 100% auto;}
+.check-img{background: url("../images/chezhu/icon_confirm1@2x.png")no-repeat;background-size: 100% auto;}
+.del-img{background: url("../images/chezhu/icon_delete@2x.png")no-repeat;background-size: 100% auto;cursor: pointer}
+.edit-bg-btn{position: fixed;bottom:70px;left:30px;width: 50px;height: auto;z-index: 11000;}
+.edit-bg-img,.edit-check,.edit-add{display: block;width: 50px;height: 50px;margin-bottom: 10px;}
+.edit-bg-img{background: url("../images/chezhu/icon__edit@2x.png")no-repeat;background-size: 100% auto;}
+.edit-add{background: url("../images/chezhu/button_add1@2x.png")no-repeat;background-size: 100% auto}
+.edit-check{display: none;background: url("../images/chezhu/icon_confirm@2x.png")no-repeat;background-size: 100% auto;}
+.margin-top{margin-top: 5px;}
+.hides{display: none;}
+.files{position: absolute;right: 0;top:0;opacity: 0;height: 100%;}
+.mob-label img{vertical-align: middle;position: absolute;right: 2.5rem;overflow: hidden}
+.arrow{height: 5rem;line-height: 5rem;}
+.car-label{position: relative;display:block;width: 100%;margin: 0 auto;background: #fff;text-align: center;padding-top: 10px;border-bottom: 1px solid #ddd;}
+.car-input{position: relative;width: 90%;}
+.car-label:after{border-bottom: 1px solid #5ba7e6;border-right: 1px solid #5ba7e6;right: 2rem;top:2rem;}
+.ton{position: absolute;color:#5ba7e6;right:12px;top:15px;display: block;width: 80px;text-align: center;height: 30px;line-height: 30px;z-index: 11;}
+.agrent{text-align: center;margin: 10px 0;font-size: 16px;}
+.xieyi,.find-mask ul li.current a,.curr-active{color:#1dbb3d;}
+.checkbox,.faCheck{width: 15px;height: 15px;background: url("../images/chezhu/checkbox_n@2x.png")no-repeat;background-size: 100% auto;vertical-align: middle}
+.checkbox:checked,.faCheck:checked{width: 15px;height: 15px;background: url("../images/chezhu/checkbox_s@2x.png")no-repeat;background-size: 100% auto;}
+.faCheck:checked{background: url("../images/fahuo/checkbox_s@2x.png")no-repeat;background-size: 100% auto;}
+.text-algin{text-align: center}
+.delete{margin-right: 20px;}
+.show-input{text-align: center;position: fixed;z-index: 10000;top:20%;width: 100%;display: none}
+.show-input input{border:1px solid #fff;height: 30px;line-height:30px;background: #fff;color: #000;width: 80%;padding-left: 20px;font-size: 14px;font-weight: 700;}
+.car-x ul li.active{color:#fff;background: #5aa6e4;}
+.car-p{padding: 10px 0 10px 20px;}
+.tip-layout{position: absolute;width: 50%;left: 50%;margin-left: -25%;bottom: 0;background: rgba(0,0,0,0.5);color:#fff;border-radius: 5px;padding: 10px;z-index: 111;display: none;}
+.testswitch {
+    position: relative;
+    width: 50px;
+    margin: 0 auto;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select: none;
+}
+
+.testswitch-checkbox {
+    display: none;
+}
+
+.testswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.testswitch-inner{display:block;width: 51px;height: 29px;background: url("../images/chezhu/switch_c@2x.png")no-repeat;background-size: 100% auto}
+.testswitch-inner:checked {
+    display: block;
+    width: 51px;
+    height: 29px;
+    background: url("../images/chezhu/switch_o@2x.png")no-repeat;
+    background-size: 100% auto;
+}
+.go{padding: 10px 0 10px 20px;}
+.go:before{top:15px;border-left:3px solid #1dbb3d}
+.curr-active:after{background: url("../images/fahuo/arrow_up@2x.png")no-repeat;background-size: 100% auto}
+.city-check ul li.curr-add-current,.fahuo .confirm,.city-li ul li.curr-add-current{background: #1dbb3d;}
+.margin{margin: 0 5px;}
+.fahuoC{color:#5ba7e6}
+.radio{width: 15px;height: 15px;background: url("../images/fahuo/noc.png")no-repeat;background-size: 100% auto;vertical-align:top;}
+.radio:checked{width: 15px;height: 15px;background: url("../images/fahuo/che.png")no-repeat;background-size: 100% auto;}
+.radio-label{display: inline-block;width: 48%;}
+.chezhu-info{width: 70%;float: right;font-size: 14px;}
+.chezhu{border-bottom: 1px solid #e8e8e8;position: relative}
+.chezhu-name{color:#333;margin-right: 5px;}
+.status{background: #5ba7e6;color:#fff;border-radius: 20px;padding: 0 5px;}
+.carNum{color:#666666}
+.carNum span{margin-left: 10px;}
+.che-add-p{color:#d8d8d8;position: relative;padding-left: 20px;margin: 10px 0 0 0;overflow: hidden;text-overflow: ellipsis;white-space: nowrap}
+.che-add-p::before{position: absolute;content:"";left:0;width: 15px;height: 20px;background: url("../images/fahuo/icon_address@2x.png")no-repeat;background-size: 100% auto}
+.green{background: #1dbb3d}
+.card-container{margin-top: 10px;}
+.pull-to-refresh-layer .pull-to-refresh-arrow{width: 1.5rem;height: 1.5rem;background-image:url("../images/fahuo/icon_loading@3x.png");background-size: 1.5rem 1.5rem;margin-top: -.75rem;margin-left: -.75rem;}
+.preloader:after{background-image:url("../images/fahuo/icon_loading@3x.png")}
+.find-top{display: flex;display: -webkit-flex;}
+.find-top .list-top-title{flex: 1;-webkit-flex: 1;width: auto;font-weight: 700}
+#car-attr:after,#car-x:after{right:20%;}
+.margin-bottom{margin-bottom: 50px;}
+.top-header{position: fixed;width: 100%;height: 50px;line-height: 50px;top:0;left: 0;z-index: 10000;display: flex;display: -webkit-flex;background:#fff;text-align: center }
+.top-header-title{flex: 1;-webkit-flex: 1;text-align: center}
+.top-header-title a{color:#333;font-size: 16px;font-weight: 700}
+.top-header-title a.border{color:#1dbb3d;border-bottom: 2px solid #1dbb3d;padding-bottom: 15px;}
+.fa-container{margin-top: 60px;}
+.huoyuan-list{position: relative;background: #fff;width: 96%;margin: 0 auto 10px;}
+.delete-img{width: 30px;height: 30px;display: inline-block;background: url("../images/fahuo/button_close@2x.png")no-repeat;background-size: 100% auto;position: absolute;right:0;top:0;cursor: pointer}
+.huoyuan-add{padding: 15px 10px;border-bottom: 1px solid #efefef;font-size: 14px;position: relative;display: flex;display: -webkit-flex;}
+.huoyuan-info{padding: 15px 10px;position: relative}
+.huoyuan-info li{position: relative;margin-bottom: 10px;font-size: 14px;color:#666;}
+.huoyuan-info li span{margin-left: 20px;color:#000;}
+.checkboxs,.edit-huo,.deleteAll,.save{display:block;width: 50px;height: 50px;margin-bottom: 10px;display: none}
+.edit-huo{background: url("../images/fahuo/icon__edit@2x.png")no-repeat;background-size: 100% auto;display: block}
+.checkboxs{background: url("../images/fahuo/icon_all@2x.png")no-repeat;background-size: 100% auto}
+.deleteAll{background: url("../images/fahuo/icon_delete1@2x.png")no-repeat;background-size: 100% auto}
+.checkbox-all{display: inline-block;width: 15px;height: 15px;background: url("../images/fahuo/button_xz2@2x.png");background-size: 100% auto;vertical-align: text-bottom;display: none}
+.close-del{position: absolute;display: inline-block;width: 50px;height: 25px;background: url("../images/fahuo/icon_delete@2x.png")no-repeat center right;background-size: 20px auto;right: 20px;cursor: pointer;display: none}
+.save{background: url("../images/fahuo/icon_confirm@2x.png")no-repeat;background-size: 100% auto}
+.start-city-show ul li,.end-city-show ul li,.city-list ul li{cursor: pointer}
+.text-ell{text-overflow: ellipsis;overflow: hidden;white-space: nowrap}
+.content{bottom: 120px;}
+.chongfa{
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+    width: 50px;
+    text-align: center;
+    color: #fff;
+    background: #4cd964;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.time{position: absolute;right: 10px;}
+.addBtns{text-align: center;margin: 10px 0;}
+.repet,.public{display: inline-block;border:1px solid #e8e8e8;border-radius: 5px;height: 40px;line-height: 40px;width: auto;text-align: center;font-size: 15px;font-weight: 700;padding: 0 10px;margin: 0 10px;background: #fff;}
+.repet-active,.public-active{border:1px solid #1dbb3d;position: relative;color:#1dbb3d;}
+.repet-active:after,.public-active:after{position: absolute;content: "";width: 20px;height: 20px;background: url("../images/fahuo/chose.png")no-repeat;background-size: 20px 20px;bottom: -1px;right: -1px}
+input::-webkit-input-placeholder,input:disabled{
+    color:#333;
+    opacity: 1;
+}
+.have-city{position: relative;padding-right: 15px;}
+.tipss{color:#fff;position: absolute;top:5px;width: 20px;height: 20px;line-height: 20px;background: red;border:1px solid red;border-radius: 50%;right: 10px;}
+.closebtn{display: inline-block;width: 20px;height: 20px;background: url("../images/chezhu/guanbi.png")no-repeat;background-size: 20px 20px;position: absolute;right: 0;top:-5px}
+.huoyuan-info li span.look{position: absolute;right: 10px;bottom: 5px;color:#1dbb3d;border-radius: 5px;border:1px solid #1dbb3d;padding: 0 5px;}
+.btn-check{display:inline-block;width: 50px;text-align: center;height: 25px;line-height: 25px;color:#fff;background: #889fbb;border-radius: 5px;}
+.remind{display: inline-block;color:#fff;width: 20px;height: 20px;line-height:20px;background: red;border-radius: 50%;border:1px solid red;text-align: center;margin-left: 10px;}
+.like{display: none;}
+.look-like{
+    display: flex;
+    border-top: 1px solid #e8e8e8;
+    padding: 5px 0;
+}
+.use-img{
+    width: 40px;
+    height: 40px;
+    margin-top: 10px;
+}
+.info-user{
+    flex:1;
+    margin-left: 10px;
+}
+.moblie-look{
+    margin-top: 20px;
+}
+
+/*新首页*/
+.footer-list{flex:1;text-align: center}
+.index{background: url("../images/chezhu/index.png")no-repeat;background-size: 100% auto;}
+.publish{background: url("../images/chezhu/publish.png")no-repeat;background-size: 100% auto;}
+.my-membmer{background: url("../images/chezhu/my.png")no-repeat;background-size: 100% auto;}
+.index-cur{background: url("../images/chezhu/index1.png")no-repeat;background-size: 100% auto;}
+.footer a.hight-color{color:#f06161;}
+.index-top{width: 100%;position: relative;overflow: hidden;background: rgba(0,0,0,0.5)}
+.index_top_bottom{position: absolute;bottom:0;z-index: 10;background: rgba(0,0,0,0.5);width: 100%;height: 30px;line-height: 30px;color:#fff;box-sizing: border-box;}
+.follow{display: inline-block;margin: 0 20px;font-size: 12px;}
+.people{color: #ff0000;}
+.info{width: 85%;color:#fff;display: flex;display:-webkit-flex;position: absolute;top:60px;left: 20px;}
+.code{width: 80px;height: 80px;vertical-align: middle;display: inline-block}
+.roof_info{flex: 1;-webkit-flex:1;margin-left: 10px;font-weight: 700;letter-spacing: 1px;}
+.index_title{font-size:24px;color:#ecad4c;margin-bottom: 10px; }
+.roof{color: #ecad4c}
+.manRoof{color:#f4675d;}
+.entry{background: #fff;}
+.entry_list li{width: 33%;float: left;text-align: center;margin: 10px 0;}
+.entry_list li a{color:#333;font-size: 12px;}
+.entry_list li .icon{width: 50px;height: 50px;display: block;margin: 0 auto 10px;}
+.entry_list li .cars{background: url("../images/chezhu/cars.png")no-repeat;background-size: 100% auto;}
+.entry_list li .goods{background: url("../images/chezhu/goods.png")no-repeat;background-size: 100% auto;}
+.entry_list li .publish_btn{background: url("../images/chezhu/fa.png")no-repeat;background-size: 100% auto;}
+.entry_list li .id_card{background: url("../images/chezhu/id_card.png")no-repeat;background-size: 100% auto;}
+.entry_list li .safe{background: url("../images/chezhu/safe.png")no-repeat;background-size: 100% auto;}
+.entry_list li .shop{background: url("../images/chezhu/shop.png")no-repeat;background-size: 100% auto;}
+
+.entry_list li .hig{background: url("../images/chezhu/ggg.png")no-repeat;background-size: 100% auto;}
+.entry_list li .tra{background: url("../images/chezhu/tl.png")no-repeat;background-size: 100% auto;}
+.entry_list li .xz{background: url("../images/chezhu/xz.png")no-repeat;background-size: 100% auto;}
+.entry_list li .yf{background: url("../images/chezhu/yf.png")no-repeat;background-size: 100% auto;}
+.entry_list li .shui{background: url("../images/chezhu/s.png")no-repeat;background-size: 100% auto;}
+.entry_list li .zhu{background: url("../images/chezhu/zy.png")no-repeat;background-size: 100% auto;}
+.entry_list li .eat{background: url("../images/chezhu/eat.png")no-repeat;background-size: 100% auto;}
+.entry_list li .zhusu{background: url("../images/chezhu/zhus.png")no-repeat;background-size: 100% auto;}
+.entry_list li .xiuli{background: url("../images/chezhu/xiul.png")no-repeat;background-size: 100% auto;}
+.entry_list li .jiayou{background: url("../images/chezhu/jiay.png")no-repeat;background-size: 100% auto;}
+.entry_list li .jiuy{background: url("../images/chezhu/jiuy.png")no-repeat;background-size: 100% auto;}
+.entry_list li .qit{background: url("../images/chezhu/qit.png")no-repeat;background-size: 100% auto;}
+.ad{margin: 10px 0;width: 100%;height: 100px;overflow: hidden;text-align: center}
+.adImg{width: 100%;height: auto}
+.list_box{background: #fff;padding: 10px;}
+.headLine{font-size: 14px;color:#333;border-bottom: 1px solid #B9B9B9;position: relative;padding-bottom: 10px;padding-left: 10px;}
+.more{position: absolute;right: 0;color:#B9B9B9;padding-right: 10px}
+.more:after{position: absolute;content: "";width: 10px;height: 10px;right:0;top:3px;border-right: 1px solid #B9B9B9;border-bottom: 1px solid #B9B9B9;-webkit-transform: rotate(-45deg);transform: rotate(-45deg)}
+.headLine:before{position: absolute;content: "";width: 2px;height: 15px;background: #ed6162;left:0;top:3px;}
+.goods_list{margin: 10px auto;display: flex;display:-webkit-flex;}
+.goods_list_item{flex: 1;-webkit-flex:1;margin: 0 5px;overflow: hidden;font-size: 12px;}
+.imgbox{display: block;width: 100%;overflow: hidden;position: relative;height: 100px;line-height:100px;text-align: center}
+.imgbox img{width: 100%;height: 100%;}
+.goods_pop{position: absolute;bottom: 0;background: rgba(0,0,0,0.5);width: 100%;color:#fff;height: 30px;line-height: 30px;font-size: 12px;}
+.goods_d{padding-left: 10px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap}
+.goods_user{width:30px;height: 30px;border-radius: 50%;vertical-align: middle}
+.goods_user_detail{display: flex;margin-top: 5px;color:#333;}
+.goods_detail{flex: 1;-webkit-flex: 1;margin-left: 5px;color:#333;position: relative;overflow: hidden}
+.name{font-size: 12px;}
+.honour{color:#fff;background: #ed6162;border-radius: 10px;padding: 0 5px;font-size: 12px;}
+.release_time{font-size: 10px;position: absolute;right: 0;color:#999;}
+.flying{font-size: 12px;border-bottom: 1px solid #999;margin-top: 5px;position: relative;width: 97%;}
+.flying:after{position: absolute;content: "";width: 1px;height: 8px;border-right: 1px solid #999;-webkit-transform: rotate(-45deg);transform: rotate(-45deg);right: 2px;bottom:-2px}
+.destination{text-align: right;font-size: 12px;}
+.car{background:#00b945; }
+.gps{position: relative;padding-left: 15px;}
+.gps:before{position: absolute;content: "";width: 10px;height:15px;left: 0;top:3px;background: url("../images/chezhu/map.png")no-repeat;background-size: 100% auto;}
+.margin-big-top{margin-top: 10px;}
+
+
+
+.card_head{background: #1dbb3b;color:#fff;text-align: center;padding: 10px 0;}
+.title_ul{margin-top: 10px;background: #fff;padding: 0 10px;}
+.title_ul li{border-bottom: 1px solid #999;padding: 15px 0;position: relative}
+.title_ul li:after{position: absolute;content: "";width: 8px;height: 8px;border-bottom: 1px solid #999;border-right: 1px solid #999;-webkit-transform: rotate(-45deg);transform: rotate(-45deg);right: 0;top:20px}
+.title_ul li a{display: block;width: 90%;color:#333;font-size: 14px;position: relative;padding-left: 30px;}
+.title_ul li a span{position: absolute;right: 10px;}
+.title_ul li a:before{position: absolute;content: "";left: 0;top:-5px;width: 30px;height: 30px;}
+.title_ul li a.goods_t:before{background: url("../images/chezhu/hh.png")no-repeat;background-size: 100% auto}
+.title_ul li a.cars_t:before{background: url("../images/chezhu/cc.png")no-repeat;background-size: 100% auto}
+.company{padding: 10px;background: #fff;margin-top: 10px;}
+.company dt{color:#333;font-size: 16px;border-bottom: 1px solid #999;padding-bottom: 10px}
+.company dd{font-size: 12px;color:#666;margin-top: 10px;}
+
+.banner_img{width: 100%;overflow: hidden}
+.banner_img img{width: 100%;}
+.company dd.company_name{font-size: 14px;color:#333;font-weight: 600}
+.padding_b{margin-bottom: 90px;}
+.head_c{display: flex;display: -webkit-flex;width: 100%;height: 50px;line-height: 50px;background:#ed6162;position: relative }
+.card_headb{flex:1;-webkit-flex:1;color:#fff;text-align: center;font-size: 16px;}
+.back{width: 50px;height: 50px;text-align: center;line-height: 50px;}
+.home{width:50px;height: 50px;text-align: center;line-height: 50px;padding-right: 10px;}
+.homeBtn{display: block;width: 30px;height: 30px;background: url("../images/chezhu/home.png")no-repeat;background-size: 100% 100%;margin: 10px 0;}
+.backBtn{display: block;width: 20px;height:20px;border-left: 2px solid #fff;border-bottom: 2px solid #fff;transform: rotate(45deg);margin: 10px;}
+.banner_bg{width: 100%;}
+.banner_bg img{width: 100%}
+.f_title h3{border-bottom: 1px solid #000;padding: 5px 10px;}
+.input_start{display: block;margin: 10px 0;width: 100%;height: 30px;line-height: 30px;font-size: 14px;padding-left: 10px;}
+.searchs{margin: 10px;width: 100%}
+.search_star,.search_btn{display: inline-block;}
+.search_star{width: 65%;vertical-align: middle}
+.search_btn{width: 20%;margin-left:20px;}
+.search_btn a{display: block;color:#fff;background: #1dbb3b;text-align: center;padding: 5px;border-radius: 5px;}
+.result{border:1px solid #e8e8e8;width: 96%;margin: 0 auto}
+.result h4{text-align: center;border-bottom: 1px solid #e8e8e8;padding: 5px 0;}
+.result ul{width:100%;display: flex;}
+.result ul li{flex: 1;text-align: center;font-size: 12px;border-right: 1px solid #e8e8e8; }
+.result ul li P{padding: 3px 0;}
+.result ul li P:first-child{border-bottom: 1px solid #e8e8e8;}
+
+@media (max-width: 320px) {
+    .car-info li p.car-title{font-size: 14px;}
+    .car-info li p.car-att{font-size: 13px;}
+    .huoyuan-info li span{font-size: 12px;}
+    .release_time{position: static;display: block}
+}
+@media (min-width: 768px) {
+    .car-label:after{right: 4rem;}
+    .ton{right: 5.5rem;}
+    .ctiy-c{width: 88%;}
+    .car-attr-mask ul li,.city ul li{width: 18%;}
+}

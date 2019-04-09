@@ -1,0 +1,134 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+
+    <div class="main-right">
+        <h1 class="main-right-title">首页管理 > <if condition="$type eq 1">广告管理<elseif condition="$type eq 2" />合作企业管理<else />商家管理</if> > 编辑</h1>
+        
+        <div class="center">
+    
+    <form id='uploadForm' class="form-inline" method="post" action="{:U('index/save')}">
+        <input type="hidden" name="id" value="{$info.id}" />
+        <div class="layer-lader">
+        <if condition="$type eq 1">
+            <label for="name" class="label-text">
+                <p class="label-title">名称</p>
+                <input type="text" name="name" class="text-input" value="{$info.name}">
+            </label>
+            
+            <label for="type" class="label-text">
+                <p class="label-title">广告位</p>
+                
+                <select name="type">
+                    <option value ="1" <if condition="$info['type'] eq 1">selected</if>>顶部广告位</option>
+                    <option value ="3" <if condition="$info['type'] eq 3">selected</if>>中部广告位</option>
+                </select>
+            </label>
+            
+            <label for="image" class="label-text">
+                <p class="label-title">图片</p>
+                <input type="file" name="file"/>
+                <input type="hidden" id="image" name='image' value="{$info.image}" />
+                <input type="button" value="上传" onclick="doUpload()" class='searchBtn' /><br><br>
+                <img src='{$info.image}' id='show' style='width: 500px;'/>
+            </label>
+        <elseif condition="$type eq 2" />
+            <input type="hidden" name="type" value="{$type}" />
+            <label for="name" class="label-text">
+                <p class="label-title">名称</p>
+                <input type="text" name="name" class="text-input" value="{$info.name}">
+            </label>
+            <label for="contact" class="label-text">
+                <p class="label-title">联系人</p>
+                <input type="text" name="contact" class="text-input" value="{$info.contact}">
+            </label>    
+            <label for="telephone" class="label-text">
+                <p class="label-title">电话</p>
+                <input type="text" name="telephone" class="text-input" value="{$info.telephone}">
+            </label> 
+            <label for="mobile" class="label-text">
+                <p class="label-title">手机</p>
+                <input type="text" name="mobile" class="text-input" value="{$info.mobile}">
+            </label> 
+            <label for="address" class="label-text">
+                <p class="label-title">地址</p>
+                <input type="text" name="address" class="text-input" value="{$info.address}">
+            </label> 
+            
+            <label for="image" class="label-text">
+                <p class="label-title">图片</p>
+                <input type="file" name="file"/>
+                <input type="hidden" id="image" name='image' value="{$info.image}" />
+                <input type="button" value="上传" onclick="doUpload()" class='searchBtn' /><br><br>
+                <img src='{$info.image}' id='show' style='width: 500px;'/>
+            </label>
+        <else />
+            <input type="hidden" name="type" value="{$type}" />
+            <label for="name" class="label-text">
+                <p class="label-title">商家名称</p>
+                <input type="text" name="name" class="text-input" value="{$info.name}">
+            </label>  
+            <label for="telephone" class="label-text">
+                <p class="label-title">电话</p>
+                <input type="text" name="telephone" class="text-input" value="{$info.telephone}">
+            </label> 
+            <label for="address" class="label-text">
+                <p class="label-title">地址</p>
+                <input type="text" name="address" class="text-input" value="{$info.address}">
+            </label> 
+            
+            <label for="category" class="label-text">
+                <p class="label-title">分类</p>
+                
+                <select name="category">
+                    <option value ="1" <if condition="$info['category'] eq 1">selected</if>>吃饭</option>
+                    <option value ="2" <if condition="$info['category'] eq 2">selected</if>>住宿</option>
+                    <option value ="3" <if condition="$info['category'] eq 3">selected</if>>修理</option>
+                    <option value ="4" <if condition="$info['category'] eq 4">selected</if>>加油</option>
+                    <option value ="5" <if condition="$info['category'] eq 5">selected</if>>救援</option>
+                    <option value ="6" <if condition="$info['category'] eq 6">selected</if>>其他</option>
+                </select>
+            </label>
+        </if>
+        
+        
+        <br /><br />
+        <a href="#" onclick="$('.form-inline').submit();" class="searchBtn">提交</a>
+        </div>
+    </form>
+</div>
+
+<script src="__PUBLIC__/js/admin.js"></script>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script>
+    function doUpload() {  
+        var formData = new FormData($("#uploadForm")[0]);  
+
+        $.ajax({  
+             url: '/admin/index/upload' ,  
+             type: 'POST',  
+             data: formData, 
+             dataType: "json",
+             async: false,  
+             cache: false,  
+             contentType: false,  
+             processData: false,  
+             success: function (data) {  
+                $('#image').attr('value', data.data);
+                $('#show').attr('src', data.data);
+                alert('上传成功');
+             },  
+             error: function (data) {  
+                 alert(data.message);  
+             }  
+        });  
+   }  
+</script>
+</body>
+</html>

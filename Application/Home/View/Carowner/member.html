@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>会员中心</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+    <script type="text/javascript">
+        //调用微信JS api 支付
+        function jsApiCall()
+        {
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',
+                <?php echo $jsApiParameters; ?>,
+                function(res){
+                    WeixinJSBridge.log(res.err_msg);
+                    location.reload();
+                    //alert(res.err_code+res.err_desc+res.err_msg);
+                }
+            );
+        }
+
+        function callpay()
+        {
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            }else{
+                jsApiCall();
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <!--会员中心头部开始-->
+    <div class="members-head">
+        <div class="head-bg">
+            <div class="user-info">
+                <div class="user-img">
+                    <i class="v" id="mem"></i>
+                </div>
+                <div class="mebers-name">
+
+                </div>
+            </div>
+            <div class="user-desc">
+                <span>车主方会员</span>
+                <!--<span>12个月</span>-->
+                <!--<span>￥180</span>-->
+            </div>
+            <a href="#" class="btn"></a>
+        </div>
+    </div>
+    <!--会员中心头部结束-->
+    <div class="center">
+        <h2 class="che-members fa">车主会员</h2>
+        <p class="mebers-info">车主会员仅针对“车来货往”平台上的货主类注册用户开放。其尊享“车来货往”平台上，车主端的所有权益。</p>
+    </div>
+    <div class="center">
+        <h2 class="che-members faCenter">会员特权</h2>
+        <ul class="center-list clearfix">
+            <li>
+                <a href="#">
+                    <i class="icon fabu"></i>
+                    发布车源
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="icon chec"></i>
+                    查找货源
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="icon contact"></i>
+                    联系发货方
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="dialog"></div>
+<div class="mask">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips" id="tip">您尚未注册成为车主方用户，无法使用该功能！</p>
+    <div class="botton">
+        <a href="#" class="go">先去逛逛</a>
+        <a href="{:U('Carowner/regist')}" class="member">去注册</a>
+    </div>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script>
+    let user='';
+    $('.btn').click(function(){
+
+        if(user.state == 3){
+            if(user.type == 2) {
+                callpay();
+            } else {
+                layer.msg('您不是车主用户, 无法开通车主方会员');
+            }
+        }else if(user.state == 2){
+            layer.msg('用户资料审核中!请等待');
+        }else if(user.state == 4){
+            $('#tip').text('审核不通过，请重新注册');
+            $('.dialog').show();
+            $('.mask').show();
+        }else{
+            $('.dialog').show();
+            $('.mask').show();
+        }
+    });
+    $('.go').click(function(){
+        $('.dialog').hide();
+        $('.mask').hide();
+    });
+
+    function getMember(){
+        $.get({
+            url:URL+'/users/index.html?type=2',
+            async:true,
+            dataType:'json',
+            success:function(data,status){
+                user = data.data;
+                let type = '';
+                let btn = '';
+                if(user.type == 1){
+
+                    if(user.type_goods == 1){
+                        type = '货主';
+                    }else{
+                        type = '货站';
+                    }
+                }else if(user.type == 2){
+                    type = '车主';
+                }
+                let vip = '';
+                if(user.vip == 1){
+                    vip = user.vip_endtime.substring(0,10)+'到期';
+                    btn = '续费';
+                    $('#mem').addClass('vv');
+                    $('#mem').removeClass('v');
+                }else{
+                    vip = '非会员';
+                    btn = '开通';
+                    $('#mem').addClass('v');
+                    $('#mem').removeClass('vv');
+                }
+                let html = '<img src=" '+ user.header_img + ' ">';
+                $('.v').before(html);
+                $('.vv').before(html);
+                $('.btn').text(btn);
+
+                let name = '<h3>'+user.name+'<span class="name-title">'+type+'</span></h3><p>'+vip+'</p>';
+                $('.mebers-name').append(name);
+
+            }
+        })
+    }
+
+    getMember();
+</script>
+</body>
+</html>

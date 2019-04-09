@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script type="text/javascript" src="/html/jquery.min.js"></script>
+    </head>
+    <body>
+        <form id="uploadForm">  
+            <input type="file" name="file"/>
+            <input type="hidden" id="show" value="" />
+            <input type="button" value="上传" onclick="doUpload()" />  
+      </form>  
+        
+        <script>
+            function doUpload() {  
+            var formData = new FormData($("#uploadForm")[0]);  
+            
+            $.ajax({  
+                 url: '/index/upload' ,  
+                 type: 'POST',  
+                 data: formData, 
+                 dataType: "json",
+                 async: false,  
+                 cache: false,  
+                 contentType: false,  
+                 processData: false,  
+                 success: function (data) {  
+                    $('#show').attr('src', data.data);
+                    alert('上传成功');
+                 },  
+                 error: function (data) {  
+                     alert(data.message);  
+                 }  
+            });  
+       }  
+        </script>
+    </body>
+</html>

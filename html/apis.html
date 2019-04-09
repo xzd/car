@@ -1,0 +1,2665 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>车来货往 API 接口文档</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css">
+            html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+                margin: 0;
+                padding: 0;
+                border: 0;
+            }
+
+            /* BODY
+            =============================================================================*/
+            body {
+                font-family: "΢���ź�",Helvetica, arial, freesans, clean, sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+                color: #333;
+                background-color: #fff;
+                padding: 20px;
+                max-width: 960px;
+                margin: 0 auto;
+            }
+
+            body>*:first-child {
+                margin-top: 0 !important;
+            }
+
+            body>*:last-child {
+                margin-bottom: 0 !important;
+            }
+
+            /* BLOCKS
+            =============================================================================*/
+
+            p, blockquote, ul, ol, dl, table, pre {
+                margin: 15px 0;
+            }
+
+            /* HEADERS
+            =============================================================================*/
+
+            h1, h2, h3, h4, h5, h6 {
+                margin: 20px 0 10px;
+                padding: 0;
+                font-weight: bold;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+                font-size: inherit;
+            }
+
+            h1 {
+                font-size: 28px;
+                color: #000;
+            }
+
+            h2 {
+                font-size: 24px;
+                border-bottom: 1px solid #ccc;
+                color: #000;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            h4 {
+                font-size: 16px;
+            }
+
+            h5 {
+                font-size: 14px;
+            }
+
+            h6 {
+                color: #777;
+                font-size: 14px;
+            }
+
+            body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+                margin-top: 10px;
+            }
+
+            /* LINKS
+            =============================================================================*/
+
+            a {
+                color: #4183C4;
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* LISTS
+            =============================================================================*/
+
+            ul, ol {
+                padding-left: 30px;
+            }
+
+            ul li > :first-child, 
+            ol li > :first-child, 
+            ul li ul:first-of-type, 
+            ol li ol:first-of-type, 
+            ul li ol:first-of-type, 
+            ol li ul:first-of-type {
+                margin-top: 0px;
+            }
+
+            ul ul, ul ol, ol ol, ol ul {
+                margin-bottom: 0;
+            }
+
+            dl {
+                padding: 0;
+            }
+
+            dl dt {
+                font-size: 14px;
+                font-weight: bold;
+                font-style: italic;
+                padding: 0;
+                margin: 15px 0 5px;
+            }
+
+            dl dt:first-child {
+                padding: 0;
+            }
+
+            dl dt>:first-child {
+                margin-top: 0px;
+            }
+
+            dl dt>:last-child {
+                margin-bottom: 0px;
+            }
+
+            dl dd {
+                margin: 0 0 15px;
+                padding: 0 15px;
+            }
+
+            dl dd>:first-child {
+                margin-top: 0px;
+            }
+
+            dl dd>:last-child {
+                margin-bottom: 0px;
+            }
+
+            /* CODE
+            =============================================================================*/
+
+            pre, code, tt {
+                font-size: 12px;
+                font-family: Consolas, "Liberation Mono", Courier, monospace;
+            }
+
+            code, tt {
+                margin: 0 0px;
+                padding: 0px 0px;
+                white-space: nowrap;
+                border: 1px solid #eaeaea;
+                background-color: #f8f8f8;
+                border-radius: 3px;
+            }
+
+            pre>code {
+                margin: 0;
+                padding: 0;
+                white-space: pre;
+                border: none;
+                background: transparent;
+            }
+
+            pre {
+                background-color: #f8f8f8;
+                border: 1px solid #ccc;
+                font-size: 13px;
+                line-height: 19px;
+                overflow: auto;
+                padding: 6px 10px;
+                border-radius: 3px;
+            }
+
+            pre code, pre tt {
+                background-color: transparent;
+                border: none;
+            }
+
+            kbd {
+                -moz-border-bottom-colors: none;
+                -moz-border-left-colors: none;
+                -moz-border-right-colors: none;
+                -moz-border-top-colors: none;
+                background-color: #DDDDDD;
+                background-image: linear-gradient(#F1F1F1, #DDDDDD);
+                background-repeat: repeat-x;
+                border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+                border-image: none;
+                border-radius: 2px 2px 2px 2px;
+                border-style: solid;
+                border-width: 1px;
+                font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+                line-height: 10px;
+                padding: 1px 4px;
+            }
+
+            /* QUOTES
+            =============================================================================*/
+
+            blockquote {
+                border-left: 4px solid #DDD;
+                padding: 0 15px;
+                color: #777;
+            }
+
+            blockquote>:first-child {
+                margin-top: 0px;
+            }
+
+            blockquote>:last-child {
+                margin-bottom: 0px;
+            }
+
+            /* HORIZONTAL RULES
+            =============================================================================*/
+
+            hr {
+                clear: both;
+                margin: 15px 0;
+                height: 0px;
+                overflow: hidden;
+                border: none;
+                background: transparent;
+                border-bottom: 4px solid #ddd;
+                padding: 0;
+            }
+
+            /* TABLES
+            =============================================================================*/
+
+            table{
+                border-collapse:collapse; width:100%; max-width:100%
+            }
+            table td{
+                border:solid 1px #d7d7d7; margin:2px; padding:5px;
+            }
+            table th{
+                border:solid 1px #d7d7d7; margin:2px; padding:5px; 
+            }
+
+            /* IMAGES
+            =============================================================================*/
+
+            img {
+                max-width: 100%
+            }
+        </style>
+        <style type="text/css">
+            .highlight  { background: #ffffff; }
+            .highlight .c { color: #999988; font-style: italic } /* Comment */
+            .highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+            .highlight .k { font-weight: bold } /* Keyword */
+            .highlight .o { font-weight: bold } /* Operator */
+            .highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+            .highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+            .highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+            .highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+            .highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+            .highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+            .highlight .ge { font-style: italic } /* Generic.Emph */
+            .highlight .gr { color: #aa0000 } /* Generic.Error */
+            .highlight .gh { color: #999999 } /* Generic.Heading */
+            .highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+            .highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+            .highlight .go { color: #888888 } /* Generic.Output */
+            .highlight .gp { color: #555555 } /* Generic.Prompt */
+            .highlight .gs { font-weight: bold } /* Generic.Strong */
+            .highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+            .highlight .gt { color: #aa0000 } /* Generic.Traceback */
+            .highlight .kc { font-weight: bold } /* Keyword.Constant */
+            .highlight .kd { font-weight: bold } /* Keyword.Declaration */
+            .highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+            .highlight .kr { font-weight: bold } /* Keyword.Reserved */
+            .highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+            .highlight .m { color: #009999 } /* Literal.Number */
+            .highlight .s { color: #d14 } /* Literal.String */
+            .highlight .na { color: #008080 } /* Name.Attribute */
+            .highlight .nb { color: #0086B3 } /* Name.Builtin */
+            .highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+            .highlight .no { color: #008080 } /* Name.Constant */
+            .highlight .ni { color: #800080 } /* Name.Entity */
+            .highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+            .highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+            .highlight .nn { color: #555555 } /* Name.Namespace */
+            .highlight .nt { color: #000080 } /* Name.Tag */
+            .highlight .nv { color: #008080 } /* Name.Variable */
+            .highlight .ow { font-weight: bold } /* Operator.Word */
+            .highlight .w { color: #bbbbbb } /* Text.Whitespace */
+            .highlight .mf { color: #009999 } /* Literal.Number.Float */
+            .highlight .mh { color: #009999 } /* Literal.Number.Hex */
+            .highlight .mi { color: #009999 } /* Literal.Number.Integer */
+            .highlight .mo { color: #009999 } /* Literal.Number.Oct */
+            .highlight .sb { color: #d14 } /* Literal.String.Backtick */
+            .highlight .sc { color: #d14 } /* Literal.String.Char */
+            .highlight .sd { color: #d14 } /* Literal.String.Doc */
+            .highlight .s2 { color: #d14 } /* Literal.String.Double */
+            .highlight .se { color: #d14 } /* Literal.String.Escape */
+            .highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+            .highlight .si { color: #d14 } /* Literal.String.Interpol */
+            .highlight .sx { color: #d14 } /* Literal.String.Other */
+            .highlight .sr { color: #009926 } /* Literal.String.Regex */
+            .highlight .s1 { color: #d14 } /* Literal.String.Single */
+            .highlight .ss { color: #990073 } /* Literal.String.Symbol */
+            .highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+            .highlight .vc { color: #008080 } /* Name.Variable.Class */
+            .highlight .vg { color: #008080 } /* Name.Variable.Global */
+            .highlight .vi { color: #008080 } /* Name.Variable.Instance */
+            .highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+            .pl-c {
+                color: #969896;
+            }
+
+            .pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+                color: #0086b3;
+            }
+
+            .pl-e,.pl-en {
+                color: #795da3;
+            }
+
+            .pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+                color: #333;
+            }
+
+            .pl-ent {
+                color: #63a35c;
+            }
+
+            .pl-k,.pl-s,.pl-st {
+                color: #a71d5d;
+            }
+
+            .pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+                color: #df5000;
+            }
+
+            .pl-id {
+                color: #b52a1d;
+            }
+
+            .pl-ii {
+                background-color: #b52a1d;
+                color: #f8f8f8;
+            }
+
+            .pl-sr .pl-cce {
+                color: #63a35c;
+                font-weight: bold;
+            }
+
+            .pl-ml {
+                color: #693a17;
+            }
+
+            .pl-mh,.pl-mh .pl-en,.pl-ms {
+                color: #1d3e81;
+                font-weight: bold;
+            }
+
+            .pl-mq {
+                color: #008080;
+            }
+
+            .pl-mi {
+                color: #333;
+                font-style: italic;
+            }
+
+            .pl-mb {
+                color: #333;
+                font-weight: bold;
+            }
+
+            .pl-md,.pl-mdhf {
+                background-color: #ffecec;
+                color: #bd2c00;
+            }
+
+            .pl-mdht,.pl-mi1 {
+                background-color: #eaffea;
+                color: #55a532;
+            }
+
+            .pl-mdr {
+                color: #795da3;
+                font-weight: bold;
+            }
+
+            .pl-mo {
+                color: #1d3e81;
+            }
+            .task-list {
+                padding-left:10px;
+                margin-bottom:0;
+            }
+
+            .task-list li {
+                margin-left: 20px;
+            }
+
+            .task-list-item {
+                list-style-type:none;
+                padding-left:10px;
+            }
+
+            .task-list-item label {
+                font-weight:400;
+            }
+
+            .task-list-item.enabled label {
+                cursor:pointer;
+            }
+
+            .task-list-item+.task-list-item {
+                margin-top:3px;
+            }
+
+            .task-list-item-checkbox {
+                display:inline-block;
+                margin-left:-20px;
+                margin-right:3px;
+                vertical-align:1px;
+            }
+        </style>
+        <style type="text/css">
+            .highlight  { background: #ffffff; }
+            .highlight .c { color: #999988; font-style: italic } /* Comment */
+            .highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+            .highlight .k { font-weight: bold } /* Keyword */
+            .highlight .o { font-weight: bold } /* Operator */
+            .highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+            .highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+            .highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+            .highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+            .highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+            .highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+            .highlight .ge { font-style: italic } /* Generic.Emph */
+            .highlight .gr { color: #aa0000 } /* Generic.Error */
+            .highlight .gh { color: #999999 } /* Generic.Heading */
+            .highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+            .highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+            .highlight .go { color: #888888 } /* Generic.Output */
+            .highlight .gp { color: #555555 } /* Generic.Prompt */
+            .highlight .gs { font-weight: bold } /* Generic.Strong */
+            .highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+            .highlight .gt { color: #aa0000 } /* Generic.Traceback */
+            .highlight .kc { font-weight: bold } /* Keyword.Constant */
+            .highlight .kd { font-weight: bold } /* Keyword.Declaration */
+            .highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+            .highlight .kr { font-weight: bold } /* Keyword.Reserved */
+            .highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+            .highlight .m { color: #009999 } /* Literal.Number */
+            .highlight .s { color: #d14 } /* Literal.String */
+            .highlight .na { color: #008080 } /* Name.Attribute */
+            .highlight .nb { color: #0086B3 } /* Name.Builtin */
+            .highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+            .highlight .no { color: #008080 } /* Name.Constant */
+            .highlight .ni { color: #800080 } /* Name.Entity */
+            .highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+            .highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+            .highlight .nn { color: #555555 } /* Name.Namespace */
+            .highlight .nt { color: #000080 } /* Name.Tag */
+            .highlight .nv { color: #008080 } /* Name.Variable */
+            .highlight .ow { font-weight: bold } /* Operator.Word */
+            .highlight .w { color: #bbbbbb } /* Text.Whitespace */
+            .highlight .mf { color: #009999 } /* Literal.Number.Float */
+            .highlight .mh { color: #009999 } /* Literal.Number.Hex */
+            .highlight .mi { color: #009999 } /* Literal.Number.Integer */
+            .highlight .mo { color: #009999 } /* Literal.Number.Oct */
+            .highlight .sb { color: #d14 } /* Literal.String.Backtick */
+            .highlight .sc { color: #d14 } /* Literal.String.Char */
+            .highlight .sd { color: #d14 } /* Literal.String.Doc */
+            .highlight .s2 { color: #d14 } /* Literal.String.Double */
+            .highlight .se { color: #d14 } /* Literal.String.Escape */
+            .highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+            .highlight .si { color: #d14 } /* Literal.String.Interpol */
+            .highlight .sx { color: #d14 } /* Literal.String.Other */
+            .highlight .sr { color: #009926 } /* Literal.String.Regex */
+            .highlight .s1 { color: #d14 } /* Literal.String.Single */
+            .highlight .ss { color: #990073 } /* Literal.String.Symbol */
+            .highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+            .highlight .vc { color: #008080 } /* Name.Variable.Class */
+            .highlight .vg { color: #008080 } /* Name.Variable.Global */
+            .highlight .vi { color: #008080 } /* Name.Variable.Instance */
+            .highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+            .pl-c {
+                color: #969896;
+            }
+
+            .pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+                color: #0086b3;
+            }
+
+            .pl-e,.pl-en {
+                color: #795da3;
+            }
+
+            .pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+                color: #333;
+            }
+
+            .pl-ent {
+                color: #63a35c;
+            }
+
+            .pl-k,.pl-s,.pl-st {
+                color: #a71d5d;
+            }
+
+            .pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+                color: #df5000;
+            }
+
+            .pl-id {
+                color: #b52a1d;
+            }
+
+            .pl-ii {
+                background-color: #b52a1d;
+                color: #f8f8f8;
+            }
+
+            .pl-sr .pl-cce {
+                color: #63a35c;
+                font-weight: bold;
+            }
+
+            .pl-ml {
+                color: #693a17;
+            }
+
+            .pl-mh,.pl-mh .pl-en,.pl-ms {
+                color: #1d3e81;
+                font-weight: bold;
+            }
+
+            .pl-mq {
+                color: #008080;
+            }
+
+            .pl-mi {
+                color: #333;
+                font-style: italic;
+            }
+
+            .pl-mb {
+                color: #333;
+                font-weight: bold;
+            }
+
+            .pl-md,.pl-mdhf {
+                background-color: #ffecec;
+                color: #bd2c00;
+            }
+
+            .pl-mdht,.pl-mi1 {
+                background-color: #eaffea;
+                color: #55a532;
+            }
+
+            .pl-mdr {
+                color: #795da3;
+                font-weight: bold;
+            }
+
+            .pl-mo {
+                color: #1d3e81;
+            }
+            .task-list {
+                padding-left:10px;
+                margin-bottom:0;
+            }
+
+            .task-list li {
+                margin-left: 20px;
+            }
+
+            .task-list-item {
+                list-style-type:none;
+                padding-left:10px;
+            }
+
+            .task-list-item label {
+                font-weight:400;
+            }
+
+            .task-list-item.enabled label {
+                cursor:pointer;
+            }
+
+            .task-list-item+.task-list-item {
+                margin-top:3px;
+            }
+
+            .task-list-item-checkbox {
+                display:inline-block;
+                margin-left:-20px;
+                margin-right:3px;
+                vertical-align:1px;
+            }
+        </style>
+        <link rel="stylesheet" href="./mdassets/treeview/jquery.treeview.css">
+        <script src="./mdassets/toc.js"></script>
+    </head>
+    <body>
+        <h1>车来货往 API 接口文档</h1>
+        <h3>新增接口</h3>
+        
+        <h3>卡友助手接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/index/shop</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>type</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>类型: 1吃饭 2住宿 3修理 4加油 5救援 6其他</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": [
+        {
+            "id": "27",
+            "name": "测试666",
+            "image": "",
+            "type": "4",
+            "contact": "",
+            "telephone": "0571-123456722",
+            "mobile": "",
+            "address": "浙江省杭州市滨江区",
+            "category": "6",
+            "create_time": "2017-11-09 21:50:29",
+            "update_time": "2017-11-09 21:50:29"
+        }
+    ],
+    "msg": "操作成功"
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "信息不存在"
+}</code></pre>
+        
+        
+        <h3>1、局站接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/index/sites</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>局站编码: 传入0获取所有局; 传入局code获取下属所有站</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+code: 1,
+data: [
+{
+code: "110100",
+name: "阿城"
+},
+{
+code: "110200",
+name: "爱河"
+},
+{
+code: "110300",
+name: "北安"
+},
+{
+code: "110400",
+name: "柴河"
+},
+{
+code: "110500",
+name: "成吉思汗"
+},
+{
+code: "110600",
+name: "大庆"
+}
+],
+msg: "操作成功"
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": [],
+    "msg": ""
+}</code></pre>
+        
+        
+        <h3>2、公路运费查询接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/index/freight/type/1</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>start</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地（区编号), 默认满洲里（150781）</td>
+                </tr>
+                <tr>
+                    <td>end</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>目的地（市编号）, 比如杭州（330100）</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    code: 1,
+    data: {
+        price: "50-80" // 价格区间
+    },
+    msg: "操作成功"
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "参数错误"
+}</code></pre>
+        
+        
+        <h3>3、铁路运费查询接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/index/freight/type/2</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>start</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地（区编号), 默认 满洲里（150781）</td>
+                </tr>
+                <tr>
+                    <td>end</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>终点站（站编号）, 比如 阿城（110100）</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    code: 1,
+    data: {
+        mdm: "22", // 门到门
+        mdz: "33", // 门到站
+        zdm: "44", // 站到门
+        zdz: "55"  // 站到站
+    },
+    msg: "操作成功"
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "参数错误"
+}</code></pre>
+        
+        <h3>4、集装箱运费查询接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/index/freight/type/3</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>start</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地（区编号), 默认 满洲里（150781）</td>
+                </tr>
+                <tr>
+                    <td>end</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>终点站（站编号）, 比如 阿城（110100）</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    code: 1,
+    data: {
+        price "22", // 门到门
+    },
+    msg: "操作成功"
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "参数错误"
+}</code></pre>
+        
+        
+        
+        <h3>5、里程税查询接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/index/freight/type/4</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>start</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地（区编号), 默认满洲里（150781）</td>
+                </tr>
+                <tr>
+                    <td>end</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>目的地（市编号）, 比如杭州（330100）</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    code: 1,
+    data: {
+        price "10", // 元/米
+    },
+    msg: "操作成功"
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": [],
+    "msg": ""
+}</code></pre>
+        
+        <br>
+        <h3> ---------------------------------------------------- 分割线 ---------------------------------------------------- </h3>
+        <br>
+        
+        <h3>1、验证手机号码</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/users/checkPhone</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>phone</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>手机号码</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "请填写有效手机号"
+}</code></pre>
+
+        
+        <br />
+        <h3>2、图片上传接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/index/upload</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>file</td>
+                    <td>FormData</td>
+                    <td>Y</td>
+                    <td>参考Demo: http://www.chelaihuowang.xin/html/uploadDemo.html</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "http://www.chelaihuowang.xin/uploads/2017-08-10/598c5f9885ddd.jpg",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "格式错误"
+}</code></pre>
+
+        
+        <br />
+        <h3> base64 图片上传接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/index/upload2</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>img</td>
+                    <td>post</td>
+                    <td>Y</td>
+                    <td>图片 base64 数据</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "http://www.chelaihuowang.xin/upload/2017-08-16/599452a0d1763.jpeg",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "格式错误"
+}</code></pre>
+
+        
+        <br />
+        <h3>3、省市区接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/index/citys</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>省市区编码: 传入0获取所有省; 传入省code获取下属所有市; 传入市code获取下属所有区县</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": [
+        {
+            "code": "330100",
+            "name": "杭州市"
+        },
+        {
+            "code": "330200",
+            "name": "宁波市"
+        },
+        {
+            "code": "330300",
+            "name": "温州市"
+        },
+        {
+            "code": "330400",
+            "name": "嘉兴市"
+        },
+        {
+            "code": "330500",
+            "name": "湖州市"
+        },
+        {
+            "code": "330600",
+            "name": "绍兴市"
+        },
+        {
+            "code": "330700",
+            "name": "金华市"
+        },
+        {
+            "code": "330800",
+            "name": "衢州市"
+        },
+        {
+            "code": "330900",
+            "name": "舟山市"
+        },
+        {
+            "code": "331000",
+            "name": "台州市"
+        },
+        {
+            "code": "331100",
+            "name": "丽水市"
+        }
+    ],
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": [],
+    "msg": ""
+}</code></pre>
+
+        
+        <br />
+        <h3 id="-">4、发货方注册接口</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/users/registerGoods</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>type_goods</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>注册身份: 1货主 2 货站</td>
+                </tr>
+                <tr>
+                    <td>phone</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>手机号</td>
+                </tr>
+                <tr>
+                    <td>phone_code</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>手机验证码</td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>真实姓名</td>
+                </tr>
+                <tr>
+                    <td>id_no</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>身份证号码</td>
+                </tr>
+                <tr>
+                    <td>header_img</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>头像</td>
+                </tr>
+                <tr>
+                    <td>id_face_img</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>身份证正面照片</td>
+                </tr>
+                <tr>
+                    <td>id_word_img</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>身份证反面照片</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": "注册信息上传成功，请等待平台审核！"
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "注册失败，请重试！"
+}</code></pre>
+        
+        
+        <br />
+        <h3 id="-">5、车主注册接口</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/users/registerCars</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>phone</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>手机号</td>
+                </tr>
+                <tr>
+                    <td>phone_code</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>手机验证码</td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>真实姓名</td>
+                </tr>
+                <tr>
+                    <td>id_no</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>身份证号码</td>
+                </tr>
+                <tr>
+                    <td>header_img</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>头像</td>
+                </tr>
+                <tr>
+                    <td>id_face_img</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>身份证正面照片</td>
+                </tr>
+                <tr>
+                    <td>id_word_img</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>身份证反面照片</td>
+                </tr>
+                <tr>
+                    <td>car_license_img</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>行驶证照片</td>
+                </tr>
+                <tr>
+                    <td>car_number_plate_type</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>车牌类型: 1黄色车牌, 2蓝色车牌</td>
+                </tr>
+                <tr>
+                    <td>car_number_plate</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>车牌号码: 浙AS3L98</td>
+                </tr>
+                <tr>
+                    <td>car_length</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>车长: 8.6米</td>
+                </tr>
+                <tr>
+                    <td>car_type</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>车型: 高栏</td>
+                </tr>
+                <tr>
+                    <td>car_load</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>车辆载重, 单位为吨</td>
+                </tr>
+                <tr>
+                    <td>car_img</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>车辆照片</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": "注册信息上传成功，请等待平台审核！"
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "注册失败，请重试！"
+}</code></pre>
+        
+        <br />
+        <h3 id="-">6、个人中心接口</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/users/index</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>type</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>身份类型: 1发货方, 2车主</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": {
+        "id": "2",
+        "name": "车主真实姓名",
+        "nickname": "李师傅",
+        "open_id": "oFQtdwd2EJKQxtyvb3id5JX3n1M1",
+        "header_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "id_no": "330321199101019876",
+        "phone": "18668103012",
+        "id_face_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "id_word_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "type": "2",
+        "state": "3",
+        "type_goods": "货主",
+        "car_license_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "car_number_plate_type": "1",
+        "car_number_plate": "浙AS3L98",
+        "car_lenght": "8.6米",
+        "car_type": "高栏",
+        "car_load": "20",
+        "car_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "car_empty": "1",
+        "vip": "0",
+        "vip_endtime": "1970-01-01 00:00:00",
+        "create_time": "2017-08-05 18:41:24",
+        "update_time": "2017-08-09 22:49:36"
+    },
+    "msg": ""
+}</code></pre>
+        
+        
+        <br />
+        <h3 id="-">7、发货方端 - 货源发布接口</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/goods/add</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>start_province</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地 - 省 code</td>
+                </tr>
+                <tr>
+                    <td>start_city</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地 - 市 code</td>
+                </tr>
+                <tr>
+                    <td>start_district</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地 - 区县 code</td>
+                </tr>
+                <tr>
+                    <td>start_province_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>出发地 - 省</td>
+                </tr>
+                <tr>
+                    <td>start_city_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>出发地 - 市</td>
+                </tr>
+                <tr>
+                    <td>start_district_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>出发地 - 区县</td>
+                </tr>
+                <tr>
+                    <td>end_province</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>目的地 - 省 code</td>
+                </tr>
+                <tr>
+                    <td>end_city</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>目的地 - 市 code</td>
+                </tr>
+                <tr>
+                    <td>end_district</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 区县 code</td>
+                </tr>
+                <tr>
+                    <td>end_province_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 省</td>
+                </tr>
+                <tr>
+                    <td>end_city_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 市</td>
+                </tr>
+                <tr>
+                    <td>end_district_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 区县</td>
+                </tr>
+                <tr>
+                    <td>car_length</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>车长（多选用英文逗号隔开）: 4.5米,6.0米</td>
+                </tr>
+                <tr>
+                    <td>car_type</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>车型: 高栏</td>
+                </tr>
+                <tr>
+                    <td>goods_type</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>货物类型: 木材</td>
+                </tr>
+                <tr>
+                    <td>goods_num</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>货物数量</td>
+                </tr>
+                <tr>
+                    <td>goods_unit</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>货物单位: 吨</td>
+                </tr>
+                <tr>
+                    <td>money</td>
+                    <td>number</td>
+                    <td>N</td>
+                    <td>运费金额: 元/单位</td>
+                </tr>
+                <tr>
+                    <td>repeat</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>20分钟重发15次, 默认选中: 1 选中, 0不选</td>
+                </tr>
+                <tr>
+                    <td>public</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>是否公开, 默认公开: 1公开, 0不公开</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "发布失败，请重试"
+}</code></pre>
+        
+        
+        <br />
+        <h3>8、发货方端 - 我的货源页接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/goods/index</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>page</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>当前页</td>
+                </tr>
+                <tr>
+                    <td>limit</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>每页数量</td>
+                </tr>
+                <tr>
+                    <td>state</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>1为已发布，2为已关闭</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": {
+        "list": [
+            {
+                "id": "2",
+                "start_province": "330000",
+                "start_city": "330100",
+                "start_district": "330102",
+                "start_province_name": "浙江",
+                "start_city_name": "杭州市",
+                "start_district_name": "上城区",
+                "end_province": "330000",
+                "end_city": "330700",
+                "end_district": "330782",
+                "end_province_name": "浙江",
+                "end_city_name": "金华市",
+                "end_district_name": "义乌市",
+                "car_lenght": "8.6米",
+                "car_type": "高栏",
+                "goods_type": "木材",
+                "goods_num": "20",
+                "goods_unit": "吨",
+                "user_id": "1",
+                "user_name": "发货方真实姓名",
+                "user_header_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+                "user_id_no": "330121199101011234",
+                "user_type_goods": "1",
+                "state": "1",
+                "create_time": "2017-08-08 20:07:31",
+                "close_time": "2017-08-08 20:25:38",
+                "update_time": "2017-08-08 21:13:19"
+            },
+            {
+                "id": "3",
+                "start_province": "330000",
+                "start_city": "330100",
+                "start_district": "330108",
+                "start_province_name": "浙江",
+                "start_city_name": "杭州市",
+                "start_district_name": "滨江区",
+                "end_province": "330000",
+                "end_city": "330300",
+                "end_district": "330327",
+                "end_province_name": "浙江",
+                "end_city_name": "温州市",
+                "end_district_name": "苍南县",
+                "car_lenght": "16米",
+                "car_type": "高栏",
+                "goods_type": "普货",
+                "goods_num": "20",
+                "goods_unit": "吨",
+                "user_id": "1",
+                "user_name": "发货方真实姓名",
+                "user_header_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+                "user_id_no": "330121199101011234",
+                "user_type_goods": "1",
+                "state": "1",
+                "create_time": "2017-08-08 20:37:49",
+                "close_time": "2017-08-08 20:41:36",
+                "update_time": "2017-08-08 21:13:20"
+            }
+        ],
+        "datacount": "2"
+    },
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "参数错误"
+}</code></pre>
+        
+        
+        <br />
+        <h3>9、发货方端 - 关闭货源接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/goods/close</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>货源ID</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "非法操作"
+}</code></pre>
+        
+        
+        <br />
+        <h3>10、发货方端 - 删除货源接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/goods/delete</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ids</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>多个货源ID, 用英文逗号隔开</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "删除失败"
+}</code></pre>
+
+        
+        <br />
+        <h3>11、发货方端 - 车主列表页接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/users/cars</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>page</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>当前页</td>
+                </tr>
+                <tr>
+                    <td>limit</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>每页数量</td>
+                </tr>
+                <tr>
+                    <td>car_empty</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>1为只看空车，0为全部</td>
+                </tr>
+                <tr>
+                    <td>car_lenght</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>车长</td>
+                </tr>
+                <tr>
+                    <td>car_type</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>车型</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": {
+        "list": [
+            {
+                "id": "2",
+                "name": "车主真实姓名",
+                "nickname": "李师傅",
+                "open_id": "oFQtdwd2EJKQxtyvb3id5JX3n1M1",
+                "header_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+                "id_no": "330321199101019876",
+                "phone": "18668103012",
+                "id_face_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+                "id_word_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+                "type": "2",
+                "state": "3",
+                "type_goods": "1",
+                "car_license_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+                "car_number_plate_type": "1",
+                "car_number_plate": "浙AS3L98",
+                "car_lenght": "8.6米",
+                "car_type": "高栏",
+                "car_load": "20",
+                "car_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+                "car_empty": "1",
+                "vip": "0",
+                "vip_endtime": "1970-01-01 00:00:00",
+                "create_time": "2017-08-05 18:41:24",
+                "update_time": "2017-08-09 22:49:36"
+            }
+        ],
+        "datacount": "1"
+    },
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "参数错误"
+}</code></pre>
+
+        
+        <br />
+        <h3>12、发货方端 - 车主详情页接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/users/car</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>车主ID</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": {
+        "id": "2",
+        "name": "车主真实姓名",
+        "nickname": "李师傅",
+        "open_id": "oFQtdwd2EJKQxtyvb3id5JX3n1M1",
+        "header_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "id_no": "330321199101019876",
+        "phone": "18668103012",
+        "id_face_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "id_word_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "type": "2",
+        "state": "3",
+        "type_goods": "1",
+        "car_license_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "car_number_plate_type": "1",
+        "car_number_plate": "浙AS3L98",
+        "car_lenght": "8.6米",
+        "car_type": "高栏",
+        "car_load": "20",
+        "car_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "car_empty": "1",
+        "vip": "0",
+        "vip_endtime": "1970-01-01 00:00:00",
+        "create_time": "2017-08-05 18:41:24",
+        "update_time": "2017-08-09 22:49:36",
+        "lines": [
+            {
+                "start": "浙江杭州市上城区",
+                "end": "浙江金华市义乌市"
+            },
+            {
+                "start": "浙江杭州市上城区",
+                "end": "浙江温州市苍南县"
+            }
+        ]
+    },
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "参数错误"
+}</code></pre>
+
+        
+        <br />
+        <h3>13、车主端 - 货源列表页接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/goods/lists</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>page</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>当前页</td>
+                </tr>
+                <tr>
+                    <td>limit</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>每页数量</td>
+                </tr>
+                <tr>
+                    <td>type_goods</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>发货方类型: 1 货主，2 货站</td>
+                </tr>
+                <tr>
+                    <td>car_lenght</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>车长</td>
+                </tr>
+                <tr>
+                    <td>car_type</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>车型</td>
+                </tr>
+                <tr>
+                    <td>start</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地 code</td>
+                </tr>
+                <tr>
+                    <td>end</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>目的地 code</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": {
+        "list": [
+            {
+                "id": "2",
+                "start_province": "330000",
+                "start_city": "330100",
+                "start_district": "330102",
+                "start_province_name": "浙江",
+                "start_city_name": "杭州市",
+                "start_district_name": "上城区",
+                "end_province": "330000",
+                "end_city": "330700",
+                "end_district": "330782",
+                "end_province_name": "浙江",
+                "end_city_name": "金华市",
+                "end_district_name": "义乌市",
+                "car_lenght": "8.6米",
+                "car_type": "高栏",
+                "goods_type": "木材",
+                "goods_num": "20",
+                "goods_unit": "吨",
+                "user_id": "1",
+                "user_name": "发货方真实姓名",
+                "user_header_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+                "user_id_no": "330121199101011234",
+                "user_type_goods": "1",
+                "state": "1",
+                "create_time": "2017-08-08 20:07:31",
+                "close_time": "2017-08-08 20:25:38",
+                "update_time": "2017-08-08 21:13:19"
+            },
+            {
+                "id": "3",
+                "start_province": "330000",
+                "start_city": "330100",
+                "start_district": "330108",
+                "start_province_name": "浙江",
+                "start_city_name": "杭州市",
+                "start_district_name": "滨江区",
+                "end_province": "330000",
+                "end_city": "330300",
+                "end_district": "330327",
+                "end_province_name": "浙江",
+                "end_city_name": "温州市",
+                "end_district_name": "苍南县",
+                "car_lenght": "16米",
+                "car_type": "高栏",
+                "goods_type": "普货",
+                "goods_num": "20",
+                "goods_unit": "吨",
+                "user_id": "1",
+                "user_name": "发货方真实姓名",
+                "user_header_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+                "user_id_no": "330121199101011234",
+                "user_type_goods": "1",
+                "state": "1",
+                "create_time": "2017-08-08 20:37:49",
+                "close_time": "2017-08-08 20:41:36",
+                "update_time": "2017-08-08 21:13:20"
+            }
+        ],
+        "datacount": "2"
+    },
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "参数错误"
+}</code></pre>
+
+        
+        <br />
+        <h3>14、车主端 - 货源详情页接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/goods/detail</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>货源ID</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": {
+        "id": "3",
+        "start_province": "330000",
+        "start_city": "330100",
+        "start_district": "330108",
+        "start_province_name": "浙江",
+        "start_city_name": "杭州市",
+        "start_district_name": "滨江区",
+        "end_province": "330000",
+        "end_city": "330300",
+        "end_district": "330327",
+        "end_province_name": "浙江",
+        "end_city_name": "温州市",
+        "end_district_name": "苍南县",
+        "car_lenght": "16米",
+        "car_type": "高栏",
+        "goods_type": "普货",
+        "goods_num": "20",
+        "goods_unit": "吨",
+        "user_id": "1",
+        "user_name": "发货方真实姓名",
+        "user_header_img": "http://www.chelaihuowang.xin/uploads/2017-08-06/5986b607b3bd2.jpeg",
+        "user_id_no": "330121199101011234",
+        "user_type_goods": "1",
+        "state": "1",
+        "create_time": "2017-08-08 20:37:49",
+        "close_time": "2017-08-08 20:41:36",
+        "update_time": "2017-08-08 21:13:20"
+    },
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "参数错误"
+}</code></pre>
+
+        
+        <br />
+        <h3>15、车主端 - 常跑路线管理页列表接口</h3>
+        <h5>接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：get<br>HTTP请求地址：/lines/index</p>
+        </blockquote>
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": [
+        {
+            "id": "6",
+            "user_id": "2",
+            "start_province": "330000",
+            "start_city": "330100",
+            "start_district": "330102",
+            "start_province_name": "浙江",
+            "start_city_name": "杭州市",
+            "start_district_name": "上城区",
+            "end_province": "330000",
+            "end_city": "330700",
+            "end_district": "330782",
+            "end_province_name": "浙江",
+            "end_city_name": "金华市",
+            "end_district_name": "义乌市",
+            "create_time": "2017-08-09 22:08:36",
+            "update_time": "2017-08-09 22:08:36"
+        },
+        {
+            "id": "5",
+            "user_id": "2",
+            "start_province": "330000",
+            "start_city": "330100",
+            "start_district": "330102",
+            "start_province_name": "浙江",
+            "start_city_name": "杭州市",
+            "start_district_name": "上城区",
+            "end_province": "330000",
+            "end_city": "330300",
+            "end_district": "330327",
+            "end_province_name": "浙江",
+            "end_city_name": "温州市",
+            "end_district_name": "苍南县",
+            "create_time": "2017-08-09 22:07:39",
+            "update_time": "2017-08-09 22:21:57"
+        }
+    ],
+    "msg": ""
+}</code></pre>
+        
+        
+        <br />
+        <h3 id="-">16、车主端 - 新增常跑路线</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/lines/add</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>start_province</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地 - 省 code</td>
+                </tr>
+                <tr>
+                    <td>start_city</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地 - 市 code</td>
+                </tr>
+                <tr>
+                    <td>start_district</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地 - 区县 code</td>
+                </tr>
+                <tr>
+                    <td>start_province_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>出发地 - 省</td>
+                </tr>
+                <tr>
+                    <td>start_city_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>出发地 - 市</td>
+                </tr>
+                <tr>
+                    <td>start_district_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>出发地 - 区县</td>
+                </tr>
+                <tr>
+                    <td>end_province</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>目的地 - 省 code</td>
+                </tr>
+                <tr>
+                    <td>end_city</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>目的地 - 市 code</td>
+                </tr>
+                <tr>
+                    <td>end_district</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 区县 code</td>
+                </tr>
+                <tr>
+                    <td>end_province_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 省</td>
+                </tr>
+                <tr>
+                    <td>end_city_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 市</td>
+                </tr>
+                <tr>
+                    <td>end_district_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 区县</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "新增失败，请重试！"
+}</code></pre>
+        
+        
+        <br />
+        <h3 id="-">17、车主端 - 修改常跑路线</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/lines/update</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>常跑路线ID</td>
+                </tr>
+                <tr>
+                    <td>start_province</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地 - 省 code</td>
+                </tr>
+                <tr>
+                    <td>start_city</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地 - 市 code</td>
+                </tr>
+                <tr>
+                    <td>start_district</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>出发地 - 区县 code</td>
+                </tr>
+                <tr>
+                    <td>start_province_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>出发地 - 省</td>
+                </tr>
+                <tr>
+                    <td>start_city_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>出发地 - 市</td>
+                </tr>
+                <tr>
+                    <td>start_district_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>出发地 - 区县</td>
+                </tr>
+                <tr>
+                    <td>end_province</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>目的地 - 省 code</td>
+                </tr>
+                <tr>
+                    <td>end_city</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>目的地 - 市 code</td>
+                </tr>
+                <tr>
+                    <td>end_district</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 区县 code</td>
+                </tr>
+                <tr>
+                    <td>end_province_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 省</td>
+                </tr>
+                <tr>
+                    <td>end_city_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 市</td>
+                </tr>
+                <tr>
+                    <td>end_district_name</td>
+                    <td>string</td>
+                    <td>Y</td>
+                    <td>目的地 - 区县</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "更新失败，请重试！"
+}</code></pre>
+        
+        
+        <br />
+        <h3 id="-">18、车主端 - 删除常跑路线</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/lines/delete</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>常跑路线ID</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "删除失败，请重试！"
+}</code></pre>
+        
+        
+        <br />
+        <h3 id="-">19、车主端 - 个人中心 - 是否空车设置接口</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/users/updateCar</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>car_empty</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>1为空车；0为非空车</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "操作失败，请重试！"
+}</code></pre>
+        
+        
+        <br />
+        <h3 id="-">20、短信发送接口</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/index/sendCode</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>phone</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>手机号码</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "短信发送失败，请重试！"
+}</code></pre>
+        
+        
+        <br />
+        <h3 id="-">21、验证原绑定手机号接口</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/index/checkCode</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>phone</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>原绑定手机号码</td>
+                </tr>
+                <tr>
+                    <td>code</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>验证码</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "验证码错误"
+}</code></pre>
+        
+        
+        <br />
+        <h3 id="-">22、修改手机号码接口</h3>
+        <h5 id="-">接口调用请求说明</h5>
+        <blockquote>
+            <p>HTTP请求方式：post<br>HTTP请求地址：/users/updatePhone</p>
+        </blockquote>
+        
+        <p>请求参数说明</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>数据类型</th>
+                    <th>是否必须</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>phone</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>新手机号码</td>
+                </tr>
+                <tr>
+                    <td>code</td>
+                    <td>number</td>
+                    <td>Y</td>
+                    <td>验证码</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <h5 id="-">正确返回示例</h5>
+        <pre><code>{
+    "code": 1,
+    "data": "",
+    "msg": ""
+}</code></pre>
+
+        <h5 id="-">错误返回示例</h5>
+        <pre><code>{
+    "code": 0,
+    "data": "",
+    "msg": "手机号码已注册，请重新填写"
+}</code></pre>
+    </body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

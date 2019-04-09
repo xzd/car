@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>身份验证</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+</head>
+<body>
+<div class="wrap">
+    <form action="" class="form">
+        <!--<label for="" class="mob-label arrow">-->
+            <!--<span><span style="color:red">*</span>头像</span>-->
+            <!--<span style="font-size: 12px;color:#666;">(真实个人照，五官清晰可见)</span>-->
+            <!--<empty name="user['header_img']">-->
+                <!--<img src="__PUBLIC__/home/images/chezhu/icon_photo_n.png" width="86px" height="54px" class="upload-img"-->
+                     <!--id="image1">-->
+                <!--<else />-->
+                <!--<img src="{$user['header_img']}" width="86px" height="54px" class="upload-img"-->
+                     <!--id="image1" >-->
+            <!--</empty>-->
+            <!--<div class="upload-btn btn-old">-->
+                <!--<input type="file" class="files" name="file" id="image_btn1"  <if condition="$agent eq 'android'">capture="environment"</if> accept="image/*" onchange="imgHeader(this)" multiple>-->
+                <!--<input type="hidden" name="header_img" id="hidden-img1" value="{$user['header_img']}">-->
+            <!--</div>-->
+        <!--</label>-->
+        <label for="" class="mob-label arrow">
+            <span><span style="color:red">*</span>身份证正面</span>
+            <span style="font-size: 12px;color:#666;">(证件信息清晰可见)</span>
+            <empty name="user['id_face_img']">
+                <img src="__PUBLIC__/home/images/chezhu/sfz_zm.png" width="86px" height="54px" class="upload-img"
+                     id="image2">
+                <else />
+                <img src="{$user['id_face_img']}" width="86px" height="54px" class="upload-img"
+                     id="image2">
+            </empty>
+            <div class="upload-btn btn-new">
+                <input type="file" class="files" name="file" id="image_btn2"  <if condition="$agent eq 'android'">capture="environment"</if> accept="image/*"  onchange="imgPreview(this)" multiple>
+                <input type="hidden" name="id_face_img" id="hidden-img2" value="{$user['id_face_img']}">
+            </div>
+
+        </label>
+        <!--<label for="" class="mob-label arrow">-->
+        <!--<span><span style="color:red">*</span>身份证反面</span>-->
+        <!--<span style="font-size: 12px;color:#666;">(证件信息清晰可见)</span>-->
+        <!--<empty name="user['id_word_img']">-->
+        <!--<img src="__PUBLIC__/home/images/chezhu/sfz_zm.png" width="86px" height="54px" class="upload-img"-->
+        <!--id="image3">-->
+        <!--<else />-->
+        <!--<img src="{$user['id_word_img']}" width="86px" height="54px" class="upload-img"-->
+        <!--id="image3">-->
+        <!--</empty>-->
+        <!--<div class="upload-btn btn-three">-->
+        <!--<input type="file" class="files" name="file" id="image_btn3"  <if condition="$agent eq 'android'">capture="environment"</if> accept="image/*" onchange="imgPrev(this)" multiple>-->
+        <!--<input type="hidden" name="id_word_img" id="hidden-img3" value="{$user['id_word_img']}">-->
+        <!--</div>-->
+        <!--</label>-->
+        <a href="#" class="mob-btn green" id="register">提交</a>
+        <div class="agrent">
+            <input type="checkbox" name="red" value="1" class="checkbox faCheck" checked>我已阅读并同意
+            <a href="{:U('Carowner/services')}" class="fahuoC">服务协议</a>
+        </div>
+    </form>
+</div>
+<div class="dialog"></div>
+<!--信息提示框-->
+<div class="tip-layout tip">
+    <div class="layout">
+        <p>您的注册信息已提交成功，请等待平台查看，预计6小时内告知您注册结果，请关注公众号推送通知</p>
+    </div>
+</div>
+<div class="mask mem">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips">您尚成为发货方会员，无法使用该功能！</p>
+    <div class="botton">
+        <a href="#" class="go">先去逛逛</a>
+        <a href="{:U('Deliver/member')}" class="member">成为会员</a>
+    </div>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script type="text/javascript">
+    //身份证正面
+    function imgPreview(fileDom){
+        //判断是否支持FileReader
+        if (window.FileReader) {
+            var reader = new FileReader();
+        } else {
+            layer.msg("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+        }
+
+        //获取文件
+        var file = fileDom.files[0];
+        var imageType = /^image\//;
+        //是否是图片
+        if (!imageType.test(file.type)) {
+            layer.msg("请选择图片！");
+            return;
+        }
+        //读取完成
+        reader.onload = function(e) {
+            //获取图片dom
+            var img = document.getElementById("image2");
+            //图片路径设置为读取的图片
+            layer.load(2);
+            var img_data = e.target.result;
+            var jsonData = {"img": img_data, "header_img":''};
+            $.ajax({
+                url: URL + "/index/upload2",
+                type: "post",
+                data: jsonData,
+                dataType: "json",
+
+                success: function (data) {
+                    //$('#image2').attr('src', data.data);
+                    img.src = e.target.result;
+                    $('#hidden-img2').val(data.data);
+                    layer.closeAll('loading');
+                }
+            });
+        };
+        reader.readAsDataURL(file);
+    }
+    //身份证反面
+    //    function imgPrev(fileDom){
+    //        //判断是否支持FileReader
+    //        if (window.FileReader) {
+    //            var reader = new FileReader();
+    //        } else {
+    //            layer.msg("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+    //        }
+    //
+    //        //获取文件
+    //        var file = fileDom.files[0];
+    //        var imageType = /^image\//;
+    //        //是否是图片
+    //        if (!imageType.test(file.type)) {
+    //            layer.msg("请选择图片！");
+    //            return;
+    //        }
+    //        //读取完成
+    //        reader.onload = function(e) {
+    //            //获取图片dom
+    //            var img = document.getElementById("image3");
+    //            //图片路径设置为读取的图片
+    //
+    //            layer.load(2);
+    //            var img_data = e.target.result;
+    //            var jsonData = {"img": img_data, "header_img":''};
+    //            $.ajax({
+    //                url: URL + "/index/upload2",
+    //                type: "post",
+    //                data: jsonData,
+    //                dataType: "json",
+    //                success: function (data) {
+    //                    //$('#image3').attr('src', data.data);
+    //                    $('#hidden-img3').val(data.data);
+    //                    img.src = e.target.result;
+    //                    layer.closeAll('loading');
+    //                }
+    //            });
+    //        };
+    //        reader.readAsDataURL(file);
+    //
+    //    }
+//    //头像
+//    function imgHeader(fileDom){
+//        //判断是否支持FileReader
+//        if (window.FileReader) {
+//            var reader = new FileReader();
+//        } else {
+//            layer.msg("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+//        }
+//
+//        //获取文件
+//        var file = fileDom.files[0];
+//        var imageType = /^image\//;
+//        //是否是图片
+//        if (!imageType.test(file.type)) {
+//            layer.msg("请选择图片！");
+//            return;
+//        }
+//        //读取完成
+//        reader.onload = function(e) {
+//            //获取图片dom
+//            var img = document.getElementById("image1");
+//            //图片路径设置为读取的图片
+//            layer.load(2);
+//
+//            var img_data = e.target.result;
+//            var jsonData = {"img": img_data, "header_img":''};
+//            $.ajax({
+//                url: URL + "/index/upload2",
+//                type: "post",
+//                data: jsonData,
+//                dataType: "json",
+//                success: function (data) {
+//                    //$('#image1').attr('src', data.data);
+//                    $('#hidden-img1').val(data.data);
+//                    img.src = e.target.result;
+//                    layer.closeAll('loading');
+//                }
+//            });
+//        };
+//        reader.readAsDataURL(file);
+//    }
+
+</script>
+<script>
+    $(function () {
+
+//
+        let my_vip = '{$my_vip}';
+        let my_id_no = '{$my_id_no}';
+        $('#register').click(function () {
+
+            let type_goods = $("input[name=type_goods]:checked").val();
+            let phone = $("input[name=phone]").val();
+            let phone_code = $("input[name=phone_code]").val();
+            let name = $("input[name=name]").val();
+            let id_no = $("input[name=id_no]").val();
+            let header_img = $("input[name=header_img]").val();
+            let id_face_img = $("input[name=id_face_img]").val();
+//            let id_word_img = $("input[name=id_word_img]").val();
+            let red = $("input[name=red]:checked").val();
+
+
+//            if (typeof type_goods === 'undefined') {
+//                layer.msg('请选取注册身份');
+//                return false;
+//            }
+//            if (phone == '') {
+//                layer.msg('请填写手机号');
+//                return false;
+//            }
+//            if (!(phone.length === 11 && /^1\d{10}$/.test(phone))) {
+//                layer.msg('请填写有效手机号');
+//                return false;
+//            }
+//            if (phone_code == '') {
+//                layer.msg('请输入验证码');
+//                return false;
+//            }
+//            if (name == '') {
+//                layer.msg('请填写真实姓名');
+//                return false;
+//            }
+//            if (id_no == '') {
+//                layer.msg('请填写身份证号码');
+//                return false;
+//            }
+//            if(!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(id_no)){
+//                layer.msg('身份证号格式错误');
+//                return false;
+//            }
+//            if (header_img == '') {
+//                layer.msg('请上传头像');
+//                return false;
+//            }
+            if (id_face_img == '') {
+                layer.msg('请上传身份证照片');
+                return false;
+            }
+//            if (id_word_img == '') {
+//                layer.msg('请上传身份证照片');
+//                return false;
+//            }
+            if (red != 1) {
+                layer.msg('请阅读并同意注册协议');
+                return false;
+            }
+            let url = URL + '/users/registerGoods';
+            $.post(url, $('.form').serialize(), function (data, status) {
+                if (data.code == 1) {
+                    layer.msg(data.msg);
+                    setTimeout(function () {
+                        window.location = '/Deliver/index';
+                    }, 2000);
+                } else {
+                    layer.msg(data.msg);
+                }
+            });
+
+
+        });
+
+       
+
+
+        $('#place').click(function () {
+            $('body').css('position', 'fixed');
+            $('.dialog').show();
+            $('.mob-mask').slideDown();
+        });
+        $('.cale,.cancel').click(function () {
+            $('body').css('position', 'static');
+            $('.dialog').hide();
+            $('.mob-mask').slideUp();
+            $('.car-num ').slideUp();
+            $('.car-x ').slideUp();
+            $('.show-input').hide();
+        });
+        $('#car-num').click(function () {
+            $('.dialog').show();
+            $('body').css('position', 'fixed');
+            $('.car-num ').slideDown();
+            $('.show-input').show();
+        });
+        $('#table1 tr td').click(function () {
+            $('#tabel2').show();
+            $('#table1').hide();
+        });
+        $('#car-x').click(function () {
+            $('.dialog').show();
+            $('body').css('position', 'fixed');
+            $('.car-x').slideDown();
+        });
+        $('.register').click(function () {
+            $('.tip-layout').show();
+        })
+    })
+</script>
+</body>
+</html>

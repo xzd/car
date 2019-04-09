@@ -1,0 +1,175 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+
+    <div class="main-right">
+        <h1 class="main-right-title">内容管理 > 货源信息</h1>
+        <div class="search">
+            <form class="form-inline" method="get" action="{:U('goods/index')}">
+                <label for="user_type_goods" class="margin-left">
+                    <span>筛选</span>
+                    <select name="user_type_goods" id="" class="input">
+                        <option value="">全部</option>
+                        <option value="1" <if condition="$search['user_type_goods'] eq 1">selected="selected"</if>>货主</option>
+                        <option value="2" <if condition="$search['user_type_goods'] eq 2">selected="selected"</if>>货站</option>
+                    </select>
+                </label>
+                <label for="user_nickname" class="margin-left">
+                    <span>微信昵称</span>
+                    <input type="text" name="user_nickname" class="input" value="{$search.user_nickname}" />
+                </label>
+                <label for="user_phone" class="margin-left">
+                    <span>手机号</span>
+                    <input type="text" name="user_phone" class="input" value="{$search.user_phone}" />
+                </label>
+                <label for="user_name" class="margin-left">
+                    <span>姓名</span>
+                    <input type="text" name="user_name" class="input" value="{$search.user_name}" />
+                </label>
+                <a href="#" onclick="$('.form-inline').submit();" class="searchBtn"><i class="icon"></i>搜索</a>
+                <a href="{:U('goods/add')}" class="searchBtn">新增</a>
+            </form>
+        </div>
+        <div class="center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>微信昵称</th>
+                    <th>姓名</th>
+                    <th>用户类型</th>
+                    <th>货源出发地/目的地</th>
+                    <th>手机号</th>
+                    <th>货源状态</th>
+                    <th>货源发布时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <volist name="info" id="vo">
+                    <tr class="info-{$vo.id}" onclick="show('{$vo.id}')">
+                        <td>{$vo.user_nickname}</td>
+                        <td>{$vo.user_name}</td>
+                        <td>
+                            <if condition="$vo['user_type_goods'] eq 1">
+                                <span class="label label-success">货主
+                            <else />
+                                <span class="label label-danger">货站
+                            </if>
+                        </td>
+                        <td>{$vo.start_province_name}{$vo.start_city_name}{$vo.start_district_name} - {$vo.end_province_name}{$vo.end_city_name}{$vo.end_district_name}</td>
+                        <td>{$vo.user_phone}</td>
+                        <td>
+                            <if condition="$vo['state'] eq 1">
+                                <span class="label label-success">已发布
+                            <elseif condition="$vo['state'] eq 2" />
+                                <span class="label label-danger">已关闭
+                            <else />
+                                <span class="label label-danger">已删除
+                            </if>
+                        </td>
+                        <td>{$vo.update_time}</td>
+                        <td>
+                    </td>
+                    </tr>
+                    </volist>
+                </tbody>
+            </table>
+            <div class="page clearfix">
+                <form name="union_form" action="{:U('/admin/goods/index')}" method="get">
+                    <input type="hidden" name="search" value="{$search}">
+                    {$page}
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--弹出层-->
+    <div class="dialog"></div>
+    
+    <volist name="info" id="vo">
+    <div class="mask-layer mask-layer-{$vo.id}">
+        <p class="mask-layer-title">货源详情</p>
+        <div class="layer-lader">
+            <h3 class="transport">运输信息</h3>
+            <ul>
+                <li>
+                    <span>出发地/目的地</span>
+                    <span class="fr">{$vo.start_province_name}{$vo.start_city_name}{$vo.start_district_name} - {$vo.end_province_name}{$vo.end_city_name}{$vo.end_district_name}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="layer-lader">
+            <h3 class="Sources">货源信息</h3>
+            <ul>
+                <li>
+                    <span>货物信息</span>
+                    <span class="fr">{$vo.goods_type} / {$vo.goods_num}{$vo.goods_unit}</span>
+                </li>
+                <li>
+                    <span>所需车辆</span>
+                    <span class="fr">{$vo.car_lenght} / {$vo.car_type}</span>
+                </li>
+                <li>
+                    <span>货源状态</span>
+                    <span class="fr">
+                        <if condition="$vo['state'] eq 1">已发布
+                        <elseif condition="$vo['state'] eq 2" />已关闭
+                        <elseif condition="$vo['state'] eq 3" />已删除
+                        </if>
+                    </span>
+                </li>
+                <li>
+                    <span>货源发布时间</span>
+                    <span class="fr">{$vo.create_time}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="layer-lader">
+            <h3 class="shipper">发货方详情</h3>
+            <ul>
+                <li>
+                    <span>姓名/类型</span>
+                    <span class="fr">{$vo.user_name} / 货主</span>
+                </li>
+                <li>
+                    <span>微信昵称</span>
+                    <span class="fr">{$vo.user_nickname}</span>
+                </li>
+                <li>
+                    <span>手机号</span>
+                    <span class="fr">{$vo.user_phone}</span>
+                </li>
+                <li>
+                    <span>身份证号</span>
+                    <span class="fr">{$vo.user_id_no}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="btn">
+            <if condition="$vo['is_admin'] eq 1">
+                <a href="#" onclick="deleteGood('{$vo.id}')" class="confirmBtn">删除</a>
+            </if>
+            <a href="#" class="cancelBtn">取消</a>
+        </div>
+    </div>
+    </volist>
+</div>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script>
+    //弹出货源详情
+    function show(id) {
+        $('.dialog,.mask-layer-' + id).show();
+    }
+    
+    $('.confirm').click(function(){
+        $('.dialog,.mask-layer').hide();
+    })
+    
+    function deleteGood(id) {
+        if(window.confirm('你确定要删除吗？')){
+            location.href='/admin/goods/delete?id='+id;
+        } else {
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

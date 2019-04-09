@@ -1,0 +1,71 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    <div class="main-right">
+        <h1 class="main-right-title">运费管理 > <if condition="$type eq 1">公路运费<elseif condition="$type eq 2" />铁路运费<elseif condition="$type eq 3" />集装箱运费<else />里程税</if></h1>
+        <div class="search">
+            <a href="{:U('freights/save', ['type' => $type])}" class="confirmBtn margin-top" id="add">新增</a>
+        </div>
+        <div class="center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>发站</th>
+                    <th>到站</th>
+                    <th>价格（元/<if condition="$type eq 4" >米<else/>吨</if>）</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name='info' id='vo'>
+                <tr>
+                    <td>{$vo.start_province_name}-{$vo.start_city_name}-{$vo.start_district_name}</td>
+                    <td>{$vo.end_province_name}-{$vo.end_city_name}</td>
+                    <td>
+                        <if condition="$type eq 2" >
+                            门到门：{$vo.price_0} <br>
+                            门到站：{$vo.price_1} <br>
+                            站到门：{$vo.price_2} <br>
+                            站到站：{$vo.price_3} <br>
+                        <else />
+                            {$vo.price}
+                        </if>
+                    </td>
+                    <td>
+                        <a href="{:U('freights/save', ['id' => $vo['id'], 'type' => $type])}" class="edit">编辑</a>
+                        <a href="#" onclick="deleteAd('{$vo.id}', '{$type}')" class="delebtn">删除</a>
+                    </td>
+                </tr>
+                </volist>
+                </tbody>
+            </table>
+            
+            <div class="page clearfix">
+                <form name="union_form" action="{:U('/admin/freights/' . $action)}" method="get">
+                    <input type="hidden" name="search" value="{$search}">
+                    {$page}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+        
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script>
+    function deleteAd(id, type) {
+        var message = '您确定删除该信息?';
+        if (confirm(message)) {
+            $.post("/admin/freights/delete", 'id=' + id + '&type=' + type,
+                function(data) {
+                    if (data.code == 1) {
+                        window.location.reload();
+                    } else {
+                        alert(data.msg);
+                    }
+                }, 'json');
+        }
+    }
+</script>
+</body>
+</html>

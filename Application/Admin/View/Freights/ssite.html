@@ -1,0 +1,43 @@
+<include file="Common/head" />
+<include file="Common/navbar" />
+
+
+<link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+<link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+
+<div class="main-right">
+    <h1 class="main-right-title">运费管理 > 站点管理 > 编辑</h1>
+    <div class="center">
+    
+    <form id='uploadForm' class="form-inline" method="post" action="{:U('freights/ssite')}">
+        <input type="hidden" name="id" value="{$info.id}" />
+        <div class="layer-lader">
+            <label for="name" class="label-text">
+                <p class="label-title">站点名称</p>
+                <input type="text" name="name" class="text-input" value="{$info.name}">
+            </label>
+            <label for="parent" class="label-text">
+                <p class="label-title">所属局</p>
+                <select name="parent" id="parent" class="input">
+                    <volist name='parents' id='vo'>
+                        <option value="{$vo.code}" <if condition="$info['parent'] eq $vo['code']">selected="selected"</if>>{$vo.name}</option>
+                    </volist>
+                </select>
+            </label>
+
+            <br /><br />
+            <a href="#" onclick="$('.form-inline').submit();" class="searchBtn">提交</a>
+        </div>
+    </form>
+</div>
+
+    
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script>
+    
+</script>
+</body>
+</html>

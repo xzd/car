@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>找货</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <!--<link rel="stylesheet" href="__PUBLIC__/home/css/sm.min.css">-->
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+
+
+</head>
+<body>
+<style type="text/css">
+    .infinite-scroll-preloader {
+        margin-top: 20px;
+    }
+
+    p {
+        margin: 0;
+    }
+</style>
+<div class="wrap">
+    <div class="list-top">
+        <span class="list-top-title startCity text-ell">{$start.district_name}</span>
+        <span class="list-top-title car-x  endCity text-ell">目的地</span>
+        <span class="list-top-title car-attr" id="car_lenght">车长/车型</span>
+    </div>
+    <div class="empty" style="display: none">
+        <img src="__PUBLIC__/home/images/chezhu/icon_null@2x.png" alt="">
+        <p class="anonymous">没有符合条件的货源！</p>
+        <a href="#" class="now">请重新筛选</a>
+    </div>
+    <!-- content应该拥有"pull-to-refresh-content"类,表示启用下拉刷新 -->
+    <div class="fa-container" style="margin-bottom: 60px">
+        <div class="content">
+
+        </div>
+        <div class="load" style="text-align: center;height: 40px;line-height: 40px">
+            <img src="__PUBLIC__/home/images/fahuo/icon_loading@3x.png" alt=""
+                 style="width: 20px;display: block;margin: 0 auto;">
+        </div>
+    </div>
+    <footer class="footer">
+        <a href="{:U('Deliver/add')}" class="huoyuan">
+            <i class="icons huo"></i>
+            发货
+        </a>
+        <a href="{:U('Deliver/find')}" class="huoyuan">
+            <i class="icons che"></i>
+            找车
+        </a>
+        <a href="{:U('Deliver/findList')}" class="huoyuan cur">
+            <i class="icons zhaohuo-u"></i>
+            找货
+        </a>
+        <a href="{:U('Deliver/index')}" class="person">
+            <i class="icons my"></i>
+            个人中心
+        </a>
+    </footer>
+</div>
+<div class="dialog"></div>
+<style>
+    .all li.current {
+        color: #5aa6e4;
+    }
+</style>
+<div class="all">
+    <ul>
+        <li data="" class="current">全部</li>
+        <li data="1">货主</li>
+        <li data="2">货站</li>
+    </ul>
+    <a href="#" class="cancel sub">确认</a>
+</div>
+<!--全部-->
+<!--车长-->
+<div class="car-attr-mask">
+    <p class="curr-add">车长</p>
+    <ul class="car_lenght_cla" style="height: 150px;-webkit-overflow-scrolling: touch;">
+        <li class="car-current">不限</li>
+        <li>4.2米</li>
+        <li>4.5米</li>
+        <li>6.0米</li>
+        <li>5.2米</li>
+        <li>6.2米</li>
+        <li>6.8米</li>
+        <li>7.2米</li>
+        <li>7.6米</li>
+        <li>8.2米</li>
+        <li>8.6米</li>
+        <li>9.6米</li>
+        <li>11.7米</li>
+        <li>12.5米</li>
+        <li>13米</li>
+        <li>13.5米</li>
+        <li>14米</li>
+        <li>15米</li>
+        <li>16米</li>
+        <li>17米</li>
+        <li>17.5米</li>
+        <li>18米</li>
+    </ul>
+    <p class="curr-add">车型</p>
+    <ul class="car_type_cla" style="height: auto">
+        <li>不限</li>
+        <li>平板</li>
+        <li>高栏</li>
+        <li>厢式</li>
+        <li>高低板</li>
+        <li>保温</li>
+        <li>冷藏</li>
+        <li>危险品</li>
+        <li>自卸</li>
+        <li>中卡</li>
+        <li>面包</li>
+    </ul>
+    <a href="#" class="cancel  sub">确认</a>
+</div>
+
+
+<div class="city-list" style="top:50px;position: fixed;background: #fff;z-index: 10001;width: 100%;display: none">
+    <p class="curr-add">已选区域：<span id="city-name"></span>
+    </p>
+    <p class="curr-add">当前地区：<span class="show-start-city">全国</span>
+        <span class="show-start-city-back">返回上一级</span>
+    </p>
+    <ul class="city-li" style="-webkit-overflow-scrolling: touch;">
+        <li code="0">不限</li>
+    </ul>
+    <a href="#" class="cancel can" id="cityBtn">取消</a>
+</div>
+
+<div class="mask reg">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips" id="tip">您尚未注册成为车主方用户，无法使用该功能！</p>
+    <div class="botton">
+        <a href="#" class="go">先逛逛</a>
+        <a href="{:U('Carowner/regist')}" class="member">去注册</a>
+    </div>
+</div>
+
+<div class="mask mem">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips">您还不是车主会员，无法使用该功能！</p>
+    <div class="botton">
+        <a href="#" class="go">先逛逛</a>
+        <a href="{:U('Carowner/member')}" class="member">成为会员</a>
+    </div>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/date.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script>
+    $(function () {
+
+        $('.now').click(function () {
+            window.location = URL + '/Carowner/lists';
+        });
+
+        'use strict';
+        let nowPage = 1;
+        let totalRows = '';
+        let limit = 10;
+
+        let type_goods = '';
+        let car_lenght = '';
+        let car_type = '';
+        let start_city_name = [];
+        let end_city_name = [];
+
+        var stop = true;
+        $.ajaxSetup({async: false});
+        function getList(page, limit, type_goods, car_lenght, car_type, start, end,up_and_down) {
+            let start_code = '';
+            let end_code = '';
+            for (let i = 0; i < start.length; i++) {
+                start_code += start[i].code + ',';
+            }
+            start_code = start_code.substring(0, start_code.length - 1);
+
+            for (let i = 0; i < end.length; i++) {
+                end_code += end[i].code + ',';
+            }
+            end_code = end_code.substring(0, end_code.length - 1);
+
+            if (start_code == '') {
+                start_code = '{$start.district}';
+            }
+            $.get(URL + '/goods/lists',
+                {
+                    page: page,
+                    limit: limit,
+                    type_goods: type_goods,
+                    car_lenght: car_lenght,
+                    car_type: car_type,
+                    start: start_code,
+                    end: end_code,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+
+                        let d = data.data.list;
+                        totalRows = data.data.datacount;
+                        if (d.length > 0) {
+                            $('.empty').hide();
+                            let cardHTML = '';
+                            let type = '';
+                            for (let i in d) {
+
+                                if (d[i].user_type_goods == 2) {
+                                    type = '货站';
+                                } else {
+                                    type = '货主';
+                                }
+
+                                cardHTML += '<div class="huo-item clearfix">' ;
+                                cardHTML += '<a href="/Carowner/deliver.html?id=' + d[i].id + '">' ;
+                                cardHTML += '<div class="huo-img">' ;
+                                cardHTML += '<img src="' + d[i].user_header_img + '" alt="">' ;
+                                cardHTML += '<span class="huozhu">' + type + '</span>' ;
+                                cardHTML += '</div>' ;
+                                cardHTML += '<div class="huozhu-info">' ;
+                                cardHTML += '<div class="huozhu-info-top">' ;
+                                cardHTML += '<span class="">' + d[i].start_city_name + d[i].start_district_name + '</span>' ;
+                                cardHTML += '<span class="flex-img"><img src="__PUBLIC__/home/images/chezhu/arrow_blue@2x.png" alt=""></span>' ;
+                                if(d[i].end_district_name != ''){
+                                    cardHTML += '<span class="">' + d[i].end_city_name + d[i].end_district_name + '</span>' ;
+                                }else{
+                                    cardHTML += '<span class="">' + d[i].end_province_name + d[i].end_city_name + '</span>' ;
+                                }
+                                cardHTML += '</div>' ;
+                                cardHTML +='<div class="huo-list-name">' ;
+                                cardHTML +='<p class="name-s">' + d[i].user_name ;
+                                cardHTML += '<span class="list-item-time">' + getDateDiff(d[i].update_time) + '</span></p>' ;
+                                cardHTML +='<p class="list-item-p text-ell">' ;
+                                cardHTML += '<span >' + d[i].goods_type + '</span>/' ;
+                                if(d[i].money.length > 0){
+                                    cardHTML += '<span>' + d[i].money+'元/吨' + '</span>/' ;
+                                }
+                                cardHTML +=  '<span >' + d[i].goods_num + '</span><span>' + d[i].goods_unit + '</span>/' ;
+                                cardHTML += '<span>' + d[i].car_lenght + '</span>/' ;
+                                cardHTML += '<span>' + d[i].car_type + '</span>' ;
+                                cardHTML += '</p>' ;
+                                cardHTML += '</div>' ;
+                                cardHTML += '</div>' ;
+                                cardHTML += '</a>' ;
+                                cardHTML += '</div>';
+                            }
+                            stop = true;
+
+                            if(up_and_down){
+                                $('.content').append(cardHTML);
+                            }else{
+                                $('.content').children().remove();
+                                $('.content').prepend(cardHTML);
+                            }
+
+
+                            if (d.length < limit) {
+                                $('.load').html('已拉到底啦！');
+                            }else{
+                                $('.load').html('<img src="__PUBLIC__/home/images/fahuo/icon_loading@3x.png" style="width: 20px;display: block;margin: 0 auto;">');
+                            }
+
+                        }
+
+                    } else {
+                        $('.content').children().remove();
+                        $('.empty').show();
+                    }
+
+                });
+        }
+
+        getList(1, limit, type_goods, car_lenght, car_type, start_city_name, end_city_name,0);
+
+
+        $('.list-top-title').click(function () {
+            $(this).addClass('huolist-cu').siblings().removeClass('huolist-cu');
+        });
+
+
+        let user = '';
+
+        function getOwner() {
+            let url = URL + '/users/index.html?type=2';
+            $.get(url, function (response) {
+                user = response.data;
+            })
+        }
+
+        getOwner();
+
+        $('.btnClickRou').click(function () {
+            if (user.state == 2) {
+                layer.msg('用户资料审核中!请等待');
+            } else if (user.state == 4) {
+                $('#tip').text('审核不通过，请重新注册');
+                $('.dialog').show();
+                $('.reg').show();
+            } else if (user.state == 3) {
+                if (user.vip == 0) {
+                    $('.dialog').show();
+                    $('.mem').show();
+                } else {
+                    window.location = "{:U('Carowner/route')}";
+                }
+            } else {
+                $('.dialog').show();
+                $('.reg').show();
+            }
+
+
+        });
+
+        $('.go, .dialog').click(function () {
+            $('.dialog').hide();
+            $('.reg').hide();
+            $('.mem').hide();
+        });
+
+        //货主货站
+        $('#all').click(function () {
+            $('.dialog').show();
+            $('.all').show();
+            $('.car_lenght').hide();
+            $('.city-list').hide();
+            $('.end-city').hide();
+            $('.car-attr-mask').hide();
+        });
+        $('.all ul li').click(function () {
+            let data = $(this).attr('data');
+            let data_text = $(this).text();
+            $('#all').text(data_text);
+            type_goods = data;
+            $(this).addClass('current').siblings().removeClass('current');
+        });
+
+
+        $('#car_lenght').click(function () {
+            $('.dialog').show();
+            $('.car-attr-mask').show();
+            $('.city-list').hide();
+            $('.end-city').hide();
+            $('.all').hide();
+        });
+
+
+        $('.car_lenght_cla li').click(function () {
+            let data = $(this).text();
+            if (data == '不限') {
+                data = '';
+            }
+
+            car_lenght = data;
+            $(this).addClass('curr-add-current').siblings().removeClass('curr-add-current');
+        });
+        $('.car_type_cla  li').click(function () {
+            let data = $(this).text();
+            if (data == '不限') {
+                data = '';
+            }
+            car_type = data;
+            $(this).addClass('curr-add-current').siblings().removeClass('curr-add-current');
+        });
+
+        $('.sub').click(function () {
+            $('.dialog').hide();
+            $('.all').hide();
+            $('.car-attr-mask').hide();
+            $('.city-list').hide();
+            $('.list-top-title').removeClass('huolist-cu');
+
+            $('.card-container').empty();
+            getList(1, limit, type_goods, car_lenght, car_type, start_city_name, end_city_name);
+        });
+
+        $('.can').click(function () {
+            $('.dialog').hide();
+            $('.all').hide();
+            $('.car-attr-mask').hide();
+            $('.city-list').hide();
+        });
+
+
+        //路线
+        let startName = '';
+        let endName = '';
+        let m = -1;
+        let flag = true;
+        let next_code = [];
+        let next_name = [];
+        let city_show = '';
+
+        function printHtml(obj) {
+
+            $('#city-name').children().remove();
+            let html = '';
+            for (let i = 0; i < obj.length; i++) {
+                html += '<span class="have-city">' + obj[i].name + '<i data="' + obj[i].code + '" class="closebtn" style="cursor: pointer"></i></span>';
+
+            }
+            $('#city-name').append(html);
+
+
+            let start_name = '';
+            for (let i = 0; i < start_city_name.length; i++) {
+                start_name += start_city_name[i].name + ',';
+            }
+            start_name = start_name.substring(0, start_name.length - 1);
+            if (start_name != '') {
+                $('.startCity').text(start_name);
+            } else {
+                $('.startCity').text('出发地');
+            }
+
+            let end_name = '';
+            for (let i = 0; i < end_city_name.length; i++) {
+                end_name += end_city_name[i].name + ',';
+            }
+            end_name = end_name.substring(0, end_name.length - 1);
+            if (end_name != '') {
+                $('.endCity').text(end_name);
+            } else {
+                $('.endCity').text('目的地');
+            }
+        }
+
+        $('.startCity').click(function () {
+
+            if (flag) {
+                $('.all').hide();
+                $('.car_lenght').hide();
+                $('.city-list').hide();
+                $('.end-city').hide();
+                $('.car-attr-mask').hide();
+                //$('.show-start-city').text('全国');
+                $('.city-list').addClass('start-city-show');
+                $('.city-list').removeClass('end-city-show');
+                m = -1;
+                next_code = [];
+                next_name = [];
+
+
+                printHtml(start_city_name);
+
+                city_show = '.startCity';
+                flag = false;
+                getCity(0);
+            }
+
+            $('.dialog').show();
+            $('.city-list').show();
+        });
+
+        $('.endCity').click(function () {
+
+            if (flag) {
+                $('.all').hide();
+                $('.car_lenght').hide();
+                $('.city-list').hide();
+                $('.end-city').hide();
+                $('.car-attr-mask').hide();
+                $('.show-start-city').text('全国');
+                $('.city-list').addClass('end-city-show');
+                $('.city-list').removeClass('start-city-show');
+                m = -1;
+                next_code = [];
+                next_name = [];
+
+                printHtml(end_city_name);
+
+                city_show = '.endCity';
+                flag = false;
+                getCity(0);
+            }
+
+            $('.dialog').show();
+            $('.city-list').show();
+        });
+
+        function getCity(code) {
+            $.get(URL + '/index/citys',
+                {
+                    code: code,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let html = '';
+                        let d = data.data;
+                        for (let i in d) {
+                            html += '<li code="' + d[i].code + '">' + d[i].name + '</li>';
+                        }
+                        $('.city-li').empty();
+                        $('.city-li').append(html);
+                        flag = true;
+                        m++;
+                    } else {
+                        layer.msg('服务端错误!');
+                        flag = true;
+                    }
+
+                });
+        }
+
+        function backGetCity(code) {
+            $.get(URL + '/index/citys',
+                {
+                    code: code,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let html = '';
+                        let d = data.data;
+                        for (let i in d) {
+                            html += '<li code="' + d[i].code + '">' + d[i].name + '</li>';
+                        }
+                        $('.city-li').empty();
+                        $('.city-li').append(html);
+                        flag = true;
+                        m--;
+                        if (d.length <= 0) {
+                            $('.city_sure').text('确定');
+                        }
+                    } else {
+                        layer.msg('服务端错误!');
+                        flag = true;
+
+                    }
+
+                });
+        }
+
+        $(document).on('click', '.start-city-show ul li', function () {
+            if (flag) {
+                flag = false;
+                let addId = ['#start_province', '#start_city', '#start_district'];
+                let addName = ['#start_province_name', '#start_city_name', '#start_district_name'];
+                let code = $(this).attr('code');
+                let name = $(this).text();
+                startName += $(this).text() + ',';
+                $('.start').val(startName);
+                $(addId[m]).val(code);
+                $(addName[m]).val(name);
+                $('.show-start-city').text(name);
+                //$('.startCity').text(name);
+                $('.show-start-city-back').show();
+                next_code.push(code);
+                next_name.push(name);
+
+
+                let sub_new_code = code.substring(0, 3);
+                let n = m-1;
+                if(n < 0){
+                    n = 0;
+                }
+                let sub_old_code = next_code[n].substring(0, 3);
+                let sub_middle_code = code.substring(3, 4);
+
+                if(sub_middle_code == 0){
+                    let data_name = {};
+                    data_name.code = code;
+                    data_name.name = name;
+                    start_city_name.push(data_name);
+                    printHtml(start_city_name);
+                }else if(sub_new_code == sub_old_code){
+
+                    for (let i = 0; i < start_city_name.length; i++) {
+                        if (start_city_name[i].code == next_code[m-1]) {
+                            start_city_name.splice(i, 1);
+                        }
+                    }
+                    let data_name = {};
+                    data_name.code = code;
+                    data_name.name = name;
+                    start_city_name.push(data_name);
+                    printHtml(start_city_name);
+
+                }
+
+
+                getCity(code);
+                if (m >= 0) {
+                    $('#cityBtn').text('确定');
+                    $('#cityBtn').addClass('sure');
+                }
+            }
+            $(this).addClass('curr-add-current').siblings().removeClass('curr-add-current');
+
+        });
+        $(document).on('click', '.end-city-show ul li', function () {
+            if (flag) {
+                flag = false;
+                let addId = ['#end_province', '#end_city', '#end_district'];
+                let addName = ['#end_province_name', '#end_city_name', '#end_district_name'];
+                let code = $(this).attr('code');
+                let name = $(this).text();
+                endName += $(this).text() + ',';
+                $('.end').val(endName);
+                $(addId[m]).val(code);
+                $(addName[m]).val(name);
+                $('.show-start-city').text(name);
+                //$('.endCity').text(name);
+                $('.show-start-city-back').show();
+                next_code.push(code);
+                next_name.push(name);
+
+                if (m >= 2) {
+
+                }
+
+                let sub_new_code = code.substring(0, 3);
+                let n = m-1;
+                if(n < 0){
+                    n = 0;
+                }
+                let sub_old_code = next_code[n].substring(0, 3);
+                let sub_middle_code = code.substring(3, 4);
+
+                if(sub_middle_code == 0){
+                    let data_name = {};
+                    data_name.code = code;
+                    data_name.name = name;
+                    end_city_name.push(data_name);
+                    printHtml(end_city_name);
+                }else if(sub_new_code == sub_old_code){
+
+                    for (let i = 0; i < end_city_name.length; i++) {
+                        if (end_city_name[i].code == next_code[m-1]) {
+                            end_city_name.splice(i, 1);
+                        }
+                    }
+                    let data_name = {};
+                    data_name.code = code;
+                    data_name.name = name;
+                    end_city_name.push(data_name);
+                    printHtml(end_city_name);
+
+                }
+
+                getCity(code);
+
+                if (m >= 0) {
+                    $('#cityBtn').text('确定');
+                    $('#cityBtn').addClass('sure');
+                }
+            }
+            $(this).addClass('curr-add-current').siblings().removeClass('curr-add-current');
+
+        });
+
+        $(document).on('click', '.show-start-city-back', function () {
+
+            let code = next_code[m - 2];
+            let name = next_name[m - 2];
+            if (m > 1) {
+                $('.show-start-city').text(name);
+                //$(city_show).text(name);
+            } else {
+                $('.show-start-city').text('全国');
+                //$(city_show).text('全国');
+            }
+            if(m <= 1){
+                next_code = [];
+                next_name = [];
+            }
+
+            backGetCity(code);
+        });
+        //closebtn
+        $(document).on('click', '.closebtn', function () {
+            let code = $(this).attr('data');
+
+            for (let i = 0; i < start_city_name.length; i++) {
+                if (start_city_name[i].code == code) {
+                    start_city_name.splice(i, 1);
+                }
+            }
+
+            for (let i = 0; i < end_city_name.length; i++) {
+                if (end_city_name[i].code == code) {
+                    end_city_name.splice(i, 1);
+                }
+            }
+            $(this).parent().remove();
+        });
+
+        $(document).on('click', '.sure', function () {
+            $('.dialog').hide();
+            $('.all').hide();
+            $('.car-attr-mask').hide();
+            $('.city-list').hide();
+            $('.list-top-title').removeClass('huolist-cu');
+            getList(1, limit, type_goods, car_lenght, car_type, start_city_name, end_city_name, 0);
+        });
+
+
+        $(window).scroll(function () {
+            var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
+            if ($(document).height() <= totalheight + 120) {
+                nowPage++;
+                console.log(nowPage);
+                if (stop == true) {
+                    stop = false;
+                    getList(nowPage, limit, type_goods, car_lenght, car_type, start_city_name, end_city_name,1);
+                } else {
+                    stop = false;
+                    $('.load').html('已拉到底啦！');
+                }
+            }
+        });
+
+    })
+
+
+</script>
+</body>
+</html>
+

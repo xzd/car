@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>注册</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+</head>
+<body>
+<div class="wrap">
+    <form action="" class="form">
+        <p class="regist-title go">手机号</p>
+        <label for="" class="mob-label">
+            <input type="number" name="phone" value="{$user['phone']}" placeholder="请填写手机号" class="mob">
+            <a class="getCode" id="enableSendBtn">获取验证码</a>
+        </label>
+        <label for="" class="mob-label bor">
+            <input type="number" name="phone_code" placeholder="请填写验证码" class="verification">
+        </label>
+
+        <a href="javascript:void(0)" class="mob-btn" id="register">注册</a>
+        <div class="agrent">
+            <input type="checkbox" name="red" value="1" class="checkbox" checked>我已阅读并同意<a href="{:U('Carowner/services')}" class="xieyi">服务协议</a>
+        </div>
+    </form>
+</div>
+
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script>
+    $(function () {
+    $('#register').click(function () {
+        let phone = $("input[name=phone]").val();
+        let phone_code = $("input[name=phone_code]").val();
+        let red = $("input[name=red]:checked").val();
+
+        if (phone == '') {
+            layer.msg('请填写手机号');
+            return false;
+        }
+        if (!(phone.length === 11 && /^1\d{10}$/.test(phone))) {
+            layer.msg('请填写有效手机号');
+            return false;
+        }
+        if (phone_code == '') {
+            layer.msg('请输入验证码');
+            return false;
+        }
+
+        if (red != 1) {
+            layer.msg('请阅读并同意注册协议');
+            return false;
+        }
+
+        let url = URL + '/users/fastRegister';
+        $.post(url, $('.form').serialize(), function (data, status) {
+            if (data.code == 1) {
+                layer.msg(data.msg);
+                setTimeout(function () {
+                    window.location = '/Carowner/newIndex';
+                }, 2000);
+            } else {
+                layer.msg(data.msg);
+            }
+        });
+    });
+        let countDown = 0;
+        let flag = true;
+        $('.getCode').click(function () {
+
+            if (flag) {
+
+                countDown = 60;
+                let phone = $("input[name=phone]").val();
+                if (phone == '') {
+                    layer.msg('请填写手机号');
+                    return false;
+                }
+                if (!(phone.length === 11 && /^1\d{10}$/.test(phone))) {
+                    layer.msg('请填写有效手机号');
+                    return false;
+                }
+                flag = false;
+                let url = URL + '/index/sendCode';
+                $.post(url, {phone: phone}, function (data, status) {
+                    if (data.code == 1) {
+                        countDownFunc();
+                    } else {
+                        layer.msg(data.msg);
+                        flag = false;
+                    }
+                });
+
+            }
+
+        });
+        function countDownFunc() {
+            countDown--;
+            if (countDown <= 0) {
+                $('#enableSendBtn').removeAttr('disabled').text('获取确认码');
+                flag = true;
+                return;
+            } else {
+                $('#enableSendBtn').attr('disabled', true).text(countDown + '秒后重发');
+            }
+            setTimeout(function () {
+                countDownFunc();
+            }, 1000);
+        }
+
+    })
+</script>
+</body>
+</html>

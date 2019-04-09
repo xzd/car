@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>我的货源</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/sm.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+</head>
+<body>
+<div class="wrap">
+    <div class="top-header">
+        <div class="top-header-title">
+            <a href="{:U('Deliver/add')}">发布</a>
+        </div>
+        <div class="top-header-title">
+            <a href="{:U('Deliver/published')}">已发布货源</a>
+        </div>
+        <div class="top-header-title">
+            <a href="{:U('Deliver/closed')}" class="border">已关闭货源</a>
+        </div>
+    </div>
+    <div class="empty" style="display:none;">
+        <img src="__PUBLIC__/home/images/fahuo/icon_null@2x.png" alt="">
+        <p class="anonymous">您没有关闭货源信息记录</p>
+    </div>
+    <!-- content应该拥有"pull-to-refresh-content"类,表示启用下拉刷新 -->
+    <div class="page-group" style="top:0">
+        <div id="page-ptr" class="page" style="top:0">
+            <div class="content pull-to-refresh-content  infinite-scroll infinite-scroll-bottom" style="bottom: 20px">
+                <div class="pull-to-refresh-layer">
+                    <div class="preloader"></div>
+                    <div class="pull-to-refresh-arrow"></div>
+                </div>
+                <!-- 下面是正文 -->
+                <div>
+                    <div class="fa-container">
+
+                    </div>
+                    <!-- 加载提示符 -->
+                    <div class="infinite-scroll-preloader">
+                        <div class="preloader"></div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+    <div class="edit-bg-btn">
+        <i class="deleteAll"></i>
+        <i class="checkboxs"></i>
+        <i class="edit-huo"></i>
+        <i class="save"></i>
+    </div>
+</div>
+<script src="__PUBLIC__/home/js/zepto.min.js"></script>
+<script src="__PUBLIC__/home/js/sm.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer_mobile/layer.js"></script>
+<script>
+    $(function () {
+        $('.edit-huo').click(function () {
+            $(this).hide();
+            $('.save,.checkboxs').css('display', 'block');
+            $('.close-del').css('display', 'inline-block');
+
+        });
+        $('.checkboxs').click(function () {
+            $('.checkbox-all').css('display', 'inline-block');
+            $('.deleteAll').css('display', 'block');
+
+
+            $('.checkbox-all').each(function () {
+                $(this).prop('checked', true);
+            });
+
+        });
+        $('.save').click(function () {
+            $(this).hide();
+            $('.deleteAll,.checkboxs,.close-del,.checkbox-all').hide();
+            $('.edit-huo').css('display', 'block');
+        });
+
+        let nowPage = 1;
+        let totalRows = '';
+        let up_and_down = 0;
+        let limit = 10;
+
+        function getList(page, limit, state, up_and_down) {
+            $.get(URL + '/goods/index',
+                {
+                    page: page,
+                    limit: limit,
+                    state: state,
+                    datatype: 'json'
+                },
+                function (data) {
+                    if (data.code === 1) {
+                        let cardHTML = '';
+                        let d = data.data.list;
+
+                        if (d != '') {
+                            for (let i in d) {
+
+                                cardHTML += '<div class="huoyuan-list">' +
+                                    '<div class="huoyuan-add">' +
+                                    '<input type="checkbox" id="' + d[i].id + '" class="checkbox-all">' +
+                                    '<span>' + d[i].start_province_name + d[i].start_city_name + d[i].start_district_name + '</span>' +
+                                    '<span class="margin"><img src="__PUBLIC__/home/images/fahuo/arrow_blue.png"></span>' +
+                                    '<span>' + d[i].end_province_name + d[i].end_city_name + d[i].end_district_name + '</span>' +
+                                    '<span id="' + d[i].id + '" class="close-del"></span>' +
+                                    '</div>' +
+                                    '<ul class="huoyuan-info">' +
+                                    '<li>货源信息<span>' + d[i].goods_type +'/'+ d[i].money + '元/吨' + '/' + d[i].goods_num + d[i].goods_unit + '</span></li>' +
+                                    '<li>所需车辆<span>' + d[i].car_lenght + '/' + d[i].car_type + '</span></li>' +
+                                    '<li>关闭时间<span>' + d[i].close_time + '</span></li>' +
+                                    '<p class="chongfa" data="' + d[i].id + '">' + '重发' + '</p>' +
+                                    '</ul>' +
+                                    '</div>';
+                            }
+                            if (up_and_down) {
+                                $('.fa-container').append(cardHTML);
+                            } else {
+                                $('.fa-container').empty();
+                                $('.fa-container').prepend(cardHTML);
+                            }
+                            if (d.length < limit) {
+                                $('.infinite-scroll-preloader').html('已拉到底啦！');
+                            }else{
+                                //$.attachInfiniteScroll($('.infinite-scroll'));
+                                $('.infinite-scroll-preloader').html('<div class="preloader"></div>');
+                            }
+                        }
+
+
+                    } else {
+                        $('.empty').show();
+                    }
+
+                });
+        }
+
+        getList(1, 20, 2,0);
+
+        //下拉刷新页面
+        $(document).on("pageInit", "#page-ptr", function (e, id, page) {
+            var $content = $(page).find(".content").on('refresh', function (e) {
+                // 模拟2s的加载过程
+
+
+                setTimeout(function () {
+                    getList(1, limit, 2,0);
+                    // 加载完毕需要重置
+                    $.pullToRefreshDone($content);
+                }, 2000);
+            });
+        });
+
+        let loading = false;
+        $(document).on('infinite', '.infinite-scroll-bottom', function () {
+
+
+            // 如果正在加载，则退出
+            if (loading) return;
+            // 设置flag
+            loading = true;
+
+            nowPage++;
+
+            let totalPages = Math.ceil(totalRows / limit);
+            // 模拟1s的加载过程
+            setTimeout(function () {
+                loading = false;
+                //
+                if (nowPage >= totalPages) {
+                    $('.infinite-scroll-preloader').html('已拉到底啦！');
+                    $.detachInfiniteScroll($('.infinite-scroll'));
+                }
+                getList(nowPage, limit, 2,0);
+                //容器发生改变,如果是js滚动，需要刷新滚动
+                $.refreshScroller();
+
+            }, 2000);
+        });
+        $.init();
+        $(document).on('click', '.close-del', function () {
+            let id = $(this).attr('id');
+            if (id != '') {
+                del(id)
+            }
+        });
+        //重发
+        $(document).on('click','.chongfa',function(){
+            let id = $(this).attr('data');
+            let url = URL + '/goods/reset';
+            $.post(url,{id:id},function (data,status) {
+                if (data.code === 1) {
+                    layer.open({content: '重发成功!'});
+                    setTimeout(function () {
+                        window.location = '/Deliver/closed';
+                    }, 2000);
+
+                } else {
+                    layer.open({content: '重发失败!'});
+                }
+            })
+        });
+        function chongfa() {
+
+        }
+
+
+        $('.deleteAll').click(function () {
+            let ids = '';
+            $('.checkbox-all').each(function () {
+                console.log($(this).is(':checked'));
+                if ($(this).is(':checked')) {
+                    let id = $(this).attr('id');
+                    ids += id + ',';
+                }
+            });
+            ids = ids.substring(0, ids.length - 1);
+            if (ids != '') {
+                del(ids)
+            }
+        });
+
+        function del(id) {
+            layer.open({
+                content: '是否真的删除！'
+                , btn: ['删除', '取消']
+                , skin: 'footer'
+                , yes: function (index) {
+//                    layer.open({content: '执行删除操作'})
+                    $.post(URL + '/goods/delete',
+                        {
+                            ids: id,
+                            datatype: 'json'
+                        },
+                        function (data) {
+                            if (data.code === 1) {
+                                layer.open({content: '删除成功!'});
+                                setTimeout(function () {
+                                    window.location = '/Deliver/closed';
+                                }, 2000);
+
+                            } else {
+                                layer.open({content: '删除失败!'});
+                            }
+
+                        });
+
+                }
+            });
+        }
+
+    })
+</script>
+</body>
+</html>

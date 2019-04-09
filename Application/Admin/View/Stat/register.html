@@ -1,0 +1,96 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    <div class="main-right">
+        <h1 class="main-right-title">数据统计查询 > 注册用户数据查询</h1>
+        <p class="add-title">
+            注册用户总况（人）
+        </p>
+        <div class="member-data">
+            <div class="dataList">
+                <p class="data-title">车主注册用户总况</p>
+                <p class="data-num">{$car_count}</p>
+            </div>
+            <div class="dataList">
+                <p class="data-title">货主注册用户总况</p>
+                <p class="data-num">{$good1_count}</p>
+            </div>
+            <div class="dataList">
+                <p class="data-title">货站注册用户总况</p>
+                <p class="data-num">{$good2_count}</p>
+            </div>
+        </div>
+        <p class="add-title">
+            新增注册用户详情（人）
+        </p>
+        <div class="search">
+            <form class="form-inline" method="get" action="{:U('stat/register')}">
+                <label for="" class="margin-right">
+                    <span>筛选</span>
+                    <select name="type" class="input">
+                        <option value="">全部</option>
+                        <option value="1" <if condition="$search['type'] eq 1">selected</if>>车主</option>
+                        <option value="2" <if condition="$search['type'] eq 2">selected</if>>货主</option>
+                        <option value="3" <if condition="$search['type'] eq 3">selected</if>>货站</option>
+                    </select>
+                </label>
+                <label for="">
+                    <span>日期</span>
+                    <input type="text" name="start_date" value="{$search.start_date}" class="input" id="calendar-mobile-range-start">
+                    <input type="text" name="end_date" value="{$search.end_date}" class="input" id="calendar-mobile-range-end">
+                </label>
+                <a href="#" onclick="$('.form-inline').submit();" class="searchBtn fr margin-top"><i class="icon"></i>搜索</a>
+            </form>
+        </div>
+        <div class="center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>新增用户</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="info" id="vo">
+                    <tr>
+                        <td>{$vo.register_time}</td>
+                        <td>{$vo.name}</td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+            <div class="page clearfix">
+                <form name="union_form" action="{:U('/admin/stat/register')}" method="get">
+                    <input type="hidden" name="search" value="{$search}">
+                    {$page}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script src="__PUBLIC__/js/jquery.mobile.custom.js"></script>
+<script src="__PUBLIC__/js/jquery-asDatepicker.js"></script>
+<script>
+    //调用日历插件
+    $(document).ready(function(){
+        var start = $('#calendar-mobile-range-start').val();
+        var end = $('#calendar-mobile-range-end').val();
+        
+        $('#calendar-mobile-range-start').asDatepicker({
+            mode: 'single',
+            mobileMode: true,
+            date: start
+        });
+        
+        $('#calendar-mobile-range-end').asDatepicker({
+            mode: 'single',
+            mobileMode: true,
+            date: end
+        });
+    });
+</script>
+</body>
+</html>

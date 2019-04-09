@@ -1,0 +1,199 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    <div class="main-right">
+        <h1 class="main-right-title">系统管理 > 角色管理</h1>
+        <div class="center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>状态</th>
+                    <th>描述</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name='infos' id='vo'>
+                <tr>
+                    <td>{$vo.name}</td>
+                    <td><if condition="$vo['state'] eq 1">正常<else />锁定</if></td>
+                    <td>{$vo.describe}</td>
+                    <td>
+                        <if condition="$vo['id'] neq 1">
+                        <a href="#" onclick="editRole('{$vo.id}')" class="edit">编辑</a>
+                        <a href="#" onclick="editPermission('{$vo.id}')" class="set">权限设置</a>
+                        <a href="#" onclick="deleteRole('{$vo.id}')" class="delebtn">删除</a>
+                        </if>
+                    </td>
+                </tr>
+                </volist>
+                </tbody>
+            </table>
+            <a href="#" class="confirmBtn margin-top" id="add">新增</a>
+        </div>
+    </div>
+    
+    <!--弹出层-->
+    <div class="dialog"></div>
+    <div class="mask">
+        <form class="form-delete" method="post" action="{:U('/admin/manage/deleteRole')}">
+        <h3 class="tips-title">提示</h3>
+        <p class="mess-tip">确认删除该角色</p>
+        <input type="hidden" name='id' id='delete_role' value="" />
+        <a href="#" onclick="$('.form-delete').submit();" class="reset">确认</a>
+        <a href="#" class="cancel">取消</a>
+        </form>
+    </div>
+</div>
+
+<div class="mask-layer" id="add-user">
+    <p class="mask-layer-title">添加角色</p>
+    <form class="form-add-role" method="post" action="{:U('/admin/manage/saveRole')}">
+    <div class="layer-lader">
+        <label for="name" class="label-text">
+            <p class="label-title">名称</p>
+            <input type="text" name='name' class="text-input" value="">
+        </label>
+        <label for="describe" class="label-text">
+            <p class="label-title">描述</p>
+            <input type="text" name='describe' class="text-input" value="">
+        </label>
+        <label for="" class="label-text">
+            <p>锁定 <span>（若锁定按钮开启，则该角色被锁定，对应权限不可使用，该角色对应账号亦无操作权限）</span></p>
+            <i class="switch switch-add-role switch-close"></i>
+            <input type="hidden" id="state" name="state" value="1" />
+        </label>
+    </div>
+    <div class="btn">
+        <a href="#" onclick="$('.form-add-role').submit();" class="confirmBtn">提交</a>
+        <a href="#" class="cancelBtn">取消</a>
+    </div>
+    </form>
+</div>
+
+<volist name="infos" id="vo" offset="1">
+    <form class="form-edit-role-{$vo.id}" method="post" action="{:U('/admin/manage/saveRole')}" >
+        <div class="mask-layer mask-layer-{$vo.id}" id="edituser">
+            <p class="mask-layer-title">编辑角色</p>
+            <div class="layer-lader">
+                <input type='hidden' name='id' value='{$vo.id}'>
+                <label for="name" class="label-text">
+                    <p class="label-title">名称</p>
+                    <input type="text" name='name' class="text-input" value="{$vo.name}">
+                </label>
+                <label for="describe" class="label-text">
+                    <p class="label-title">描述</p>
+                    <input type="text" name='describe' class="text-input" value="{$vo.describe}">
+                </label>
+                <label for="" class="label-text">
+                    <p>锁定 <span>（若锁定按钮开启，则该角色被锁定，对应权限不可使用，该角色对应账号亦无操作权限）</span></p>
+                    <if condition="$vo['state'] eq 1">
+                    <i class="switch switch-edit-role-{$vo.id} switch-close" onclick="editSwitch('{$vo.id}')"></i>
+                    <else />
+                    <i class="switch switch-edit-role-{$vo.id} switch-open" onclick="editSwitch('{$vo.id}')"></i>
+                    </if>
+                    <input type="hidden" id="state" name="state" value="{$vo.state}" />
+                </label>
+            </div>
+            <div class="btn">
+                <a href="#" onclick="$('.form-edit-role-{$vo.id}').submit();" class="confirmBtn">提交</a>
+                <a href="#" class="cancelBtn">取消</a>
+            </div>
+        </div>
+    </form>
+</volist>
+
+<volist name="infos" id="vo" offset="1">
+    <form class="form-edit-permission-{$vo.id}" method="post" action="{:U('/admin/manage/savePermission')}" >
+        <div class="mask-layer mask-layer-permission-{$vo.id}" id="set">
+            <p class="mask-layer-title">权限设置</p>
+            <input type='hidden' name='id' value='{$vo.id}'>
+            <div class="layer-lader">
+                <foreach name="vo.permissionArr" item="p" key="k">
+                <div class="group">
+                    <i class="up"></i>
+                    <label for="neir" class="checkbox-label">
+                        <input type="checkbox" <if condition="$p['is_check']">checked</if> class="checkbox" id="neir">{$k}
+                    </label>
+                    <foreach name="p.permission" item="name">
+                        <div class="group-list">
+                            <label for="check" class="checkbox-label">
+                                <input type="checkbox" class="checkbox" id="check" name="permissions[]" value="{$key}" <if condition="in_array($key, $vo['permissions'])">checked</if>>{$name}
+                            </label>
+                        </div>
+                    </foreach>
+                </div>
+                </foreach>
+            </div>
+            <div class="btn">
+                <a href="#" onclick="$('.form-edit-permission-{$vo.id}').submit();" class="confirmBtn">提交</a>
+                <a href="#" class="cancelBtn">取消</a>
+            </div>
+        </div>
+    </form>
+</volist>
+        
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script>
+    //垂直导航栏，点击下拉子菜单
+    $(".main>a").click(function(){
+        $(this).next().slideToggle(500)
+            .parent().siblings().find(".slider-list").slideUp(500);
+        $(this).parent().addClass('active').siblings().removeClass('active');
+    });
+    $('.slider-list-li').click(function(){
+        $(this).addClass('current').siblings().removeClass('current');
+    });
+    $('.current-arrow>a').click(function(){
+        $('.slider-list-item').slideToggle(500);
+        $(this).parent().toggleClass('arr');
+    });
+    $('.slider-list-item li').click(function(){
+        $(this).addClass('curr').siblings().removeClass('curr');
+    });
+    // 新增
+    $('#add').click(function(){
+        $('#add-user,.dialog').show();
+    });
+    //删除
+    function deleteRole(id) {
+        $('#delete_role').val(id);
+        $('.dialog,.mask').show();
+    }
+    //修改
+    function editRole(id) {
+        $('.dialog,.mask-layer-' + id).show();
+    }
+    
+    // 权限
+    function editPermission(id) {
+        $('.dialog,.mask-layer-permission-' + id).show();
+    }
+    $('.cancelBtn,.cancel').click(function(){
+        $('.dialog,#edituser,#add-user,.mask,#set').hide();
+    });
+    
+    //功能开关切换
+    $('.switch-add-role').click(function(){
+        $(this).toggleClass('switch-open').toggleClass('switch-close');
+        var state = $('.form-add-role #state').val();
+        if (state == 1) {
+            $('.form-add-role #state').val(2);
+        } else {
+            $('.form-add-role #state').val(1);
+        }
+    });
+    
+    function editSwitch(id) {
+        $('.switch-edit-role-' + id).toggleClass('switch-open').toggleClass('switch-close');
+        var state = $('.form-edit-role-' + id + ' #state').val();
+        if (state == 1) {
+            $('.form-edit-role-' + id + ' #state').val(2);
+        } else {
+            $('.form-edit-role-' + id + ' #state').val(1);
+        }
+    }
+</script>
+</body>
+</html>

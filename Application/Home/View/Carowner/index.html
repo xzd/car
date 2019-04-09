@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+    <style type="text/css">
+        .lazy_tip {
+            position: absolute;
+            margin-top: 35%;
+            z-index: 1001;
+            font-size: 25px;
+            width: 100%;
+            color: #ffffff;
+            line-height: 30px;
+        }
+
+        .lazy_cover {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1000;
+            color: #ffffff;
+            font-size: 25px;
+            opacity: 0.7;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .pic_edit {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-s {
+            margin-top: 5px;
+            color: #fff;
+            display: inline-block;
+            border-radius: 5px;
+            background-color: gray;
+            padding: 5px;
+        }
+
+        #clipBtn {
+            float: right;
+            margin-right: 10px;
+        }
+
+        #resBtn {
+            margin-left: 10px;
+        }
+
+        #hit {
+            position: fixed;
+            top: 19%;
+            left: 9.375%;
+            background: gainsboro;
+        }
+
+        #clipArea {
+            margin: 30px auto;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap" id="app">
+    <div class="members-head detail-top">
+        <div class="detail-img">
+            <i class="v" id="mem"></i>
+            <input type="file" id="myfile" style="opacity: 0;position: fixed;top:50px" accept="image/*">
+        </div>
+        <h3 class="detail-name"></h3>
+        <p class="num"></p>
+    </div>
+    <div class="center pad">
+        <ul class="member-car">
+            <li>
+                <a href="#" class="iphone btnClickbang">绑定手机号
+                    <span class="fr phone"></span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Carowner/member')}" class="quan">会员权限</a>
+            </li>
+        </ul>
+    </div>
+    <div class="center">
+        <h2 class="che-members my-car">我的车辆</h2>
+        <ul class="car-info">
+            <li>
+                <p class="car-title">车牌号码</p>
+                <p class="car-att car_number_plate"></p>
+            </li>
+            <li>
+                <p class="car-title">车长/车型/载重</p>
+                <p class="car-att attr"></p>
+            </li>
+            <li>
+                <p class="car-title">是否空车</p>
+                <div class="testswitch" id="onoffswitch">
+                    <input class="testswitch-checkbox testswitch-inner" id="switch" value="1" type="checkbox"/>
+                    <label class="testswitch-label" for="onoffswitch"></label>
+                </div>
+            </li>
+        </ul>
+        <h2 class="che-members line-add btnClickRou"><a href="#">常跑路线</a></h2>
+    </div>
+    <div class="center" style="margin-bottom: 70px;">
+        <h2 class="che-members kefu">平台客服电话：17647023442</h2>
+    </div>
+    <footer class="footer">
+        <a href="{:U('Carowner/lists')}" class="huoyuan">
+            <i class="icons huo"></i>
+            货源搜索
+        </a>
+        <a href="#" class="chang-c btnClickRou">
+            <i class="icons chang"></i>
+            常跑路线
+        </a>
+        <a href="{:U('Carowner/index')}" class="person cu">
+            <i class="icons my-cu"></i>
+            个人中心
+        </a>
+    </footer>
+</div>
+<div class="dialog"></div>
+<div class="mob-mask">
+    <ul>
+        <li>联系电话</li>
+        <li>
+            <a href="tel:17647023442">17647023442</a>
+        </li>
+        <li class="cale">取消</li>
+    </ul>
+</div>
+<div class="mask reg">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips" id="tip">您尚未注册成为车主方用户，无法使用该功能！</p>
+    <div class="botton">
+        <a href="#" class="go">先逛逛</a>
+        <a href="{:U('Carowner/regist')}" class="member">去注册</a>
+    </div>
+</div>
+
+<div class="mask mem">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips">您还不是车主会员，无法使用该功能！</p>
+    <div class="botton">
+        <a href="#" class="go">先逛逛</a>
+        <a href="{:U('Carowner/member')}" class="member">成为会员</a>
+    </div>
+</div>
+<div class="dialog_img" style="display: none">
+    <div class="lazy_tip" id="lazy_tip" style="display: none;">
+        <span>1%</span><br>
+        加载是很重要的......
+        <div class="l">
+            <canvas class="sonic" height="100" width="100" style="margin-top: 0px;"></canvas>
+        </div>
+    </div>
+    <div class="lazy_cover" style="display: none;"></div>
+    <div class="resource_lazy hide"></div>
+
+    <div class="pic_edit">
+        <h2 style="color: #FFFFFF"></h2>
+        <div class="btns">
+            <a id="resBtn" class="btn-s">放弃</a>
+            <a id="clipBtn" class="btn-s">完成</a>
+        </div>
+        <div id="clipArea" style="-webkit-user-select: none; overflow: hidden; position: relative;">
+            <div class="photo-clip-view"
+                 style="position: absolute; left: 50%; top: 50%; width: 336.375px; height: 336.375px; margin-left: -168.188px; margin-top: -168.188px;">
+                <div class="photo-clip-moveLayer"
+                     style="transform-origin: 0px 0px 0px; transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) scale(1) translateZ(0px); touch-action: none; -webkit-user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                    <div class="photo-clip-rotateLayer"></div>
+                </div>
+            </div>
+            <div class="photo-clip-mask"
+                 style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; pointer-events: none;">
+                <div class="photo-clip-mask-left"
+                     style="position: absolute; left: 0px; right: 50%; top: 50%; bottom: 50%; width: auto; height: 336.375px; margin-right: 168.188px; margin-top: -168.188px; margin-bottom: -168.188px; background-color: rgba(0, 0, 0, 0);"></div>
+                <div class="photo-clip-mask-right"
+                     style="position: absolute; left: 50%; right: 0px; top: 50%; bottom: 50%; margin-left: 168.188px; margin-top: -168.188px; margin-bottom: -168.188px; background-color: rgba(0, 0, 0, 0);"></div>
+                <div class="photo-clip-mask-top"
+                     style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 50%; margin-bottom: 168.188px; background-color: rgba(0, 0, 0, 0);"></div>
+                <div class="photo-clip-mask-bottom"
+                     style="position: absolute; left: 0px; right: 0px; top: 50%; bottom: 0px; margin-top: 168.188px; background-color: rgba(0, 0, 0, 0);"></div>
+                <div class="photo-clip-area"
+                     style="border: 1px dashed rgb(221, 221, 221); position: absolute; left: 50%; top: 50%; width: 336.375px; height: 336.375px; margin-left: -169.188px; margin-top: -169.188px;"></div>
+            </div>
+        </div>
+
+
+    </div>
+    <img src="" title="upload.jpg" filename="" id="hit"
+         style="display: none; z-index: 9; background-color: rgb(102, 102, 102); background-size: contain; background-position: 50% 50%; background-repeat: no-repeat;">
+    <div id="cover"></div>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script src="__PUBLIC__/home/js/sonic.js"></script>
+<script src="__PUBLIC__/home/js/comm.js"></script>
+<script src="__PUBLIC__/home/js/hammer.js"></script>
+<script src="__PUBLIC__/home/js/iscroll-zoom.js"></script>
+<script src="__PUBLIC__/home/js/jquery.photoClip.js"></script>
+
+
+<script>
+    $(function () {
+
+        let user = '';
+
+        function getOwner() {
+            $.get({
+                url: URL + '/users/index.html?type=2',
+                async: true,
+                dataType: 'json',
+                success: function (data, status) {
+                    user = data.data;
+                    let type = '';
+                    if (user.type == 1) {
+
+                        if (user.type_goods == 1) {
+                            type = '货主';
+                        } else {
+                            type = '货站';
+                        }
+                    } else if (user.type == 2) {
+                        type = '车主';
+                    }
+
+                    if (user.car_empty == 1) {
+                        $('#switch').val(1);
+                        $('#switch').prop('checked', true);
+                    } else {
+                        $('#switch').val(0);
+                        $('#switch').prop('checked', false);
+                    }
+                    let html = '<img id="header_img" src=" ' + user.header_img + ' ">';
+
+                    $('.detail-img').append(html);
+                    let name = '<h3  class="detail-name"> ' + user.name + '<span class="name-title">' + type + '</span></h3>';
+                    $('.detail-img').after(name);
+                    if (user.id_no == '') {
+                        $('.num').text('身份证号:---------');
+                    } else {
+                        $('.num').text('身份证号:' + user.id_no.replace(/(\d{4})\d{10}(\d{4})/, '$1****$2'));
+                    }
+
+
+                    if (user.vip == 1) {
+                        $('#mem').addClass('vv');
+                        $('#mem').removeClass('v');
+                    } else {
+                        $('#mem').addClass('v');
+                        $('#mem').removeClass('vv');
+                    }
+
+                    if (user.phone != 0) {
+                        $('.phone').text(user.phone);
+                    }
+
+                    $('.car_number_plate').text(user.car_number_plate);
+                    let car_type_lenght = '';
+                    if (user.car_lenght != '') {
+                        car_type_lenght += user.car_lenght + '/';
+                    }
+                    if (user.car_type != '') {
+                        car_type_lenght += user.car_type + '/';
+                    }
+                    if (user.car_load != 0) {
+                        car_type_lenght += user.car_load + '吨';
+                    }
+                    $('.attr').text(car_type_lenght);
+
+                }
+            })
+        }
+
+        getOwner();
+
+        function getNum(){
+            $.get(URL+'/lines/notice',{
+                    datatype:'json'
+                },
+                function (data) {
+                    if(data.code === 1){
+                        let num = '';
+                        let d = data.data;
+                        if(d > 0){
+                            num += '<span class="tipss">'+d+'</span>';
+                            $('.chang').prepend(num);
+                        }
+
+                    }
+                }
+            )
+        }
+        getNum();
+        $('.btnClickbang').click(function () {
+            if (user.state == 3) {
+                window.location = "{:U('Carowner/checkMobile')}";
+            } else if (user.state == 2) {
+                window.location = "{:U('Carowner/checkMobile')}";
+            } else if (user.state == 4) {
+                $('#tip').text('审核不通过，请重新注册');
+                $('.dialog').show();
+                $('.reg').show();
+            } else {
+                $('.dialog').show();
+                $('.reg').show();
+            }
+        });
+
+        $('.btnClickRou').click(function () {
+            if (user.state == 2) {
+                layer.msg('用户资料审核中!请等待');
+            } else if (user.state == 4) {
+                $('#tip').text('审核不通过，请重新注册');
+                $('.dialog').show();
+                $('.reg').show();
+            } else if (user.state == 3) {
+                if (user.vip == 0) {
+                    $('.dialog').show();
+                    $('.mem').show();
+                } else {
+                    window.location = "{:U('Carowner/route')}";
+                }
+            } else {
+                $('.dialog').show();
+                $('.reg').show();
+            }
+
+
+        });
+
+
+        $('.go').click(function () {
+            $('.dialog,.mask').hide()
+        })
+
+//    点击客服电话弹窗
+        $('.kefu').click(function () {
+            $('.dialog').show();
+            $('.mob-mask').slideDown(500);
+        });
+        $('.cale,.dialog').click(function () {
+            $('.dialog').hide();
+            $('.mob-mask').slideUp(500);
+        });
+        $('#resBtn').click(function () {
+            $('.dialog_img').hide();
+        });
+
+
+        $("#onoffswitch").click(function (e) {
+            e.preventDefault();
+            if (user.state == 3) {
+                clickSwitch();
+            } else if (user.state == 2) {
+                layer.msg('用户资料审核中!请等待');
+            } else if (user.state == 4) {
+                $('#tip').text('审核不通过，请重新注册');
+                $('.dialog').show();
+                $('.reg').show();
+            } else {
+                $('.dialog').show();
+                $('.reg').show();
+            }
+        });
+
+        var clickSwitch = function () {
+            let val = $('#switch').val();
+            if (val == 1) {
+                updatecar(0);
+
+            } else {
+                updatecar(1);
+            }
+        };
+
+        function updatecar(type) {
+            let url = URL + '/users/updatecar';
+
+            $.post(url, {car_empty: type}, function (data, status) {
+                if (data.code == 1) {
+                    if (type == 0) {
+                        $("#switch").prop('checked', false);
+                        $('#switch').val(type);
+                        layer.msg('设置为运输中!');
+                    } else {
+
+                        $("#switch").prop('checked', true);
+                        $('#switch').val(type);
+                        layer.msg('设置为空车!');
+                    }
+
+                } else {
+                    layer.msg(data.msg);
+                }
+            });
+        }
+    });
+
+
+</script>
+<script>
+
+    var body_width = $('body').width();
+    var body_height = $('body').height();
+    $("#clipArea").photoClip({
+        width: body_width * 0.8125,
+        height: body_width * 0.8125,
+        file: "#myfile",
+        view: "#hit",
+        ok: "#clipBtn",
+        loadStart: function () {
+            //console.log("照片读取中");
+            $("#loadingToast").show();
+            $('.lazy_tip span').text('');
+            $('.lazy_cover,.lazy_tip').show();
+        },
+        loadComplete: function () {
+            //console.log("照片读取完成");
+            $("#loadingToast").hide();
+            $('.dialog_img').fadeIn();
+            $('.lazy_cover,.lazy_tip').hide();
+        },
+        clipFinish: function (dataURL) {
+            $('#hit').attr('src', dataURL);
+            saveImageInfo();
+        }
+    });
+
+
+    //图片上传
+    function saveImageInfo() {
+        var filename = $('#hit').attr('fileName');
+        var img_data = $('#hit').attr('src');
+        var productId = $("#productId").val();
+        var jsonData = {"img": img_data, "productId": productId, "header_img": 1};
+        $.ajax({
+            url: URL + "/index/upload2",
+            type: "post",
+            data: jsonData,
+            dataType: "json",
+            beforeSend: function (XMLHttpRequest) {
+                // $.dialog.tips('正在提交数据...',600,'loading.gif');
+                $("#loadingToast").show();
+                console.log('正在提交数据');
+            },
+            success: function (data) {
+                console.log(data);
+                $('#header_img').attr('src', data.data);
+                $('.dialog_img').css('display', 'none');
+            }
+        });
+
+    }
+
+</script>
+</body>
+</html>

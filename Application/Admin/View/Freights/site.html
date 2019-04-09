@@ -1,0 +1,61 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    <div class="main-right">
+        <h1 class="main-right-title">运费管理 > 站点管理</h1>
+        <div class="search">
+            <a href="{:U('freights/ssite')}" class="confirmBtn margin-top" id="add">新增</a>
+        </div>
+        <div class="center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>站</th>
+                    <th>编号</th>
+                    <th>局</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name='info' id='vo'>
+                <tr>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.code}</td>
+                    <td>{$codes[$vo['parent']]}</td>
+                    <td>
+                        <a href="#" onclick="deleteAd('{$vo.id}')" class="delebtn">删除</a>
+                    </td>
+                </tr>
+                </volist>
+                </tbody>
+            </table>
+            
+            <div class="page clearfix">
+                <form name="union_form" action="{:U('/admin/freights/' . $action)}" method="get">
+                    <input type="hidden" name="search" value="{$search}">
+                    {$page}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+        
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script>
+    function deleteAd(id) {
+        var message = '您确定删除该信息?';
+        if (confirm(message)) {
+            $.post("/admin/freights/dsite", 'id=' + id,
+                function(data) {
+                    if (data.code == 1) {
+                        window.location.reload();
+                    } else {
+                        alert(data.msg);
+                    }
+                }, 'json');
+        }
+    }
+</script>
+</body>
+</html>

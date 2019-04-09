@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>注册</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/webuploader.css"/>
+</head>
+<body>
+<div id="app">
+
+    <div class="wrap">
+        <form action="" class="form">
+            <p class="regist-title"><span style="color:red">*</span>手机号 </p>
+            <label for="" class="mob-label">
+                <input type="number" name="phone" value="{$user['phone']}" placeholder="请填写手机号" class="mob">
+                <a class="getCode" id="enableSendBtn">获取验证码</a>
+            </label>
+            <label for="" class="mob-label bor">
+                <input type="number" name="phone_code" placeholder="请填写验证码" class="verification">
+            </label>
+            <p class="regist-title"><span style="color:red">*</span>身份信息</p>
+            <label for="" class="mob-label">
+                <input type="text" name="name" value="{$user['name']}" placeholder="请填写真实姓名">
+            </label>
+            <label for="" class="mob-label">
+                <input type="text" name="id_no" value="{$user['id_no']}" placeholder="请填写身份证号码">
+            </label><!--
+            <label for="" class="mob-label arrow">
+                <span><span style="color:red">*</span>头像</span>
+                <span style="font-size: 12px;color:#666;">(真实个人照片，五官清晰可见)</span>
+                <empty name="user['header_img']">
+                    <img src="__PUBLIC__/home/images/chezhu/icon_photo_n.png" width="67px" height="67px" class="upload-img"
+                         id="image1">
+                    <else />
+                    <img src="{$user['header_img']}" width="67px" height="67px" class="upload-img"
+                         id="image1">
+                </empty>
+            
+                <div class="upload-btn btn-old">
+                    <input type="file" class="files" name="file" id="image_btn1" <if condition="$agent eq 'android'">capture="environment"</if> accept="image/*" onchange="imgHeader(this)" multiple >
+                    <input type="hidden" name="header_img" id="hidden-img1" value="{$user['header_img']}">
+                </div>
+            </label>
+            <label for="" class="mob-label arrow">
+                <span><span style="color:red">*</span>身份证正面</span>
+                <span style="font-size: 12px;color:#666;">(证件信息清晰可见。)</span>
+                <empty name="user['id_face_img']">
+                    <img src="__PUBLIC__/home/images/chezhu/sfz_zm.png" width="86px" height="54px" class="upload-img"
+                         id="image2">
+                    <else />
+                    <img src="{$user['id_face_img']}" width="86px" height="54px" class="upload-img"
+                         id="image2">
+                </empty>
+
+                <div class="upload-btn btn-new">
+                    <input type="file" class="files" name="file" id="image_btn2" <if condition="$agent eq 'android'">capture="environment"</if> accept="image/*" onchange="imgPreview(this)" multiple>
+                    <input type="hidden" name="id_face_img" id="hidden-img2" value="{$user['id_face_img']}">
+                </div>
+
+            </label>
+
+            <label for="" class="mob-label arrow">
+                <span><span style="color:red">*</span>行驶证照片</span>
+                <span style="font-size: 12px;color:#666;">(证件信息清晰可见。)</span>
+                <empty name="user['car_license_img']">
+                    <img src="__PUBLIC__/home/images/chezhu/xsz_1.png" width="86px" height="54px" class="upload-img"
+                         id="image4">
+                    <else />
+                    <img src="{$user['car_license_img']}" width="86px" height="54px" class="upload-img"
+                         id="image4">
+                </empty>
+
+                <div class="upload-btn btn-foru">
+                    <input type="file" class="files" name="file" id="image_btn4" <if condition="$agent eq 'android'">capture="environment"</if> accept="image/*" onchange="imgLicense(this)" multiple>
+                    <input type="hidden" name="car_license_img" id="hidden-img4" value="{$user['car_license_img']}">
+                </div>
+            </label>-->
+            <p class="regist-title"><span style="color:red">*</span>车辆信息 </p>
+            <label for="" class="car-label car_number_plate">
+                <input type="text" placeholder="请选择车牌号码" name="car_number_plate_name" value="{$user['car_number_plate']}" disabled="disabled"
+                       class="ctiy-c-input car-input" id="car-num" >
+                <input type="hidden" name="car_number_plate" value="{$user['car_number_plate']}">
+            </label>
+            <label for="" class="car-label car-length">
+                <input type="text" placeholder="请选择车长/车型" name="car_lenght_type" value="{$user['car_lenght']}<if condition="$user['car_type'] neq ''">/</if>{$user['car_type']}" disabled="disabled"
+                       class="ctiy-c-input car-input">
+                <input type="hidden" name="car_lenght" value="{$user['car_lenght']}">
+                <input type="hidden" name="car_type" value="{$user['car_type']}">
+            </label>
+<!--            <label for="" class="car-label">
+                <input type="text" placeholder="请输入车辆载重" name="car_load" value="{$user['car_load']}" class="ctiy-c-input car-input">
+                <span class="ton" style="background: #fff;z-index: 1000;text-align: right;margin-right: 10px;">吨</span>
+            </label>
+            <label for="" class="mob-label arrow">
+                <span>车辆照片</span>
+                <span style="font-size: 12px;color:#666;">(车辆照片清晰可见。)</span>
+                <empty name="user['car_img']">
+                    <img src="__PUBLIC__/home/images/chezhu/clzp_1.png" width="86px" height="54px" class="upload-img"
+                         id="image5">
+                    <else />
+                    <img src="{$user['car_img']}" width="86px" height="54px" class="upload-img"
+                         id="image5">
+                </empty>
+                <div class="upload-btn btn-five">
+                    <input type="file" class="files" name="file" id="image_btn5" <if condition="$agent eq 'android'">capture="environment"</if> accept="image/*"  onchange="imgCar(this)" multiple>
+                    <input type="hidden" name="car_img" id="hidden-img5" value="{$user['car_img']}">
+                </div>
+            </label>-->
+            <a href="javascript:void(0)" class="mob-btn" id="register">注册</a>
+            <div class="agrent">
+                <input type="checkbox" name="red" value="1" class="checkbox" checked>我已阅读并同意<a href="{:U('Carowner/services')}" class="xieyi">服务协议</a>
+            </div>
+
+        </form>
+    </div>
+    <div class="dialog" style="display: none"></div>
+    <div class="mob-mask car-c car_number_plate_type_show">
+        <ul>
+            <li data="1">黄色车牌</li>
+            <li data="2">蓝色车牌</li>
+        </ul>
+        <div class="cancel confirm sure">确定</div>
+    </div>
+    <div class="show-input temporary"><input type="text" id="temporary"></div>
+    <div class="car-num city car-c car_number_plate_show">
+        <p class="curr-add text-algin">选择车牌号码<span class="delete fr delete_plate">删除</span></p>
+        <ul class="car_number_plate_a">
+            <li>京</li>
+            <li>津</li>
+            <li>沪</li>
+            <li>渝</li>
+            <li>冀</li>
+            <li>蒙</li>
+            <li>豫</li>
+            <li>鲁</li>
+            <li>晋</li>
+            <li>陕</li>
+            <li>皖</li>
+            <li>青</li>
+            <li>苏</li>
+            <li>浙</li>
+            <li>鄂</li>
+            <li>湘</li>
+            <li>赣</li>
+            <li>宁</li>
+            <li>闽</li>
+            <li>粤</li>
+            <li>桂</li>
+            <li>琼</li>
+            <li>川</li>
+            <li>赣</li>
+            <li>贵</li>
+            <li>云</li>
+            <li>辽</li>
+            <li>吉</li>
+            <li>黑</li>
+            <li>蒙</li>
+        </ul>
+        <ul class="car_number_plate_num" style="display: none">
+            <li>A</li>
+            <li>B</li>
+            <li>C</li>
+            <li>D</li>
+            <li>E</li>
+            <li>F</li>
+            <li>G</li>
+            <li>H</li>
+            <li>J</li>
+            <li>K</li>
+            <li>L</li>
+            <li>M</li>
+            <li>N</li>
+            <li>P</li>
+            <li>Q</li>
+            <li>R</li>
+            <li>S</li>
+            <li>T</li>
+            <li>U</li>
+            <li>V</li>
+            <li>W</li>
+            <li>X</li>
+            <li>Y</li>
+            <li>Z</li>
+            <li>0</li>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+        </ul>
+        <div class="cancel confirm sure p">取消</div>
+    </div>
+    <div class="city car-x " style="display: none">
+        <p class="car-p">车长</p>
+        <ul class="lenght-car">
+            <li>不限</li>
+            <li>4.5米</li>
+            <li>5.2米</li>
+            <li>6.2米</li>
+            <li>6.8米</li>
+            <li>7.2米</li>
+            <li>8.6米</li>
+            <li>9.6米</li>
+            <li>12.5米</li>
+            <li>13米</li>
+            <li>13.5米</li>
+            <li>16米</li>
+            <li>17米</li>
+            <li>17.5米</li>
+        </ul>
+        <p class="car-p">车型</p>
+        <ul class="type-car">
+            <li>不限</li>
+            <li>平板</li>
+            <li>高栏</li>
+            <li>矮栏</li>
+            <li>高低板</li>
+            <li>保温</li>
+            <li>冷藏</li>
+            <li>危险品</li>
+            <li>自卸</li>
+            <li>中卡</li>
+            <li>面包</li>
+            <li>厢式</li>
+        </ul>
+        <a href="javascript:void(0)" class="cancel confirm" id="type">确定</a>
+    </div>
+    <!--信息提示框-->
+    <div class="tip-layout">
+        <div class="layout">
+            <p>您的注册信息已提交成功，请等待平台查看，预计6小时内告知您注册结果，请关注公众号推送通知</p>
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/home/js/ajaxfileupload.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+
+<script>
+    //头像
+    function imgHeader(fileDom){
+        //判断是否支持FileReader
+        if (window.FileReader) {
+            var reader = new FileReader();
+        } else {
+            layer.msg("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+        }
+
+        //获取文件
+        var file = fileDom.files[0];
+        var imageType = /^image\//;
+        //是否是图片
+        if (!imageType.test(file.type)) {
+            layer.msg("请选择图片！");
+            return;
+        }
+        //读取完成
+        reader.onload = function(e) {
+            //获取图片dom
+            var img = document.getElementById("image1");
+            //图片路径设置为读取的图片
+
+
+            layer.load(2);
+            var img_data = e.target.result;
+            var jsonData = {"img": img_data, "header_img":''};
+            $.ajax({
+                url: URL + "/index/upload2",
+                type: "post",
+                data: jsonData,
+                dataType: "json",
+                success: function (data) {
+                    //$('#image1').attr('src', data.data);
+                    $('#hidden-img1').val(data.data);
+                    img.src = e.target.result;
+                    layer.closeAll('loading');
+                }
+            });
+        };
+        reader.readAsDataURL(file);
+    }
+    //身份证正面
+    function imgPreview(fileDom){
+        //判断是否支持FileReader
+        if (window.FileReader) {
+            var reader = new FileReader();
+        } else {
+            layer.msg("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+        }
+
+        //获取文件
+        var file = fileDom.files[0];
+        var imageType = /^image\//;
+        //是否是图片
+        if (!imageType.test(file.type)) {
+            layer.msg("请选择图片！");
+            return;
+        }
+        //读取完成
+        reader.onload = function(e) {
+            //获取图片dom
+            var img = document.getElementById("image2");
+            //图片路径设置为读取的图片
+            layer.load(2);
+
+            var img_data = e.target.result;
+            var jsonData = {"img": img_data, "header_img":''};
+            $.ajax({
+                url: URL + "/index/upload2",
+                type: "post",
+                data: jsonData,
+                dataType: "json",
+
+                success: function (data) {
+                    //$('#image2').attr('src', data.data);
+                    $('#hidden-img2').val(data.data);
+                    img.src = e.target.result;
+                    layer.closeAll('loading');
+                }
+            });
+        };
+        reader.readAsDataURL(file);
+    }
+
+
+
+    //驾驶证
+    function imgLicense(fileDom){
+        //判断是否支持FileReader
+        if (window.FileReader) {
+            var reader = new FileReader();
+        } else {
+            layer.msg("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+        }
+
+        //获取文件
+        var file = fileDom.files[0];
+        var imageType = /^image\//;
+        //是否是图片
+        if (!imageType.test(file.type)) {
+            layer.msg("请选择图片！");
+            return;
+        }
+        //读取完成
+        reader.onload = function(e) {
+            //获取图片dom
+            var img = document.getElementById("image4");
+            //图片路径设置为读取的图片
+            layer.load(2);
+
+            var img_data = e.target.result;
+            var jsonData = {"img": img_data, "header_img":''};
+            $.ajax({
+                url: URL + "/index/upload2",
+                type: "post",
+                data: jsonData,
+                dataType: "json",
+
+                success: function (data) {
+                    //$('#image4').attr('src', data.data);
+                    $('#hidden-img4').val(data.data);
+                    img.src = e.target.result;
+                    layer.closeAll('loading');
+                }
+            });
+        };
+        reader.readAsDataURL(file);
+    }
+    //车辆照片
+    function imgCar(fileDom){
+        //判断是否支持FileReader
+        if (window.FileReader) {
+            var reader = new FileReader();
+        } else {
+            layer.msg("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+        }
+
+        //获取文件
+        var file = fileDom.files[0];
+        var imageType = /^image\//;
+        //是否是图片
+        if (!imageType.test(file.type)) {
+            layer.msg("请选择图片！");
+            return;
+        }
+        //读取完成
+        reader.onload = function(e) {
+            //获取图片dom
+            var img = document.getElementById("image5");
+            //图片路径设置为读取的图片
+            layer.load(2);
+
+
+            var img_data = e.target.result;
+            var jsonData = {"img": img_data, "header_img":''};
+            $.ajax({
+                url: URL + "/index/upload2",
+                type: "post",
+                data: jsonData,
+                dataType: "json",
+                success: function (data) {
+                    // $('#image5').attr('src', data.data);
+                    $('#hidden-img5').val(data.data);
+                    img.src = e.target.result;
+                    layer.closeAll('loading');
+                }
+            });
+        };
+        reader.readAsDataURL(file);
+
+    }
+</script>
+<script>
+    $(function () {
+
+
+        $('#register').click(function () {
+
+            let phone = $("input[name=phone]").val();
+            let phone_code = $("input[name=phone_code]").val();
+            let name = $("input[name=name]").val();
+            let id_no = $("input[name=id_no]").val();
+
+            let header_img = $("input[name=header_img]").val();
+            let id_face_img = $("input[name=id_face_img]").val();
+//            let id_word_img = $("input[name=id_word_img]").val();
+            let car_license_img = $("input[name=car_license_img]").val();
+
+            let car_number_plate_type = $("input[name=car_number_plate_type]").val();
+            let car_number_plate = $("input[name=car_number_plate]").val();
+            let car_lenght = $("input[name=car_lenght]").val();
+            let car_type = $("input[name=car_type]").val();
+            let car_load_num = $("input[name=car_load_num]").val();
+            let car_load = $("input[name=car_load]").val();
+
+
+            let car_img = $("input[name=car_img]").val();
+
+            let red = $("input[name=red]:checked").val();
+
+
+            if (phone == '') {
+                layer.msg('请填写手机号');
+                return false;
+            }
+            if (!(phone.length === 11 && /^1\d{10}$/.test(phone))) {
+                layer.msg('请填写有效手机号');
+                return false;
+            }
+            if (phone_code == '') {
+                layer.msg('请输入验证码');
+                return false;
+            }
+            if (name == '') {
+                layer.msg('请填写真实姓名');
+                return false;
+            }
+
+            if (id_no == '') {
+                layer.msg('请填写身份证号码');
+                return false;
+            }
+            let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+            if(reg.test(id_no) === false)
+            {
+                layer.msg('身份证号格式错误');
+                return  false;
+            }
+//            if(!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(id_no)){
+//                layer.msg('身份证号格式错误');
+//                return false;
+//            }
+            if (header_img == '') {
+                layer.msg('请上传头像');
+                return false;
+            }
+            if (id_face_img == '') {
+                layer.msg('请上传身份证照片');
+                return false;
+            }
+//            if (id_word_img == '') {
+//                layer.msg('请上传身份证照片');
+//                return false;
+//            }
+
+            if (car_license_img == '') {
+                layer.msg('请上传行驶证照片');
+                return false;
+            }
+
+            if (car_number_plate == '') {
+                layer.msg('请填写车牌号码');
+                return false;
+            }
+            if (car_lenght == '') {
+                layer.msg('请选择车长/车型');
+                return false;
+            }
+            if (car_type == '') {
+                layer.msg('请填写车牌号码');
+                return false;
+            }
+            if (car_load == '') {
+                layer.msg('请填写车辆载重');
+                return false;
+            }
+
+
+            if (red != 1) {
+                layer.msg('请阅读并同意注册协议');
+                return false;
+            }
+
+            let url = URL + '/users/registerCars';
+            $.post(url, $('.form').serialize(), function (data, status) {
+                if (data.code == 1) {
+                    layer.msg(data.msg);
+                    setTimeout(function () {
+                        window.location = '/Carowner/index';
+                    }, 2000);
+                } else {
+                    layer.msg(data.msg);
+                }
+            });
+
+
+        });
+
+        let countDown = 0;
+        let flag = true;
+        $('.getCode').click(function () {
+
+            if (flag) {
+
+                countDown = 60;
+                let phone = $("input[name=phone]").val();
+                if (phone == '') {
+                    layer.msg('请填写手机号');
+                    return false;
+                }
+                if (!(phone.length === 11 && /^1\d{10}$/.test(phone))) {
+                    layer.msg('请填写有效手机号');
+                    return false;
+                }
+                flag = false;
+                let url = URL + '/index/sendCode';
+                $.post(url, {phone: phone}, function (data, status) {
+                    if (data.code == 1) {
+                        countDownFunc();
+                    } else {
+                        layer.msg(data.msg);
+                        flag = false;
+                    }
+                });
+
+            }
+
+        });
+
+        function countDownFunc() {
+            countDown--;
+            if (countDown <= 0) {
+                $('#enableSendBtn').removeAttr('disabled').text('获取确认码');
+                flag = true;
+                return;
+            } else {
+                $('#enableSendBtn').attr('disabled', true).text(countDown + '秒后重发');
+            }
+            setTimeout(function () {
+                countDownFunc();
+            }, 1000);
+        }
+
+
+        $('.sure').click(function () {
+            $('.dialog').hide();
+            $('.mob-mask').slideUp();
+            $('.car-num ').slideUp();
+            $('.car-x ').slideUp();
+            $('.show-input').hide();
+            $('.unit').hide();
+            $('.car_number_plate_show').hide();
+            $('body').css('position','static');
+        });
+        $('.dialog').click(function () {
+            $(this).hide();
+            $('.car_number_plate_type_show').slideUp();
+            $('.car-x').slideUp();
+            $('.type').slideUp();
+            $('.unit').slideUp();
+            $('.car_number_plate_show').slideUp();
+            $('.temporary').slideUp();
+            $('body').css('position','static');
+        });
+
+        $('.car_number_plate_type').click(function () {
+            $('.dialog').show();
+            $('.car_number_plate_type_show ').slideDown();
+
+        });
+        $('.car_number_plate_type_show ul li').click(function () {
+            let data = $(this).text();
+            let val = $(this).attr('data');
+            $("input[name='car_number_plate_type_name']").val(data);
+            $("input[name='car_number_plate_type']").val(val);
+            $(this).addClass('car-current').siblings().removeClass('car-current');
+
+        });
+
+
+        $('.car_number_plate').click(function () {
+            $('.dialog').show();
+            $('.car_number_plate_show').slideDown();
+            $('.temporary').show();
+            $('body').css('position','fixed');
+        });
+        let plate = '';
+        $('.car_number_plate_a li').click(function () {
+            let data = $(this).text();
+            plate += data;
+            $("#temporary").val(plate);
+            $(this).addClass('car-current').siblings().removeClass('car-current');
+            $('.car_number_plate_a').hide();
+            $('.car_number_plate_num').show();
+
+        });
+
+        let data_num ='';
+        $('.car_number_plate_num li').click(function () {
+            data_num = '';
+            let count = plate.length;
+            if(count >= 7){
+                layer.msg('你选择太多了');
+                return false;
+            }
+            $(this).addClass('car-current').siblings().removeClass('car-current');
+            data_num += $(this).text();
+
+
+            plate += data_num;
+            $("#temporary").val(plate);
+            $("input[name='car_number_plate']").val(plate);
+            $("input[name='car_number_plate_name']").val(plate);
+
+            count = plate.length;
+            if (count >= 7) {
+                $('.p').text('完成');
+            }else{
+                $('.p').text('取消');
+            }
+        });
+
+        $('.delete_plate').click(function () {
+            let del = plate.substr(-1);
+            $('.car_number_plate_show li').each(function () {
+                let del_data = $(this).text();
+                if(del_data == del){
+                    $(this).removeClass('car-current');
+                }
+
+            });
+
+            plate = plate.substring(0, plate.length - 1);
+            let count = plate.length;
+            if (count >= 7) {
+                $('.p').text('完成');
+            }else{
+                $('.p').text('取消');
+            }
+            if (count <= 0) {
+                $('.car_number_plate_a').show();
+                $('.car_number_plate_num').hide();
+            }
+            $("#temporary").val(plate);
+            $("input[name='car_number_plate']").val(plate);
+            $("input[name='car_number_plate_name']").val(plate);
+        });
+
+
+        //请选择车长/车型
+        $('.car-length').click(function () {
+            $('.dialog').show();
+            $('.car-x').slideDown();
+        });
+        let car_attr = '';
+        $('.lenght-car li').click(function () {
+
+            $(this).addClass('car-current').siblings().removeClass('car-current');
+        });
+        $('.type-car li').click(function () {
+            $(this).addClass('car-current').siblings().removeClass('car-current');
+        });
+        $('#type').click(function () {
+            $('.dialog').hide();
+            $('.car-x').hide();
+            $('.lenght-car li').each(function () {
+                if ($(this).hasClass('car-current')) {
+                    let data = $(this).text();
+                    car_attr += data + ',';
+                }
+            });
+            car_attr = car_attr.substring(0, car_attr.length - 1);
+            $("input[name='car_lenght']").val(car_attr);
+
+            $('.type-car li').each(function () {
+                if ($(this).hasClass('car-current')) {
+                    let data = $(this).text();
+                    $("input[name='car_type']").val(data);
+                    car_attr += '/' + data;
+                }
+            });
+            $("input[name='car_lenght_type']").val(car_attr);
+            car_attr = '';
+        });
+
+
+        //选择单位
+//        $('.unit ul li').click(function () {
+//            let data = $(this).text();
+//            $('#car_loadt').text(data);
+//            $('.car_loadt').val(data);
+//            $(this).addClass('car-current').siblings().removeClass('car-current');
+//        });
+//
+//        $('.ton').click(function () {
+//            $('.unit').slideDown(500);
+//            $('.dialog').show();
+//        });
+
+    })
+</script>
+
+</body>
+</html>

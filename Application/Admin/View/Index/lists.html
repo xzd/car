@@ -1,0 +1,98 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    <div class="main-right">
+        <h1 class="main-right-title">首页管理 > <if condition="$type eq 1">广告管理<elseif condition="$type eq 2" />合作企业管理<else />商家管理</if></h1>
+        <div class="search">
+            <a href="{:U('index/save', ['type' => $type])}" class="confirmBtn margin-top" id="add">新增</a>
+        </div>
+        <div class="center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <if condition="$type eq 1">
+                        <th>名称</th>
+                        <th>图片</th>
+                        <th>广告位</th>
+                    <elseif condition="$type eq 2" />
+                        <th>名称</th>
+                        <th>图片</th>
+                        <th>联系人</th>
+                        <th>电话</th>
+                        <th>手机</th>
+                        <th>地址</th>
+                    <else />
+                        <th>商家名称</th>
+                        <th>商家分类</th>
+                        <th>联系人</th>
+                        <th>地址</th>
+                    </if>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name='info' id='vo'>
+                <tr>
+                <if condition="$type eq 1 or $vo['type'] eq 3">
+                    <td>{$vo.name}</td>
+                    <td><img src="{$vo.image}" style="height: 100px;" /></td>
+                    <td><if condition="$vo['type'] eq 1">顶部广告位<else />中部广告位</if></td>
+                <elseif condition="$vo['type'] eq 2" />
+                    <td>{$vo.name}</td>    
+                    <td><img src="{$vo.image}" style="height: 100px;" /></td>
+                    <td>{$vo.contact}</td>
+                    <td>{$vo.telephone}</td>
+                    <td>{$vo.mobile}</td>
+                    <td>{$vo.address}</td>
+                <else />
+                    <td>{$vo.name}</td>
+                    <td>
+                        <if condition="$vo['category'] eq 1">吃饭
+                        <elseif condition="$vo['category'] eq 2" />住宿
+                        <elseif condition="$vo['category'] eq 3" />修理
+                        <elseif condition="$vo['category'] eq 4" />加油
+                        <elseif condition="$vo['category'] eq 5" />救援
+                        <elseif condition="$vo['category'] eq 6" />其他
+                        </if>
+                    </td>
+                    <td>{$vo.telephone}</td>
+                    <td>{$vo.address}</td>
+                </if>
+                    <td>
+                        <a href="{:U('index/save', ['id' => $vo['id'], 'type' => $type])}" class="edit">编辑</a>
+                        <a href="#" onclick="deleteAd('{$vo.id}', '{$type}')" class="delebtn">删除</a>
+                    </td>
+                </tr>
+                </volist>
+                </tbody>
+            </table>
+            
+            <div class="page clearfix">
+                <form name="union_form" action="{:U('/admin/index/index')}" method="get">
+                    <input type="hidden" name="search" value="{$search}">
+                    {$page}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+        
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script>
+    function deleteAd(id, type) {
+        var message = '您确定删除该广告?';
+        if (confirm(message)) {
+            $.post("/admin/index/delete", 'id=' + id + '&type=' + type,
+                function(data) {
+                    if (data.code == 1) {
+                        window.location.reload();
+                    } else {
+                        alert(data.msg);
+                    }
+                }, 'json');
+        }
+    }
+</script>
+</body>
+</html>

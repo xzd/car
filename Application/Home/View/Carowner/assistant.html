@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>卡友助手</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <style>
+        body {
+            background: #f7f7f7
+        }
+
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <!--<div class="head_c">-->
+        <!--<div class="back">-->
+            <!--<a href="javascript:history.back(-1)" class="backBtn"></a>-->
+        <!--</div>-->
+        <!--<div class="card_headb">运费查询</div>-->
+        <!--<div class="home">-->
+            <!--<a href="newIndex.html" class="homeBtn"></a>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="entry">
+        <ul class="entry_list clearfix">
+            <li>
+                <a href="eat.html">
+                    <i class="icon eat"></i>
+                    吃饭
+                </a>
+            </li>
+            <li>
+                <a href="putUp.html">
+                    <i class="icon zhusu"></i>
+                    住宿
+                </a>
+            </li>
+
+            <li>
+                <a href="repair.html">
+                    <i class="icon xiuli"></i>
+                    修理
+                </a>
+            </li>
+            <li>
+                <a href="fighting.html">
+                    <i class="icon jiayou"></i>
+                    加油
+                </a>
+            </li>
+            <li>
+                <a href="rescue.html">
+                    <i class="icon jiuy"></i>
+                    救援
+                </a>
+            </li>
+            <li>
+                <a href="other.html">
+                    <i class="icon qit"></i>
+                    其他
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        wx.config(<?php echo $js->config(array('onMenuShareQQ','onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareWeibo'), false) ?>);
+
+
+        wx.ready(function(){
+            // wx.hideOptionMenu();
+            wx.onMenuShareTimeline({
+                title: '车来货往',
+                link: 'http://www.chelaihuowang.xin/Carowner/newIndex.html',
+                imgUrl: ' http://www.chelaihuowang.xin/Public/home/images/chezhu/shareLogo.jpg',
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+//                    alert('分享到朋友圈成功');
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+//                    alert('你没有分享到朋友圈');
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: '车来货往',
+                desc: '车来货往是专注于满洲里木材运输的专业信息平台',
+                link: 'http://www.chelaihuowang.xin/Carowner/newIndex.html',
+                imgUrl: ' http://www.chelaihuowang.xin/Public/home/images/chezhu/shareLogo.jpg',
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                trigger: function (res) {
+                    // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+                },
+                success: function (res) {
+                    console.log('分享给朋友成功');
+                },
+                cancel: function (res) {
+                    console.log('你没有分享给朋友');
+                },
+                fail: function (res) {
+                    console.log(JSON.stringify(res));
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

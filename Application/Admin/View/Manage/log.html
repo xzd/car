@@ -1,0 +1,82 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    <div class="main-right">
+        <h1 class="main-right-title">系统管理 > 日志管理</h1>
+        <div class="search">
+            <form class="form-inline" method="get" action="{:U('manage/log')}">
+            <label for="admin_id" class="margin-right">
+                <span>用户名</span>
+                <select name="admin_id" id="admin_id" class="input">
+                    <option value="">全部</option>
+                    <volist name="admins" id="admin">
+                        <option value="{$key}" <if condition="$search['admin_id'] eq $key">selected</if>>{$admin}</option>
+                    </volist>
+                </select>
+            </label>
+            <label for="">
+                <span>日期</span>
+                <input type="text" name="start_date" value="{$search.start_date}" class="input" id="calendar-mobile-range-start">
+                <input type="text" name="end_date" value="{$search.end_date}" class="input" id="calendar-mobile-range-end">
+            </label>
+            <a href="#" onclick="$('.form-inline').submit();" class="searchBtn fr margin-top"><i class="icon"></i>搜索</a>
+            </form>
+        </div>
+        <div class="center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>菜单</th>
+                    <th>操作</th>
+                    <th>描述</th>
+                    <th>操作时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="info" id="vo">
+                <tr>
+                    <td>{$vo.admin_name}</td>
+                    <td>{$vo.menu}</td>
+                    <td>{$vo.action}</td>
+                    <td>{$vo.desc}</td>
+                    <td>{$vo.create_time}</td>
+                </tr>
+                </volist>
+                </tbody>
+            </table>
+            <div class="page clearfix">
+                <form name="union_form" action="{:U('/admin/manage/log')}" method="get">
+                    <input type="hidden" name="search" value="{$search}">
+                    {$page}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script src="__PUBLIC__/js/jquery.mobile.custom.js"></script>
+<script src="__PUBLIC__/js/jquery-asDatepicker.js"></script>
+<script>
+    //调用日历插件
+    $(document).ready(function(){
+        var start = $('#calendar-mobile-range-start').val();
+        var end = $('#calendar-mobile-range-end').val();
+        
+        $('#calendar-mobile-range-start').asDatepicker({
+            mode: 'single',
+            mobileMode: true,
+            date: start
+        });
+        
+        $('#calendar-mobile-range-end').asDatepicker({
+            mode: 'single',
+            mobileMode: true,
+            date: end
+        });
+    });
+</script>
+</body>
+</html>

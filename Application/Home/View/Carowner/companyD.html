@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>企业中心</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+    <style>
+        body{background: #f7f7f7}
+        * {
+            font-family: PingFang SC
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="card_head"></div>
+    <div class="banner_img">
+    </div>
+
+    <dl class="company">
+    </dl>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script>
+    $(function () {
+        function getList(id) {
+            $.get({
+                url: URL + '/index/info?id=',
+                async: true,
+                dataType: 'json',
+                data: {
+                    'id': id
+                },
+                success: function (res) {
+                    console.log(res);
+                    let data = res.data;
+                    $('.card_head').text(data.name);
+                    let html = '<img src=" ' + data.image + ' ">';
+                    $('.banner_img').append(html);
+                    let enHtml = '';
+                        enHtml += '<dt>公司信息</dt>';
+                        enHtml += '<dd class="company_name">' + data.name + '</dd>';
+                        enHtml += '<dd>' + data.contact+ '</dd>';
+                        enHtml += '<dd>联系人：' + data.contact + '</dd>';
+                        enHtml += '<dd>电话：' + data.telephone + '</dd>';
+                        enHtml += ' <dd>手机：' + data.mobile + '</dd>';
+                        enHtml += '<dd>' + data.address + '</dd>';
+
+                    $('.company').append(enHtml);
+
+
+                }
+            })
+        }
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return unescape(r[2]); return null; //返回参数值
+        }
+        var id = getUrlParam('id');
+        getList(id);
+    })
+</script>
+</body>
+</html>

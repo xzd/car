@@ -1,0 +1,79 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    <form id="submit-form" class="form-inline" method="post" action="{:U('users/free')}">
+    <div class="main-right">
+        <h1 class="main-right-title">注册用户管理 > 新增注册用户会员免费管理</h1>
+        <p class="add-title">
+            新增注册用户会员免费设置
+        </p>
+            
+        <div class="setting">
+            <h3>功能开关 <span>(若该按钮关闭，则该功能即刻关闭，且不可进行功能设置；但已享有该功能服务的用户在此前设置的会员免费期限结束前，
+                仍享有该服务，直至免费期限结束。)</span></h3>
+            <div class="switch-btn">
+                <if condition="$info['start'] eq 1 ">
+                    <i class="switch switch-open"></i>
+                    <p class="status">开启状态</p>
+                <else />
+                    <i class="switch switch-close"></i>
+                    <p class="status">关闭状态</p>
+                </if>
+                <input type="hidden" id="start" name="start" value="{$info['start']}" />
+            </div>
+        </div>
+        <div class="setting">
+            <h3>功能设置 <span>(功能开启期限及会员免费期限)</span></h3>
+            <div class="settingGroup">
+                <p class="seeting-title">功能开启期限：</p>
+                <input type="text" class="input" name="start_date" value="{$info.start_date}" id="calendar-mobile-range-start">
+                <input type="text" class="input" name="end_date" value="{$info.end_date}" id="calendar-mobile-range-end">
+            </div>
+            <div class="settingGroup">
+                <p class="seeting-title">会员免费期限：</p>
+                <label for="radio1">
+                    <input type="radio" id="radio1" name="free_month" value="1" class="radio" <if condition="$info.free_month eq 1">checked</if>>1个月
+                </label>
+                <label for="radio2">
+                    <input type="radio" id="radio2" name="free_month" value="3" class="radio" <if condition="$info.free_month eq 3">checked</if>>3个月
+                </label>
+                <label for="radio3">
+                    <input type="radio" id="radio3" name="free_month" value="6" class="radio" <if condition="$info.free_month eq 6">checked</if>>6个月
+                </label>
+                <label for="radio4">
+                    <input type="radio" id="radio4" name="free_month" value="12" class="radio" <if condition="$info.free_month eq 12">checked</if>>1年
+                </label>
+                <label for="radio5">
+                    <input type="radio" id="radio5" name="free_month" value="24" class="radio" <if condition="$info.free_month eq 24">checked</if>>2年
+                </label>
+            </div>
+        </div>
+        <a href="#" onclick="$('#submit-form').submit();" class="confirmBtn margin-top margin-bottom">保存设置</a>
+    </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/admin.js"></script>
+<script src="__PUBLIC__/js/jquery.mobile.custom.js"></script>
+<script src="__PUBLIC__/js/jquery-asDatepicker.js"></script>
+<script>
+    //调用日历插件
+    $(document).ready(function(){
+        var start = $('#calendar-mobile-range-start').val();
+        var end = $('#calendar-mobile-range-end').val();
+        
+        $('#calendar-mobile-range-start').asDatepicker({
+            mode: 'single',
+            mobileMode: true,
+            date: start
+        });
+        
+        $('#calendar-mobile-range-end').asDatepicker({
+            mode: 'single',
+            mobileMode: true,
+            date: end
+        });
+    });
+</script>
+</body>
+</html>

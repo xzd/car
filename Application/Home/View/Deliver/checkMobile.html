@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>验证原绑定手机号</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+</head>
+<body>
+<div class="wrap">
+    <form action="" class="form">
+        <label for="" class="mob-label">
+            <input type="number" value="" disabled="disabled" name="phone" class="mob">
+            <a href="#" class="getCode xieyi" id="enableSendBtn">获取验证码</a>
+        </label>
+        <label for="" class="mob-label bor">
+            <input type="number" placeholder="请填写验证码" name="phone_code" class="verification">
+        </label>
+        <a href="#" class="mob-btn green submit">验证原绑定手机号</a>
+    </form>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script>
+    let user = '';
+    function getOwner(){
+        $.get({
+            url:URL+'/users/index',
+            async:true,
+            dataType:'json',
+            success:function(data,status){
+                user = data.data;
+                $('.mob').val(user.phone);
+
+            }
+        })
+    }
+    getOwner();
+
+    let countDown = 0;
+    let flag = true;
+
+    $('.getCode').click(function () {
+
+        if(flag){
+            countDown = 60;
+            let phone = $("input[name=phone]").val();
+            if(phone == ''){
+                layer.msg('请填写手机号');
+                return false;
+            }
+            if (!(phone.length === 11 && /^1\d{10}$/.test(phone))) {
+                layer.msg('请填写有效手机号');
+                return false;
+            }
+            flag =false;
+            let url = URL+'/index/sendCode';
+            $.post(url, {phone:phone}, function (data, status) {
+                if (data.code == 1) {
+                    countDownFunc();
+                } else {
+                    layer.msg(data.msg);
+                    flag =false;
+                }
+            });
+
+        }
+
+    });
+
+    function countDownFunc() {
+        countDown--;
+        if (countDown <= 0) {
+            $('#enableSendBtn').removeAttr('disabled').text('获取确认码');
+            flag =true;
+            return;
+        } else {
+            $('#enableSendBtn').attr('disabled', true).text(countDown + '秒后重发');
+        }
+        setTimeout(function () {
+            countDownFunc();
+        }, 1000);
+    }
+
+    $('.submit').click(function () {
+        let phone = $("input[name=phone]").val();
+        let phone_code = $("input[name=phone_code]").val();
+
+        if(phone == ''){
+            layer.msg('请填写手机号');
+            return false;
+        }
+        if (!(phone.length === 11 && /^1\d{10}$/.test(phone))) {
+            layer.msg('请填写有效手机号');
+            return false;
+        }
+        if(phone_code == ''){
+            layer.msg('请输入验证码');
+            return false;
+        }
+        let url = URL+'/index/checkCode';
+        $.post(url, {phone:phone,code:phone_code}, function (data, status) {
+            if (data.code == 1) {
+                layer.msg('验证成功!');
+                setTimeout(function () {
+                    window.location = '/Deliver/editMobile';
+                }, 2000);
+
+            } else {
+                layer.msg('验证失败!');
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

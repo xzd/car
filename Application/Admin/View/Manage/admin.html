@@ -1,0 +1,184 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    <div class="main-right">
+        <h1 class="main-right-title">系统管理 > 用户管理</h1>
+        <div class="center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>角色</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name='infos' id='vo'>
+                <tr>
+                    <td>{$vo.username}</td>
+                    <td>{$vo.role}</td>
+                    <td><if condition="$vo['state'] eq 1">正常<else />锁定</if></td>
+                    <td>{$vo.create_time}</td>
+                    <td>
+                        <a href="#" onclick="editAdmin('{$vo.id}')" class="edit">编辑</a>
+                        <if condition="$vo['id'] neq 1">
+                        <a href="#" onclick="deleteAdmin('{$vo.id}')" class="delebtn">删除</a>
+                        </if>
+                    </td>
+                </tr>
+                </volist>
+                </tbody>
+            </table>
+            <a href="#" class="confirmBtn margin-top" id="add">新增</a>
+        </div>
+    </div>
+    <!--弹出层-->
+    <div class="dialog"></div>
+    <div class="mask">
+        <form class="form-delete" method="post" action="{:U('/admin/manage/deleteAdmin')}">
+        <h3 class="tips-title">提示</h3>
+        <p class="mess-tip">确认删除该角色</p>
+        <input type="hidden" name='id' id='delete_admin' value="" />
+        <a href="#" onclick="$('.form-delete').submit();" class="reset">确认</a>
+        <a href="#" class="cancel">取消</a>
+        </form>
+    </div>
+</div>
+
+<volist name="infos" id="vo">
+    <form class="form-edit-admin-{$vo.id}" method="post" action="{:U('/admin/manage/saveAdmin')}" >
+        <div class="mask-layer mask-layer-{$vo.id}" id="edituser">
+            <p class="mask-layer-title">编辑用户</p>
+            <input type='hidden' name='id' value='{$vo.id}'>
+            <div class="layer-lader">
+                <label for="username" class="label-text">
+                    <p class="label-title">名称</p>
+                    <input type="text" name="username" class="text-input" value="{$vo.username}" <if condition="$vo['id'] eq 1">disabled</if>>
+                </label>
+                <label for="password" class="label-text">
+                    <p class="label-title">修改密码（不填不会修改密码）</p>
+                    <input type="password" name="password" class="text-input" value="">
+                </label>
+                <label for="role_id" class="label-text">
+                    <p class="label-title">角色</p>
+                    <select name="role_id" class="text-input" <if condition="$vo['id'] eq 1">disabled</if>>
+                        <volist name="roles" id="role">
+                            <option value="{$key}" <if condition="$vo['role_id'] eq $key">selected</if>>{$role}</option>
+                        </volist>
+                    </select>
+                </label>
+                <label for="" class="label-text">
+                    <p>锁定 <span>（若锁定按钮开启，则该角色被锁定，对应权限不可使用，该角色对应账号亦无操作权限）</span></p>
+                    <if condition="$vo['state'] eq 1">
+                    <i class="switch switch-edit-admin-{$vo.id} switch-close" onclick="editSwitch('{$vo.id}')"></i>
+                    <else />
+                    <i class="switch switch-edit-admin-{$vo.id} switch-open" onclick="editSwitch('{$vo.id}')"></i>
+                    </if>
+                    <input type="hidden" id="state" name="state" value="{$vo.state}" />
+                </label>
+            </div>
+            <div class="btn">
+                <a href="#" onclick="$('.form-edit-admin-{$vo.id}').submit();" class="confirmBtn">提交</a>
+                <a href="#" class="cancelBtn">取消</a>
+            </div>
+        </div>
+    </form>
+</volist>
+
+<div class="mask-layer" id="add-user">
+    <p class="mask-layer-title">添加用户</p>
+    <form class="form-add-admin" method="post" action="{:U('/admin/manage/saveAdmin')}">
+    <div class="layer-lader">
+        <label for="username" class="label-text">
+            <p class="label-title">名称</p>
+            <input type="text" name="username" class="text-input" value="">
+        </label>
+        <label for="password" class="label-text">
+            <p class="label-title">密码</p>
+            <input type="password" name="password" class="text-input" value="">
+        </label>
+        <label for="role_id" class="label-text">
+            <p class="label-title">角色</p>
+            <select name="role_id" class="text-input">
+                <volist name="roles" id="role">
+                <option value="{$key}" >{$role}</option>
+                </volist>
+            </select>
+        </label>
+        <label for="" class="label-text">
+            <p>锁定 <span>（若锁定按钮开启，则该角色被锁定，对应权限不可使用，该角色对应账号亦无操作权限）</span></p>
+            <i class="switch switch-add-admin switch-close"></i>
+            <input type="hidden" id="state" name="state" value="1" />
+        </label>
+    </div>
+    <div class="btn">
+        <a href="#" onclick="$('.form-add-admin').submit();" class="confirmBtn">提交</a>
+        <a href="#" class="cancelBtn">取消</a>
+    </div>
+    </form>
+</div>
+
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script>
+    //垂直导航栏，点击下拉子菜单
+    $(".main>a").click(function(){
+        $(this).next().slideToggle(500)
+            .parent().siblings().find(".slider-list").slideUp(500);
+        $(this).parent().addClass('active').siblings().removeClass('active');
+    });
+    $('.slider-list-li').click(function(){
+        $(this).addClass('current').siblings().removeClass('current');
+    });
+    $('.current-arrow>a').click(function(){
+        $('.slider-list-item').slideToggle(500);
+        $(this).parent().toggleClass('arr');
+    });
+    $('.slider-list-item li').click(function(){
+        $(this).addClass('curr').siblings().removeClass('curr');
+    });
+    $('#add').click(function(){
+        $('#add-user,.dialog').show();
+    });
+    
+    //修改
+    function editAdmin(id) {
+        $('.dialog,.mask-layer-' + id).show();
+    }
+    
+    $('.cancelBtn,.cancel').click(function(){
+        $('.dialog,#edituser,#add-user,.mask').hide();
+    });
+    
+    //删除
+    function deleteAdmin(id) {
+        $('#delete_admin').val(id);
+        $('.dialog,.mask').show();
+    }
+    
+    //功能开关切换
+    $('.switch-add-admin').click(function(){
+        $(this).toggleClass('switch-open').toggleClass('switch-close');
+        var state = $('.form-add-admin #state').val();
+        if (state == 1) {
+            $('.form-add-admin #state').val(2);
+        } else {
+            $('.form-add-admin #state').val(1);
+        }
+    });
+    
+    function editSwitch(id) {
+        if (id > 1) {
+            $('.switch-edit-admin-' + id).toggleClass('switch-open').toggleClass('switch-close');
+            var state = $('.form-edit-admin-' + id + ' #state').val();
+            if (state == 1) {
+                $('.form-edit-admin-' + id + ' #state').val(2);
+            } else {
+                $('.form-edit-admin-' + id + ' #state').val(1);
+            }
+        }
+    }
+</script>
+</body>
+</html>

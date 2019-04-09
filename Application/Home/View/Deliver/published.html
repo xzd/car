@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>我的货源</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+</head>
+<body>
+<div class="wrap">
+    <div class="top-header">
+        <div class="top-header-title">
+            <a href="{:U('Deliver/add')}">发布</a>
+        </div>
+        <div class="top-header-title">
+            <a href="{:U('Deliver/published')}" class="border btnClickRes">已发布货源</a>
+        </div>
+        <div class="top-header-title">
+            <a href="{:U('Deliver/closed')}" class="">已关闭货源</a>
+        </div>
+    </div>
+    <div class="empty" style="display:none;">
+        <img src="__PUBLIC__/home/images/fahuo/icon_null@2x.png" alt="">
+        <p class="anonymous">您还没有发布任何货源信息</p>
+        <p class="now"><a href="{:U('Deliver/add')}">赶紧发布吧！</a></p>
+    </div>
+    <div class="fa-container">
+        <div class="load" style="text-align: center;height: 40px;line-height: 40px">
+            <img src="__PUBLIC__/home/images/fahuo/icon_loading@3x.png" alt=""
+                 style="width: 20px;display: block;margin: 0 auto;">
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script>
+    $(function () {
+        var stop = true;
+        var page = 1;
+        let nowPage = 1;
+        var limit = 3;
+        var state = 1;
+        
+        var start,end,start_name,end_name;
+        
+        $.ajaxSetup({async: false});
+        function getList(page, limit, state) {
+            $.get(URL + '/goods/index',
+                {
+                    page: page,
+                    limit: limit,
+                    state: state,
+                    datatype: 'json'
+                },
+                function (data) {
+                    console.log(data);
+                    if (data.code === 1) {
+                        let cardHTML = '';
+                        let d = data.data.list;
+                        if (d.length > 0) {
+                            for (let i in d) {
+                                
+                                
+                                if (d[i].start_district != 0) {
+                                    start = d[i].start_district;
+                                } else if (d[i].start_city != 0) {
+                                    start = d[i].start_city;
+                                } else if (d[i].start_province != 0) {
+                                    start = d[i].start_province;
+                                }
+                                if (d[i].end_district != 0) {
+                                    end = d[i].end_district;
+                                } else if (d[i].end_city != 0) {
+                                    end = d[i].end_city;
+                                } else if (d[i].end_province != 0) {
+                                    end = d[i].end_province;
+                                }
+                                if (d[i].start_district_name != '') {
+                                    start_name = d[i].start_district_name;
+                                } else if (d[i].start_city_name != '') {
+                                    start_name = d[i].start_city_name;
+                                } else if (d[i].start_province_name != '') {
+                                    start_name = d[i].start_province_name;
+                                }
+                                if (d[i].end_district_name != '') {
+                                    end_name = d[i].end_district_name;
+                                } else if (d[i].end_city_name != '') {
+                                    end_name = d[i].end_city_name;
+                                } else if (d[i].end_province_name != '') {
+                                    end_name = d[i].end_province_name;
+                                }
+
+                                cardHTML += '<div class="huoyuan-list">';
+                                cardHTML += '<div class="huoyuan-add">';
+                                cardHTML += '<span>' + d[i].start_province_name + d[i].start_city_name + d[i].start_district_name + '</span>';
+                                cardHTML += '<span class="margin"><img src="__PUBLIC__/home/images/fahuo/arrow_blue.png"></span>';
+                                cardHTML += '<span>' + d[i].end_province_name + d[i].end_city_name + d[i].end_district_name + '</span>';
+                                cardHTML += '<span id="' + d[i].id + '" class="delete-img"></span>';
+                                cardHTML += '</div>';
+                                cardHTML += '<ul class="huoyuan-info">';
+                                cardHTML += '<li>货源信息<span>' + d[i].goods_type + '/' + d[i].money + '元/吨' + '/' + d[i].goods_num + d[i].goods_unit + '</span></li>';
+                                cardHTML += '<li>所需车辆<span>' + d[i].car_lenght + '/' + d[i].car_type + '</span></li>';
+                                cardHTML += '<li>发布时间<span>' + d[i].create_time + '</span></li>';
+                                cardHTML += '<li><span class="look" style="cursor: pointer"><a href="/Deliver/find.html?start=' + start + '&start_name=' + start_name + '&end=' + end + '&end_name=' + end_name + '" style="color: #1dbb3d;">匹配的司机</a></span></li>';
+//                                if(d[i].calls.length > 0) {
+//                                    for (let j = 0; j < d[i].calls.length; j++) {
+//                                        cardHTML += '<li class="like"><div class="look-like">';
+//                                        cardHTML += '<img src="' + d[i].calls[j].header_img + '" class="use-img">';
+//                                        cardHTML += '<div class="info-user"><p>' + d[i].calls[j].name + '</p><p>' + d[i].calls[j].car_number_plate + '</p><p>' + d[i].calls[j].create_time + '</p></div>';
+//                                        cardHTML += '<div class="moblie-look">' + d[i].calls[j].phone + '</div>';
+//                                        cardHTML += '</div> ';
+//                                        cardHTML += '</li>';
+//                                    }
+//                                }else{
+//                                    cardHTML += '<li class="like">';
+//                                    cardHTML +='<p style="text-align: center">暂无司机看过</p>';
+//                                    cardHTML += '</li>';
+//                                }
+
+
+
+                                cardHTML += '</ul>';
+                                cardHTML += '</div>';
+                            }
+                            stop = true;
+                            $('.load').before(cardHTML);
+                            if (d.length < limit) {
+                                $('.load').html('已拉到底啦！');
+                            }
+
+                        }
+
+                    } else {
+                        $('.empty').show();
+                    }
+
+                });
+        }
+
+        getList(1, limit, state);
+        $(window).scroll(function () {
+            var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
+            if ($(document).height() <= totalheight + 120) {
+                nowPage++;
+                console.log(nowPage);
+                if (stop == true) {
+                    stop = false;
+                    getList(nowPage, limit, state);
+                } else {
+                    stop = false;
+                    $('.load').html('已拉到底啦！');
+                }
+            }
+        });
+
+        $(document).on('click', '.delete-img', function () {
+            let id = $(this).attr('id');
+            if (id != '') {
+                layer.confirm('是否关闭！', function () {
+                    $.post(URL + '/goods/close',
+                        {
+                            id: id,
+                            datatype: 'json'
+                        },
+                        function (data) {
+                            if (data.code === 1) {
+                                layer.msg('关闭成功!');
+                                setTimeout(function () {
+                                    window.location = '/Deliver/published';
+                                }, 2000);
+
+                            } else {
+                                layer.msg('关闭失败!');
+                            }
+
+                        });
+                });
+
+
+            }
+        });
+
+
+        $(document).on('click', '.look', function () {
+            $(this).parents('.huoyuan-info').find('.like').toggle();
+        });
+        $('.btnClickRes').click(function () {
+
+            if (user.state == 2) {
+                layer.msg('用户资料审核中!请等待');
+            } else if (user.state == 4) {
+                $('#tip').text('审核不通过，请重新注册');
+                $('.dialog').show();
+                $('.reg').show();
+            } else if (user.state == 3) {
+                if (user.vip == 0) {
+                    $('.dialog').show();
+                    $('.mem').show();
+                } else {
+                    window.location = "{:U('Deliver/published')}";
+                }
+            } else {
+                $('.dialog').show();
+                $('.reg').show();
+            }
+
+        });
+    })
+</script>
+</body>
+</html>

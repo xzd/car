@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>首页</title>
+    <link rel="stylesheet" href="__PUBLIC__/home/css/reset.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/swiper.min.css">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <style>
+        body {
+            background: #f7f7f7
+        }
+
+        * {
+            font-family: PingFang SC
+        }
+        #swiper2{margin: 10px 0;}
+        #swiper2 .swiper-slide{width: 100px;}
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="index-top">
+        <div class="swiper-container" id="swiper-container1">
+            <div class="swiper-wrapper" id="swiper">
+            </div>
+        </div>
+
+
+        <div class="index_top_bottom">
+            <div class="follow">关注：<span class="people notice">0</span>人</div>
+            <div class="follow">今日点击：<span class="people clinic">0</span></div>
+        </div>
+    </div>
+    <div class="entry">
+        <ul class="entry_list clearfix">
+            <li>
+                <a href="javascript:;" class="btnClickCar">
+                    <i class="icon cars"></i>
+                    车源信息
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" class="btnClickGoods">
+                    <i class="icon goods"></i>
+                    货源信息
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" class="btnClickAdd">
+                    <i class="icon publish_btn"></i>
+                    发布信息
+                </a>
+            </li>
+            <li>
+                <a href="#" class="btnClickSafe">
+                    <i class="icon safe"></i>
+                    保险服务
+                </a>
+            </li>
+            <li>
+                <a href="idCard.html">
+                    <i class="icon id_card"></i>
+                    身份验证
+                </a>
+            </li>
+            <li>
+                <a href="#" class="btnClickSafe">
+                    <i class="icon shop"></i>
+                    积分商城
+                </a>
+            </li>
+            <li>
+                <a href="check.html">
+                    <i class="icon yf"></i>
+                    运费查询
+                </a>
+            </li>
+            <li>
+                <a href="tax.html">
+                    <i class="icon shui"></i>
+                    里程税查询
+                </a>
+            </li>
+            <li>
+                <a href="assistant.html">
+                    <i class="icon zhu"></i>
+                    卡友助手
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="ad">
+        <div class="swiper-container" id="continer">
+            <div class="swiper-wrapper" id="swiper1">
+            </div>
+        </div>
+    </div>
+    <div class="list_box">
+        <h3 class="headLine">货源信息 <a href="{:U('Carowner/lists')}" class="more">更多</a></h3>
+        <div class="goods_list goodsHtml">
+
+
+        </div>
+
+    </div>
+    <div class="list_box margin-big-top">
+        <h3 class="headLine">车源信息 <a href="{:U('Deliver/find')}" class="more">更多</a></h3>
+        <div class="goods_list carsHtml">
+
+        </div>
+    </div>
+    <div class="list_box margin-big-top">
+        <h3 class="headLine">合作企业 <a href="more.html" class="more">更多</a></h3>
+        <div class="enterprises">
+            <div class="swiper-container" id="continer1">
+                <div class="swiper-wrapper" id="swiper2">
+                </div>
+                <!--<div class="swiper-pagination"></div>-->
+            </div>
+        </div>
+    </div>
+    <div class="padding_b"></div>
+    <footer class="footer">
+        <a href="#" class="footer-list hight-color">
+            <i class="icons index-cur"></i>
+            返回首页
+        </a>
+        <a href="javascript:;" class="footer-list" id="publish">
+            <i class="icons publish"></i>
+            发布信息
+        </a>
+        <a href="javascript:;" class="footer-list" id="center">
+            <i class="icons my-membmer"></i>
+            个人中心
+        </a>
+    </footer>
+</div>
+<div class="dialog"></div>
+<div class="mask reg">
+    <p class="mask-title">温馨提示</p>
+    <p class="tips" id="tip">您尚未注册，请先注册！</p>
+    <div class="botton">
+        <a href="#" class="go">先逛逛</a>
+        <a href="{:U('Carowner/card')}" class="member">去注册</a>
+    </div>
+</div>
+<script src="__PUBLIC__/home/js/jquery.min.js"></script>
+<script src="__PUBLIC__/home/js/config.js"></script>
+<script src="__PUBLIC__/home/js/date.js"></script>
+<script src="__PUBLIC__/home/js/layer/layer.js"></script>
+<script src="__PUBLIC__/home/js/swiper.min.js"></script>
+
+<script>
+    $(function () {
+        function getList() {
+            $.get({
+                url: URL + '/Index/index',
+                async: true,
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res);
+                    let data = res.data;
+
+                    let clinic = res.data.clinic;
+                    $('.clinic').text(clinic);
+                    let notice = res.data.follow;
+                    $('.notice').text(notice);
+
+                    //头部轮播
+                    let topHtml = '';
+                    for (let i in data.ad1) {
+                        topHtml += '<div class="swiper-slide">';
+                        topHtml += '<img src=" ' + data.ad1[i] + '" style="width: 100%">';
+                        topHtml += '</div>';
+                    }
+                    $('#swiper').append(topHtml);
+                    //页面广告
+                    let adHtml = '';
+                    for (let i in data.ad2) {
+                        adHtml += '<div class="swiper-slide">';
+                        adHtml += '<img src=" ' + data.ad2[i] + '" style="width: 100%">';
+                        adHtml += '</div>';
+                    }
+                        $('#swiper1').append(adHtml);
+
+                    let enHtml = '';
+                    let length = data.enterprises.length;
+//                    if (length >= 3) {
+//                        length = 3;
+//                    }
+                    for (let i = 0; i < length; i++) {
+                        enHtml += '<div class="swiper-slide">';
+                        enHtml += '<a href="/Carowner/companyD.html?id=' + data.enterprises[i].id + '"> <span class="imgbox">';
+                        enHtml += '<img src="' + data.enterprises[i].image + '">';
+                        enHtml += '</span> <div class="goods_user_detail">' + data.enterprises[i].name + '</div> </a> </div>';
+
+                    }
+                    $('#swiper2').append(enHtml);
+
+
+                    let goodsHtml = '';
+                    for (let i in data.goods) {
+                        goodsHtml += '<div class="goods_list_item"><a href="/Carowner/deliver.html?id=' + data.goods[i].id + '"><span class="imgbox">';
+                        goodsHtml += '<img src="' + data.goods[i].image + '">';
+                        goodsHtml += '<div class="goods_pop"><p class="goods_d">' + data.goods[i].goods_type + '/' + data.goods[i].goods_num + data.goods[i].goods_unit + '/' + data.goods[i].car_lenght + '烘干板材/32吨/12米/高低板烘干板材/32吨/12米/高低板</p></div> </span>';
+                        goodsHtml += '<div class="goods_user_detail">';
+                        goodsHtml += '<img src="' + data.goods[i].user_header_img + '" class="goods_user"><div class="goods_detail">';
+                        goodsHtml += '<div class="user_detail"><span class="name">' + data.goods[i].user_name + '</span><span class="honour">货主</span><span class="release_time">' + getDateDiff(data.goods[i].update_time) + '</span></div>';
+                        goodsHtml += '<p class="flying">' + data.goods[i].start_province_name + data.goods[i].start_city_name + data.goods[i].start_district_name + '</p><p class="destination">' + data.goods[i].end_province_name + data.goods[i].end_city_name + data.goods[i].end_district_name + '</p> </div> </div> </a> </div>';
+
+                    }
+                    $('.goodsHtml').append(goodsHtml);
+
+                    let carsHtml = '';
+                    for (let i in data.cars) {
+                        let car_empty = '';
+                        if (data.cars[i].car_empty == 1) {
+                            car_empty = "空车";
+                        } else {
+                            car_empty = "运输中";
+                        }
+                        carsHtml += '<div class="goods_list_item"><a href="/Deliver/carowner.html?id=' + data.cars[i].id + '"><span class="imgbox"><img src="' + data.cars[i].car_img + '"></span>';
+                        carsHtml += ' <div class="goods_user_detail"><img src="' + data.cars[i].header_img + '" class="goods_user"><div class="goods_detail">';
+                        carsHtml += '<div class="user_detail"><span class="name">' + data.cars[i].name + '</span><span class="honour car">' + car_empty + '</span></div>';
+                        carsHtml += '<p class="text-ell flying">' + data.cars[i].car_number_plate + '/' + data.cars[i].car_lenght + '/' + data.cars[i].car_type + '</p><p class="gps">' + data.cars[i].location + '</p></div></div></a></div>';
+                    }
+
+                    $('.carsHtml').append(carsHtml);
+                    //身份判断
+                    $('#center').click(function () {
+                        if (data.userinfo.type == 0) {
+                            layer.msg('请前往注册页开通会员！', {time: 2000}, function () {
+                                window.location.href = "/Carowner/card.html";
+                            });
+
+                        } else if (data.userinfo.type == 2) {
+                            window.location.href = "{:U('Carowner/index')}";
+                        } else if (data.userinfo.type == 1) {
+                            window.location.href = "{:U('Deliver/index')}";
+                        }
+                    });
+                    //发布
+                    $('#publish').click(function(){
+                        if(data.userinfo.type == 0){
+                            $('.dialog').show();
+                            $('.reg').show();
+                        }else{
+                            window.location = "{:U('Deliver/add')}";
+                        }
+                    });
+                    //点击车源信息
+                    $('.btnClickCar').click(function () {
+                        if (data.userinfo.state == 1 && data.userinfo.type == 0) {
+                            $('.dialog').show();
+                            $('.reg').show();
+                        } else{
+                            window.location = "{:U('Deliver/find')}";
+                        }
+
+                    });
+
+                    //点击货源信息
+                    $('.btnClickGoods').click(function () {
+                        if (data.userinfo.state == 1 && data.userinfo.type == 0) {
+                            $('.dialog').show();
+                            $('.reg').show();
+                        } else{
+                            window.location = "{:U('Carowner/lists')}";
+                        }
+
+                    });
+
+                    //点击发布信息
+                    $('.btnClickAdd').click(function () {
+                        if (data.userinfo.state == 1 && data.userinfo.type == 0) {
+                            $('.dialog').show();
+                            $('.reg').show();
+                        }else {
+                            window.location = "{:U('Deliver/add')}";
+                        }
+
+                    });
+
+                }
+            })
+        }
+
+        getList();
+
+        //保险服务，积分商城
+        $('.btnClickSafe').click(function(){
+           layer.msg('正在努力开发中，敬请期待！') ;
+        });
+
+
+        $('.go').click(function () {
+            $('.dialog').hide();
+            $('.reg').hide();
+            $('.ziliao').hide();
+        });
+
+    })
+</script>
+<script type="text/javascript">
+    $(function() {
+        wx.config(<?php echo $js->config(array('onMenuShareQQ','onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareWeibo'), false) ?>);
+
+
+        wx.ready(function(){
+            // wx.hideOptionMenu();
+            wx.onMenuShareTimeline({
+                title: '车来货往',
+                link: 'http://www.chelaihuowang.xin/Carowner/newIndex.html',
+                imgUrl: ' http://www.chelaihuowang.xin/Public/home/images/chezhu/shareLogo.jpg',
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+//                    alert('分享到朋友圈成功');
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+//                    alert('你没有分享到朋友圈');
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: '车来货往',
+                desc: '车来货往是专注于满洲里木材运输的专业信息平台',
+                link: 'http://www.chelaihuowang.xin/Carowner/newIndex.html',
+                imgUrl: ' http://www.chelaihuowang.xin/Public/home/images/chezhu/shareLogo.jpg',
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                trigger: function (res) {
+                    // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+                },
+                success: function (res) {
+                    console.log('分享给朋友成功');
+                },
+                cancel: function (res) {
+                    console.log('你没有分享给朋友');
+                },
+                fail: function (res) {
+                    console.log(JSON.stringify(res));
+                }
+            });
+        });
+    });
+</script>
+<script>
+    //头部广告
+    var mySwiper = new Swiper('#swiper-container1', {
+        autoplay: 5000,//可选选项，自动滑动
+        initialSlide :0,
+        observer:true,//修改swiper自己或子元素时，自动初始化swiper
+        observeParents:false,//修改swiper的父元素时，自动初始化swiper
+        onSlideChangeEnd: function(swiper){
+            swiper.update();
+            mySwiper.startAutoplay();
+            mySwiper.reLoop();
+        }
+    });
+
+    var swiper = new Swiper('#continer1', {
+        pagination: '.swiper-pagination',
+        slidesPerView: 3,
+        paginationClickable: true,
+        autoplay : 5000,
+        initialSlide :0,
+        spaceBetween: 10,
+        observer:true,//修改swiper自己或子元素时，自动初始化swiper
+        observeParents:false,//修改swiper的父元素时，自动初始化swiper
+        onSlideChangeEnd: function(swiper){
+            swiper.update();
+            mySwiper.startAutoplay();
+            mySwiper.reLoop();
+        }
+    });
+
+    //页面广告
+//    function adSwiper() {
+        var mySwiper1 = new Swiper('#continer', {
+            autoplay: 5000,//可选选项，自动滑动
+            initialSlide :0,
+            autoplayDisableOnInteraction: false,
+            updateOnImagesReady : true,
+            observer:true,//修改swiper自己或子元素时，自动初始化swiper
+            observeParents:false,//修改swiper的父元素时，自动初始化swiper
+            onSlideChangeEnd: function(swiper){
+                swiper.update();
+                mySwiper.startAutoplay();
+                mySwiper.reLoop();
+            }
+        });
+//    }
+//    adSwiper();
+
+</script>
+</body>
+</html>

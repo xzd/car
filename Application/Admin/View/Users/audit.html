@@ -1,0 +1,182 @@
+<include file="Common/head" />
+    <include file="Common/navbar" />
+    
+    <div class="main-right">
+        <h1 class="main-right-title">注册用户管理 > 审核管理 > 待审核</h1>
+        <div class="search text-align">
+            <form class="form-inline" method="get" action="{:U('users/audit')}">
+                <label for="nickname" class="margin-right">
+                    <span>微信昵称</span>
+                    <input type="text" name="nickname" class="input" value="{$search.nickname}" />
+                </label>
+                <label for="phone">
+                    <span>手机号</span>
+                    <input type="text" name="phone" class="input" value="{$search.phone}" />
+                </label>
+                <a href="#" onclick="$('.form-inline').submit();" class="searchBtn"><i class="icon"></i>搜索</a>
+            </form>
+        </div>
+        <div class="center">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>微信昵称</th>
+                        <th>姓名</th>
+                        <th>用户类型</th>
+                        <th>手机号</th>
+                        <th>提交审核时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <volist name="info" id="vo">
+                    <tr onclick="show('{$vo.id}')">
+                        <td>{$vo.nickname}</td>
+                        <td>{$vo.name}</td>
+                        <td>
+                            <if condition="$vo['type'] eq 2">车主
+                            <elseif condition="$vo['type_goods'] eq 1" />货主
+                            <else />货站
+                            </if>
+                        </td>
+                        <td>{$vo.phone}</td>
+                        <td>{$vo.register_time}</td>
+                    </tr>
+                    </volist>
+                </tbody>
+            </table>
+            <div class="page clearfix">
+                <form name="union_form" action="{:U('/admin/users/index')}" method="get">
+                    <input type="hidden" name="search" value="{$search}">
+                    {$page}
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--弹出层-->
+    <div class="dialog"></div>
+    
+    <volist name="info" id="vo">
+    <form id="submit_form_{$vo.id}" method="post" action="{:U('/admin/users/check')}" >
+        <div class="mask-layer mask-layer-{$vo.id}">
+            <input type="hidden" name="id" value="{$vo.id}" />
+            <input type="hidden" name="type" value="1" />
+            <input type="hidden" name="state" value="" id="form_state_{$vo.id}"/>
+            <input type="hidden" name="nickname" value="{$search.nickname}" />
+            <input type="hidden" name="phone" value="{$search.phone}" />
+            
+            <p class="mask-layer-title"><if condition="$vo['type'] eq 1">发货方用户审核申请详情<else />车主用户审核申请详情</if></p>
+            <div class="layer-lader">
+                <h3 class="user">用户信息</h3>
+                <ul>
+                    <li>
+                        <span>姓名</span>
+                        <span class="fr">{$vo.name}</span>
+                    </li>
+                    <if condition="$vo['type'] eq 1">
+                    <li>
+                        <span>发货方类型</span>
+                        <span class="fr">
+                            <if condition="$vo['type_goods'] eq 1">货主<else />货站</if>
+                        </span>
+                    </li>
+                    </if>
+                    <li class="clearfix">
+                        <span>用户头像</span>
+                        <span class="fr">
+                            <img src="{$vo.header_img}" class="user-img deImg imgJs">
+                        </span>
+                    </li>
+                    <li>
+                        <span>微信昵称</span>
+                        <span class="fr">{$vo.nickname}</span>
+                    </li>
+                    <li>
+                        <span>手机号</span>
+                        <span class="fr">{$vo.phone}</span>
+                    </li>
+                    <li>
+                        <span>身份证号</span>
+                        <span class="fr">{$vo.id_no}</span>
+                    </li>
+                    <li class="clearfix">
+                        <span>身份证照片（正反面）</span>
+                        <span class="fr">
+                            <img src="{$vo.id_face_img}" class="sfz deImg imgJs">
+                             <img src="{$vo.id_word_img}" class="sfz deImg imgJs">
+                        </span>
+                    </li>
+                    <if condition="$vo['type'] eq 2">
+                    <li class="clearfix">
+                        <span>行驶证照片</span>
+                        <span class="fr">
+                            <img src="{$vo.car_license_img}" class="sfz deImg imgJs">
+                        </span>
+                    </li>
+                    </if>
+                    <li>
+                        <span>注册时间</span>
+                        <span class="fr">{$vo.register_time}</span>
+                    </li>
+                </ul>
+            </div>
+        
+            <if condition="$vo['type'] eq 2">
+            <div class="layer-lader">
+                <h3 class="member">车辆信息</h3>
+                <ul>
+                    <li>
+                        <span>车辆类型</span>
+                        <span class="fr"><if condition="$vo['vip'] eq 1">黄色车牌<else />蓝色车牌</if></span>
+                    </li>
+                    <li>
+                        <span>车牌号码</span>
+                        <span class="fr">{$vo.car_number_plate}</span>
+                    </li>
+                    <li>
+                        <span>车长/车型/载重</span>
+                        <span class="fr">{$vo.car_lenght}/{$vo.car_type}/{$vo.car_load}吨</span>
+                    </li>
+                    <li class="clearfix">
+                        <span>车辆照片</span>
+                        <span class="fr">
+                            <img src="{$vo.car_img}" class="user-img deImg imgJs">
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            </if>
+        
+            <div class="layer-lader">
+                <h3 class="member">审核备注</h3>
+                <textarea class="remark-info" name="remark" rows="3" cols="75"></textarea>
+            </div>
+            <div class="btn">
+                <a href="#" onclick="submit2('{$vo.id}', 3)" class="confirmBtn">审核通过</a>
+                <a href="#" onclick="submit2('{$vo.id}', 4)" class="rejected">审核驳回</a>
+                <a href="#" class="cancelBtn">取消</a>
+            </div>
+            <!--imgBg begin-->
+            <div class="imgBg">
+                <div class="imgBgMain">
+                    <img src="" alt="" class="showImg" width="100%" />
+                </div>
+            </div>
+            <!--imgBg end-->
+        </div>
+    </form>
+    </volist>
+
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/js/admin.js"></script>
+    <script>
+        //弹出货源详情
+        function show(id) {
+            $('.dialog,.mask-layer-' + id).show();
+        }
+        function submit2(id, state) {
+            $('#form_state_' + id).val(state);
+            $('#submit_form_' + id).submit();
+        }
+    </script>
+    </body>
+</html>
